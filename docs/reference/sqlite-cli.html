@@ -54,11 +54,15 @@
 </div>
 </section><section id="dots">
 <h2>Dot-commands</h2>
-<div class="rules">
+<p>Lines starting with a dot are settings of the shell, not SQL. No semicolon. The Python fallback shell has none of them and prints rows as tuples.</p><div class="panel">
+<div class="cap">sqlite&gt; with .mode box</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>.mode box</span><span class="ln cmd"><span class="p">sqlite> </span>SELECT student_name, inter_city FROM students WHERE inter_city = 'Vijayawada';</span><span class="ln">┌────────────────────────┬────────────┐</span><span class="ln">│      student_name      │ inter_city │</span><span class="ln">├────────────────────────┼────────────┤</span><span class="ln">│ Lakshmi Prasanna Gudla │ Vijayawada │</span><span class="ln">│ Divya Sree Pothula     │ Vijayawada │</span><span class="ln">└────────────────────────┴────────────┘</span></pre>
+</div><div class="rules">
 <div class="rule"><div class="c"><code>.tables</code></div><div class="d">list the tables in this file</div></div>
 <div class="rule"><div class="c"><code>.schema</code></div><div class="d">print the CREATE TABLE statements</div></div>
-<div class="rule"><div class="c"><code>.headers on</code></div><div class="d">print column names above results</div></div>
-<div class="rule"><div class="c"><code>.mode column</code></div><div class="d">align results in columns (default is <code>a|b|c</code>)</div></div>
+<div class="rule"><div class="c"><code>.mode box</code></div><div class="d">draw every result as a table with borders and the column names on top — set this first</div></div>
+<div class="rule"><div class="c"><code>.headers on</code></div><div class="d">print column names above results (box mode already does)</div></div>
+<div class="rule"><div class="c"><code>.mode column</code></div><div class="d">align results in plain columns, no borders (the default is <code>a|b|c</code>)</div></div>
 <div class="rule"><div class="c"><code>.read schema.sql</code></div><div class="d">run every statement in a file</div></div>
 <div class="rule"><div class="c"><code>.quit</code></div><div class="d">leave (or Ctrl+D)</div></div>
 </div>

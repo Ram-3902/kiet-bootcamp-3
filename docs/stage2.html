@@ -104,6 +104,9 @@ serves any college, and text with a quote in it cannot break or hijack your SQL.
 <li><p>Run it with a college from <em>your</em> database. The example team has two Narayana students.</p><div class="panel">
 <div class="cap">terminal 1</div>
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 by_college.py "Narayana Junior College"</span><span class="ln">Lakshmi Prasanna Gudla</span><span class="ln">Divya Sree Pothula</span></pre>
+</div><p>Same question in the shell from Stage 1, with box mode on. The rows are the same two; the program just prints them without the box. The shell and the program are both clients of the same file.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sqlite3 ../../data/team_details.db</span><span class="ln">SQLite version 3.45.1 2024-01-30 16:01:20</span><span class="ln">Enter ".help" for usage hints.</span><span class="ln cmd"><span class="p">sqlite> </span>.mode box</span><span class="ln cmd"><span class="p">sqlite> </span>SELECT student_name FROM students WHERE inter_college = 'Narayana Junior College';</span><span class="ln">┌────────────────────────┐</span><span class="ln">│      student_name      │</span><span class="ln">├────────────────────────┤</span><span class="ln">│ Lakshmi Prasanna Gudla │</span><span class="ln">│ Divya Sree Pothula     │</span><span class="ln">└────────────────────────┘</span><span class="ln cmd"><span class="p">sqlite> </span>.quit</span></pre>
 </div></li>
 <li><p>Now a college that is not in your database. It prints nothing — that is correct. Zero rows came back, the loop ran zero times, no error.</p><div class="panel">
 <div class="cap">terminal 1</div>
