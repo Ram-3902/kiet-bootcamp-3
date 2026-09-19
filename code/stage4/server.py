@@ -33,21 +33,12 @@ def wish(name):
     return "TODO (Task 1)"
 
 
-# ---- Task 2: POST /iseven, body {"number": 4}  ->  {"number": 4, "is_even": true}
-@route("/iseven", method="POST")
-def iseven():
-    data = request.json            # the body, already a dict (or None if no JSON was sent)
-    # TODO (Task 2): if data is None, or data has no "number", answer with status 400 and an error dict.
-    #                otherwise return a dict with "number" and "is_even"  (hint: number % 2 == 0)
-    return "TODO (Task 2)"
-
-
-# ---- Task 3: GET /about  ->  your own details, the three keys of the table --
+# ---- Task 2: GET /about  ->  your own details, the three keys of the table --
 @route("/about")
 def about():
-    # TODO (Task 3): return a dict with exactly these three keys, filled with YOUR details:
+    # TODO (Task 2): return a dict with exactly these three keys, filled with YOUR details:
     #                "student_name", "inter_college", "inter_city"
-    return "TODO (Task 3)"
+    return "TODO (Task 2)"
 
 
 # ---- start --------------------------------------------------------------

@@ -63,25 +63,15 @@ report(s == 200 and b == "Good morning Ravi", "Task 1: GET /wish/Ravi -> Good mo
 s, h, b = request("GET", "/wish/Lakshmi")
 report(s == 200 and b == "Good morning Lakshmi", "Task 1: GET /wish/Lakshmi -> Good morning Lakshmi", "Good morning Lakshmi", b)
 
-s, h, b = request("POST", "/iseven", {"number": 4})
-report(s == 200 and as_json(b) == {"number": 4, "is_even": True}, "Task 2: POST /iseven 4 -> is_even true", {"number": 4, "is_even": True}, b)
-
-s, h, b = request("POST", "/iseven", {"number": 7})
-report(s == 200 and as_json(b) == {"number": 7, "is_even": False}, "Task 2: POST /iseven 7 -> is_even false", {"number": 7, "is_even": False}, b)
-
-s, h, b = request("POST", "/iseven")
-j = as_json(b)
-report(s == 400 and isinstance(j, dict) and "error" in j, "Task 2: POST /iseven with no body -> 400 with an error", "400 + {'error': ...}", f"{s} {b[:60]}")
-
 s, h, b = request("GET", "/about")
 j = as_json(b)
 keys = ["student_name", "inter_college", "inter_city"]
 if not isinstance(j, dict):
-    report(False, "Task 3: GET /about returns a dict (JSON object)", "a dict", b[:60])
+    report(False, "Task 2: GET /about returns a dict (JSON object)", "a dict", b[:60])
 else:
-    report(sorted(j.keys()) == sorted(keys), "Task 3: /about has exactly the three keys of the students table", keys, sorted(j.keys()))
+    report(sorted(j.keys()) == sorted(keys), "Task 2: /about has exactly the three keys of the students table", keys, sorted(j.keys()))
     empty = [k for k in keys if not isinstance(j.get(k), str) or j.get(k).strip() == ""]
-    report(not empty, "Task 3: /about values are non-empty strings", "your real details", f"empty or missing: {empty}" if empty else j)
+    report(not empty, "Task 2: /about values are non-empty strings", "your real details", f"empty or missing: {empty}" if empty else j)
 
 print()
 print(f"{passed} passed, {failed} failed")

@@ -40,23 +40,21 @@
 <header class="page">
 <p class="stage">Stage 4 · Session 2 · afternoon</p>
 <h1>Write your own server</h1>
-<p class="sub">Three functions, three addresses, port 8081. Return a string for text, a dict for JSON, and guard the body that is not there.</p>
+<p class="sub">Two functions, two addresses, port 8081. Return a string for text, a dict for JSON.</p>
 <p class="artifact">@route("/wish/&lt;name&gt;")</p>
 </header>
 <section id="concept">
 <h2>Concept</h2>
 <p>A route is a function with an address. In Stage 3 you saw four addresses answer; today you
-give three functions addresses of your own. The line <code>@route("/hai")</code> above
+give two functions addresses of your own. The line <code>@route("/hai")</code> above
 <code>def hai():</code> says one thing: when this path is asked for, call this function. It does not
 call it now. It does not change what the function does. It writes the address into Bottle's list, and
 <code>run()</code> at the bottom starts the waiting loop that consults that list.</p><p>What the function returns becomes the answer. Return a string and the client gets text. Return a
 dict and Bottle turns it into JSON and sets <code>Content-Type: application/json</code> for you — the
-<code>json.dumps</code> from Stage 0 block 3, done automatically. You never build the response by hand.</p><p>The three doors from Stage 3 map to three pieces of Bottle. A path parameter,
-<code>&lt;name&gt;</code> in the route, becomes a function argument — <code>def wish(name):</code>
-receives whatever was in the URL. The query string is <code>request.query.get("k")</code>. The body,
-when it is JSON, is <code>request.json</code>, already a dict, or <code>None</code> if nothing was sent.
-That <code>None</code> is where the <code>if x is None:</code> guard from Stage 0 earns its place: a
-missing body must become a 400 with an error dict, not a crash.</p><p>Your server listens on port 8081, so it can run at the same time as the Stage 3 server on 8080. Two
+<code>json.dumps</code> from Stage 0 block 3, done automatically. You never build the response by hand.</p><p>The doors from Stage 3 map to pieces of Bottle. A path parameter, <code>&lt;name&gt;</code> in the
+route, becomes a function argument — <code>def wish(name):</code> receives whatever was in the URL. The
+query string is <code>request.query.get("k")</code>; that is for Stage 5. Today one route takes a name
+from the path and the other takes nothing at all.</p><p>Your server listens on port 8081, so it can run at the same time as the Stage 3 server on 8080. Two
 programs, two ports, one machine; curl picks which one by the number after the colon. Keep both running
 for the last step and watch two terminals answer.</p>
 </section>
@@ -66,7 +64,7 @@ for the last step and watch two terminals answer.</p>
 <div class="cap">videos/stage4.mp4</div>
 <video controls preload="metadata" src="videos/stage4.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
 </div>
-<p class="note">Starting the stub, filling in wish, restarting, curl; the same for iseven and about; then both servers side by side answering /hai and /wish/Ravi.</p>
+<p class="note">Starting the stub, filling in wish, restarting, curl; the same for about; then both servers side by side answering /hai and /wish/Ravi.</p>
 </section>
 <section id="task">
 <h2>Task</h2>
@@ -79,17 +77,13 @@ for the last step and watch two terminals answer.</p>
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8081/hai</span><span class="ln">Namasthey!!!</span></pre>
 </div><p>Open <code>server.py</code> in your editor. This is the whole file:</p><div class="panel">
 <div class="cap">code/stage4/server.py</div>
-<pre class="code"><span class="ln"><span class="cm"># server.py — Stage 4. Your first server.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   Terminal 1:  python3 server.py              (port 8081, so it can run beside the Stage 3 server on 8080)</span></span><span class="ln"><span class="cm">#                python3 server.py --port 8082</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># A route is a function with an address.</span></span><span class="ln"><span class="cm">#   @route("/hai") means: when someone asks for /hai, call the function below.</span></span><span class="ln"><span class="cm">#   Return a string  -&gt; a text response.</span></span><span class="ln"><span class="cm">#   Return a dict    -&gt; Bottle turns it into JSON for you.</span></span><span class="ln"> </span><span class="ln">import sys</span><span class="ln">from bottle import route, run, request, response</span><span class="ln"> </span><span class="ln"><span class="cm"># ---- read --port from the command line ---------------------------------</span></span><span class="ln">port = 8081</span><span class="ln">previous = ""</span><span class="ln">for word in sys.argv:</span><span class="ln">    if previous == "--port":</span><span class="ln">        port = int(word)</span><span class="ln">    previous = word</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- this one already works -------------------------------------------</span></span><span class="ln">@route("/hai")</span><span class="ln">def hai():</span><span class="ln">    return "Namasthey!!!"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 1: GET /wish/&lt;name&gt;  -&gt;  Good morning &lt;name&gt; ----------------------</span></span><span class="ln">@route("/wish/&lt;name&gt;")</span><span class="ln">def wish(name):</span><span class="ln"><span class="cm">    # TODO (Task 1): return the text "Good morning " followed by the name</span></span><span class="ln">    return "TODO (Task 1)"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 2: POST /iseven, body {"number": 4}  -&gt;  {"number": 4, "is_even": true}</span></span><span class="ln">@route("/iseven", method="POST")</span><span class="ln">def iseven():</span><span class="ln">    data = request.json            # the body, already a dict (or None if no JSON was sent)</span><span class="ln"><span class="cm">    # TODO (Task 2): if data is None, or data has no "number", answer with status 400 and an error dict.</span></span><span class="ln"><span class="cm">    #                otherwise return a dict with "number" and "is_even"  (hint: number % 2 == 0)</span></span><span class="ln">    return "TODO (Task 2)"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 3: GET /about  -&gt;  your own details, the three keys of the table --</span></span><span class="ln">@route("/about")</span><span class="ln">def about():</span><span class="ln"><span class="cm">    # TODO (Task 3): return a dict with exactly these three keys, filled with YOUR details:</span></span><span class="ln"><span class="cm">    #                "student_name", "inter_college", "inter_city"</span></span><span class="ln">    return "TODO (Task 3)"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- start --------------------------------------------------------------</span></span><span class="ln">print(f"Serving on http://localhost:{port}  — Ctrl+C to stop")</span><span class="ln">run(host="localhost", port=port, debug=True)</span></pre>
+<pre class="code"><span class="ln"><span class="cm"># server.py — Stage 4. Your first server.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   Terminal 1:  python3 server.py              (port 8081, so it can run beside the Stage 3 server on 8080)</span></span><span class="ln"><span class="cm">#                python3 server.py --port 8082</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># A route is a function with an address.</span></span><span class="ln"><span class="cm">#   @route("/hai") means: when someone asks for /hai, call the function below.</span></span><span class="ln"><span class="cm">#   Return a string  -&gt; a text response.</span></span><span class="ln"><span class="cm">#   Return a dict    -&gt; Bottle turns it into JSON for you.</span></span><span class="ln"> </span><span class="ln">import sys</span><span class="ln">from bottle import route, run, request, response</span><span class="ln"> </span><span class="ln"><span class="cm"># ---- read --port from the command line ---------------------------------</span></span><span class="ln">port = 8081</span><span class="ln">previous = ""</span><span class="ln">for word in sys.argv:</span><span class="ln">    if previous == "--port":</span><span class="ln">        port = int(word)</span><span class="ln">    previous = word</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- this one already works -------------------------------------------</span></span><span class="ln">@route("/hai")</span><span class="ln">def hai():</span><span class="ln">    return "Namasthey!!!"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 1: GET /wish/&lt;name&gt;  -&gt;  Good morning &lt;name&gt; ----------------------</span></span><span class="ln">@route("/wish/&lt;name&gt;")</span><span class="ln">def wish(name):</span><span class="ln"><span class="cm">    # TODO (Task 1): return the text "Good morning " followed by the name</span></span><span class="ln">    return "TODO (Task 1)"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 2: GET /about  -&gt;  your own details, the three keys of the table --</span></span><span class="ln">@route("/about")</span><span class="ln">def about():</span><span class="ln"><span class="cm">    # TODO (Task 2): return a dict with exactly these three keys, filled with YOUR details:</span></span><span class="ln"><span class="cm">    #                "student_name", "inter_college", "inter_city"</span></span><span class="ln">    return "TODO (Task 2)"</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- start --------------------------------------------------------------</span></span><span class="ln">print(f"Serving on http://localhost:{port}  — Ctrl+C to stop")</span><span class="ln">run(host="localhost", port=port, debug=True)</span></pre>
 </div></li>
 <li><p><strong>Task 1.</strong> Fill in <code>wish</code>: the name from the path, in a different sentence from Stage 3 on purpose. <strong>Stop the server with Ctrl+C and start it again</strong> after every edit — it reads the file only once, at start.</p><div class="panel">
 <div class="cap">terminal 2 — curl</div>
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8081/wish/Ravi</span><span class="ln">Good morning Ravi</span><span class="ln cmd"><span class="p">$ </span>curl localhost:8081/wish/Lakshmi</span><span class="ln">Good morning Lakshmi</span></pre>
 </div></li>
-<li><p><strong>Task 2.</strong> Fill in <code>iseven</code>: the number from the body. <code>%</code> from Stage 0 block 4. Guard the missing body first, then answer.</p><div class="panel">
-<div class="cap">terminal 2 — curl</div>
-<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8081/iseven -H "Content-Type: application/json" -d '{"number": 4}'</span><span class="ln">{"number": 4, "is_even": true}</span><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8081/iseven -H "Content-Type: application/json" -d '{"number": 7}'</span><span class="ln">{"number": 7, "is_even": false}</span><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8081/iseven</span><span class="ln">{"error": "send JSON like {\"number\": 4}"}</span></pre>
-</div></li>
-<li><p><strong>Task 3.</strong> Fill in <code>about</code>: a dict with exactly the three keys of the <code>students</code> table, holding <em>your</em> details, typed in. This is the first JSON your own server sends, and it has the same shape as one row of Stage 1.</p><div class="panel">
+<li><p><strong>Task 2.</strong> Fill in <code>about</code>: a dict with exactly the three keys of the <code>students</code> table, holding <em>your</em> details, typed in. This is the first JSON your own server sends, and it has the same shape as one row of Stage 1.</p><div class="panel">
 <div class="cap">terminal 2 — curl</div>
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8081/about</span><span class="ln">{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}</span><span class="ln cmd"><span class="p">$ </span>curl -i localhost:8081/about</span><span class="ln">HTTP/1.0 200 OK</span><span class="ln">Date: Mon, 21 Sep 2026 09:17:51 GMT</span><span class="ln">Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">Content-Type: application/json</span><span class="ln">Content-Length: 116</span><span class="ln"> </span><span class="ln">{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}</span></pre>
 </div><p>Look at the <code>Content-Type</code>. You returned a dict; Bottle said <code>application/json</code>. In Task 1 you returned a string and it said <code>text/html</code>.</p></li>
@@ -106,14 +100,14 @@ for the last step and watch two terminals answer.</p>
 <h2>Expected output</h2>
 <p>Terminal 1 after the five steps. Yours has your timestamps; the sizes match if your JSON matches.</p><div class="panel">
 <div class="cap">terminal 1 — server</div>
-<pre class="term"><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /hai HTTP/1.1" 200 12</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /wish/Ravi HTTP/1.1" 200 17</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /wish/Lakshmi HTTP/1.1" 200 20</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "POST /iseven HTTP/1.1" 200 30</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "POST /iseven HTTP/1.1" 200 31</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "POST /iseven HTTP/1.1" 400 43</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /about HTTP/1.1" 200 116</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /about HTTP/1.1" 200 116</span></pre>
+<pre class="term"><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /hai HTTP/1.1" 200 12</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /wish/Ravi HTTP/1.1" 200 17</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /wish/Lakshmi HTTP/1.1" 200 20</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /about HTTP/1.1" 200 116</span><span class="ln">127.0.0.1 - - [21/Sep/2026 14:47:51] "GET /about HTTP/1.1" 200 116</span></pre>
 </div><p>If you edit the file and the answer does not change, you did not restart. If Terminal 1 shows a traceback ending in <code>TypeError</code> or <code>KeyError</code> and curl shows a 500 page, read the last line of the traceback: it names the line in your file.</p>
 </section>
 <section id="check">
 <h2>Check yourself</h2>
 <div class="panel">
 <div class="cap">terminal 2 — curl</div>
-<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">PASS: GET /hai -&gt; Namasthey!!! (given)</span><span class="ln">PASS: Task 1: GET /wish/Ravi -&gt; Good morning Ravi</span><span class="ln">PASS: Task 1: GET /wish/Lakshmi -&gt; Good morning Lakshmi</span><span class="ln">PASS: Task 2: POST /iseven 4 -&gt; is_even true</span><span class="ln">PASS: Task 2: POST /iseven 7 -&gt; is_even false</span><span class="ln">PASS: Task 2: POST /iseven with no body -&gt; 400 with an error</span><span class="ln">PASS: Task 3: /about has exactly the three keys of the students table</span><span class="ln">PASS: Task 3: /about values are non-empty strings</span><span class="ln"> </span><span class="ln">8 passed, 0 failed</span></pre>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">PASS: GET /hai -&gt; Namasthey!!! (given)</span><span class="ln">PASS: Task 1: GET /wish/Ravi -&gt; Good morning Ravi</span><span class="ln">PASS: Task 1: GET /wish/Lakshmi -&gt; Good morning Lakshmi</span><span class="ln">PASS: Task 2: /about has exactly the three keys of the students table</span><span class="ln">PASS: Task 2: /about values are non-empty strings</span><span class="ln"> </span><span class="ln">5 passed, 0 failed</span></pre>
 </div>
 </section>
 <section id="takeaway">
@@ -136,20 +130,20 @@ for the last step and watch two terminals answer.</p>
 <p class="exp">The running process has the old code in memory. Ctrl+C and python3 server.py again loads the new file.</p>
 </div>
 <div class="q" data-answer="2">
-<p>A route returns <code>{"number": 4, "is_even": True}</code>. What does curl print?</p>
-<button class="opt" type="button"><code>{'number': 4, 'is_even': True}</code></button>
-<button class="opt" type="button"><code>{"number": 4, "is_even": true}</code></button>
-<button class="opt" type="button"><code>number=4 is_even=True</code></button>
+<p>A route returns <code>{"inter_city": "Visakhapatnam", "ok": True}</code>. What does curl print?</p>
+<button class="opt" type="button"><code>{'inter_city': 'Visakhapatnam', 'ok': True}</code></button>
+<button class="opt" type="button"><code>{"inter_city": "Visakhapatnam", "ok": true}</code></button>
+<button class="opt" type="button"><code>inter_city=Visakhapatnam ok=True</code></button>
 <button class="opt" type="button">an error, dicts cannot be returned</button>
 <p class="exp">Bottle runs json.dumps on the dict: double quotes, lowercase true. That is JSON, not Python.</p>
 </div>
-<div class="q" data-answer="3">
-<p><code>curl -X POST localhost:8081/iseven</code> with no <code>-d</code>. What is <code>request.json</code> inside the route?</p>
-<button class="opt" type="button"><code>{}</code></button>
-<button class="opt" type="button"><code>""</code></button>
-<button class="opt" type="button"><code>None</code></button>
-<button class="opt" type="button"><code>0</code></button>
-<p class="exp">No body means no JSON, and Bottle gives None. Without the is None guard, data.get would crash and the client would see a 500.</p>
+<div class="q" data-answer="2">
+<p><code>curl -i localhost:8081/about</code> shows <code>Content-Type: application/json</code>; <code>curl -i localhost:8081/wish/Ravi</code> shows <code>text/html</code>. Why?</p>
+<button class="opt" type="button">about() was written second</button>
+<button class="opt" type="button">about() returns a dict, wish() returns a string</button>
+<button class="opt" type="button">Port 8081 sends JSON only for /about</button>
+<button class="opt" type="button">The name has letters in it</button>
+<p class="exp">Bottle sets Content-Type from what the function returns: a dict becomes JSON, a string is sent as text.</p>
 </div>
 <div class="q" data-answer="1">
 <p>Both servers are running. <code>curl localhost:8080/wish/Ravi</code> gives a 404. Why?</p>

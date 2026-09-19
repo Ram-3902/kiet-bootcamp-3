@@ -32,21 +32,7 @@ def wish(name):
     return f"Good morning {name}"
 
 
-# ---- Task 2: POST /iseven, body {"number": 4}  ->  {"number": 4, "is_even": true}
-@route("/iseven", method="POST")
-def iseven():
-    data = request.json            # the body, already a dict (or None if no JSON was sent)
-    if data is None:
-        response.status = 400
-        return {"error": "send JSON like {\"number\": 4}"}
-    number = data.get("number")
-    if number is None:
-        response.status = 400
-        return {"error": "send JSON like {\"number\": 4}"}
-    return {"number": number, "is_even": number % 2 == 0}
-
-
-# ---- Task 3: GET /about  ->  your own details, the three keys of the table --
+# ---- Task 2: GET /about  ->  your own details, the three keys of the table --
 @route("/about")
 def about():
     return {"student_name": "Ravi Teja Kanchi",
