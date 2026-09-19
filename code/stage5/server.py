@@ -85,17 +85,25 @@ def students_search():
 # ---- Task 3: GET /colleges  ->  {"colleges": ["...", "..."]} ----------------
 @route("/colleges")
 def colleges():
-    # TODO (Task 3): query "SELECT DISTINCT inter_college FROM students ORDER BY inter_college" with []
-    #                each row is a tuple with one item: row[0]. Collect them into a list.
-    return {"todo": "Task 3"}
+    # TODO (Task 3): write the SQL. Every college once, sorted:  SELECT DISTINCT ... ORDER BY ...
+    rows = query("", [])
+    names = []
+    for row in rows:
+        names.append(row[0])          # each row is a tuple with one item
+    return {"colleges": names}
 
 
 # ---- Task 4: GET /count?college=X  ->  {"college": "X", "count": n} ---------
 @route("/count")
 def count():
-    # TODO (Task 4): unpack "college" (400 if missing, same message as /students);
-    #                query "SELECT COUNT(*) FROM students WHERE inter_college = ?"; the number is rows[0][0]
-    return {"todo": "Task 4"}
+    college = request.query.get("college")
+    if college is None:
+        response.status = 400
+        return {"error": "college parameter is required"}
+    # TODO (Task 4): write the SQL. How many rows have this college?  SELECT COUNT(*) ... WHERE ... = ?
+    #                (until the SQL is written this route answers 500: the empty SQL has no ? for the college)
+    rows = query("", [college])
+    return {"college": college, "count": rows[0][0]}   # COUNT(*) gives one row with one number
 
 
 # ---- start --------------------------------------------------------------

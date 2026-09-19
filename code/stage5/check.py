@@ -68,6 +68,13 @@ def as_json(text):
         return None
 
 
+def brief(s, b):
+    """What to show in a FAIL line: the body, or a hint when the route crashed."""
+    if s == 500:
+        return "500 — the route crashed; read the traceback in Terminal 1"
+    return f"{s} {b[:100]}" if s != 200 else b[:120]
+
+
 print(f"Check database: {TMP}")
 print(f"Start your server against it in Terminal 1:  {START}")
 print()
@@ -89,38 +96,38 @@ elif s == 200 and isinstance(j, dict) and "students" in j:
     print(f"{passed} passed, {failed} failed")
     sys.exit(1)
 else:
-    report(False, "GET /students?college=Narayana+Junior+College (given route)", "200 + count 2", f"{s} {b[:80]}")
+    report(False, "GET /students?college=Narayana+Junior+College (given route)", "200 + count 2", brief(s, b))
 
 s, h, b = get("/students")
-report(s == 400 and as_json(b) == {"error": "college parameter is required"}, "GET /students without college -> 400", {"error": "college parameter is required"}, f"{s} {b[:80]}")
+report(s == 400 and as_json(b) == {"error": "college parameter is required"}, "GET /students without college -> 400", {"error": "college parameter is required"}, brief(s, b))
 
 # Task 1
 s, h, b = get("/students/by-location?location=Visakhapatnam")
-report(s == 200 and as_json(b) == {"count": 2, "students": [RAVI, SAI]}, "Task 1: GET /students/by-location?location=Visakhapatnam -> 2 students", {"count": 2, "students": [RAVI, SAI]}, b[:120])
+report(s == 200 and as_json(b) == {"count": 2, "students": [RAVI, SAI]}, "Task 1: GET /students/by-location?location=Visakhapatnam -> 2 students", {"count": 2, "students": [RAVI, SAI]}, brief(s, b))
 s, h, b = get("/students/by-location?location=Guntur")
-report(s == 200 and as_json(b) == {"count": 0, "students": []}, "Task 1: GET /students/by-location?location=Guntur -> 0 students", {"count": 0, "students": []}, b[:120])
+report(s == 200 and as_json(b) == {"count": 0, "students": []}, "Task 1: GET /students/by-location?location=Guntur -> 0 students", {"count": 0, "students": []}, brief(s, b))
 s, h, b = get("/students/by-location")
-report(s == 400 and as_json(b) == {"error": "location parameter is required"}, "Task 1: GET /students/by-location without location -> 400", {"error": "location parameter is required"}, f"{s} {b[:80]}")
+report(s == 400 and as_json(b) == {"error": "location parameter is required"}, "Task 1: GET /students/by-location without location -> 400", {"error": "location parameter is required"}, brief(s, b))
 
 # Task 2
 s, h, b = get("/students/search?college=Narayana+Junior+College&location=Vijayawada")
-report(s == 200 and as_json(b) == {"count": 2, "students": [LAKSHMI, DIVYA]}, "Task 2: GET /students/search Narayana + Vijayawada -> 2 students", {"count": 2, "students": [LAKSHMI, DIVYA]}, b[:120])
+report(s == 200 and as_json(b) == {"count": 2, "students": [LAKSHMI, DIVYA]}, "Task 2: GET /students/search Narayana + Vijayawada -> 2 students", {"count": 2, "students": [LAKSHMI, DIVYA]}, brief(s, b))
 s, h, b = get("/students/search?college=Narayana+Junior+College&location=Visakhapatnam")
-report(s == 200 and as_json(b) == {"count": 0, "students": []}, "Task 2: GET /students/search Narayana + Visakhapatnam -> 0 students", {"count": 0, "students": []}, b[:120])
+report(s == 200 and as_json(b) == {"count": 0, "students": []}, "Task 2: GET /students/search Narayana + Visakhapatnam -> 0 students", {"count": 0, "students": []}, brief(s, b))
 s, h, b = get("/students/search?college=Narayana+Junior+College")
-report(s == 400 and as_json(b) == {"error": "college and location parameters are required"}, "Task 2: GET /students/search with only college -> 400", {"error": "college and location parameters are required"}, f"{s} {b[:80]}")
+report(s == 400 and as_json(b) == {"error": "college and location parameters are required"}, "Task 2: GET /students/search with only college -> 400", {"error": "college and location parameters are required"}, brief(s, b))
 
 # Task 3
 s, h, b = get("/colleges")
-report(s == 200 and as_json(b) == {"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}, "Task 3: GET /colleges -> the 2 colleges, sorted", {"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}, b[:120])
+report(s == 200 and as_json(b) == {"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}, "Task 3: GET /colleges -> the 2 colleges, sorted", {"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}, brief(s, b))
 
 # Task 4
 s, h, b = get("/count?college=Sri+Chaitanya+Junior+College")
-report(s == 200 and as_json(b) == {"college": "Sri Chaitanya Junior College", "count": 2}, "Task 4: GET /count?college=Sri+Chaitanya+Junior+College -> 2", {"college": "Sri Chaitanya Junior College", "count": 2}, b[:120])
+report(s == 200 and as_json(b) == {"college": "Sri Chaitanya Junior College", "count": 2}, "Task 4: GET /count?college=Sri+Chaitanya+Junior+College -> 2", {"college": "Sri Chaitanya Junior College", "count": 2}, brief(s, b))
 s, h, b = get("/count?college=Vignan+Junior+College")
-report(s == 200 and as_json(b) == {"college": "Vignan Junior College", "count": 0}, "Task 4: GET /count?college=Vignan+Junior+College -> 0", {"college": "Vignan Junior College", "count": 0}, b[:120])
+report(s == 200 and as_json(b) == {"college": "Vignan Junior College", "count": 0}, "Task 4: GET /count?college=Vignan+Junior+College -> 0", {"college": "Vignan Junior College", "count": 0}, brief(s, b))
 s, h, b = get("/count")
-report(s == 400 and as_json(b) == {"error": "college parameter is required"}, "Task 4: GET /count without college -> 400", {"error": "college parameter is required"}, f"{s} {b[:80]}")
+report(s == 400 and as_json(b) == {"error": "college parameter is required"}, "Task 4: GET /count without college -> 400", {"error": "college parameter is required"}, brief(s, b))
 
 print()
 print(f"{passed} passed, {failed} failed")
