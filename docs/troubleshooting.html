@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html" class="cur">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<h1>Troubleshooting</h1>
+<p class="sub">The messages you will actually see, what they mean, and the line that fixes them.</p>
+<p class="artifact">lsof -i :8080</p>
+</header>
+<p>Every message below is one you can actually get during the day, with the line that fixes it. Find the text you see on screen; the cause is next to it.</p><section id="inuse"><h2>Address already in use</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 server.py</span><span class="ln">Serving on http://localhost:8080  — Ctrl+C to stop</span><span class="ln">Bottle v0.13.4 server starting up (using WSGIRefServer())...</span><span class="ln">Listening on http://localhost:8080/</span><span class="ln">Hit Ctrl-C to quit.</span><span class="ln"> </span><span class="ln">Traceback (most recent call last):</span><span class="ln dim">…</span><span class="ln">OSError: [Errno 98] Address already in use</span></pre>
+</div><p>Another program already holds that port — almost always an earlier copy of a server you forgot to stop, maybe in a terminal you closed. A closed terminal does not always kill what was running in it.</p><p>Find it and stop it, then start again:</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>lsof -i :8080</span><span class="ln">COMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><span class="ln">python3  4242  kiet    3u  IPv4  31337      0t0  TCP localhost:8080 (LISTEN)</span><span class="ln cmd"><span class="p">$ </span>kill 4242</span></pre>
+</div><p>Or in one line: <code>fuser -k 8080/tcp</code>. If you meant to run two servers, give the second one another port: <code>python3 server.py --port 8090</code>.</p></section><section id="refused"><h2>Connection refused</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/hai</span><span class="ln">curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server</span></pre>
+</div><p>Nothing is listening on that port. The server is not running, or it is running on a different port than the one you typed, or it crashed on start (look at its terminal).</p><p>Look at Terminal 1. If it shows a prompt instead of <code>Listening on…</code>, start the server. If it shows a traceback, read the last line. Check the port number in the curl matches the one in the start line.</p></section><section id="bottle"><h2>ModuleNotFoundError: No module named 'bottle'</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 server.py</span><span class="ln">Traceback (most recent call last):</span><span class="ln">  File "server.py", line 15, in &lt;module&gt;</span><span class="ln">    from bottle import route, run, request, response</span><span class="ln">ModuleNotFoundError: No module named 'bottle'</span></pre>
+</div><p>Python looks for <code>bottle.py</code> in the same folder as the file you ran. You ran the file from a folder that does not have it, or you copied <code>server.py</code> somewhere on its own.</p><p>Run it from its own folder: <code>cd ~/kiet-bootcamp-3/code/stage5</code> then <code>python3 server.py</code>. Each server folder has its own <code>bottle.py</code>. If you made a new folder, copy <code>bottle.py</code> into it.</p></section><section id="notable"><h2>no such table: students</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 read_all.py</span><span class="ln">Traceback (most recent call last):</span><span class="ln dim">…</span><span class="ln">sqlite3.OperationalError: no such table: students</span></pre>
+</div><p>The program opened a database file that has no <code>students</code> table in it. SQLite creates an empty file when the path does not exist, so a wrong path never says 'file not found' — it says this.</p><p>Check where the program is looking. The Stage 5 server prints its DB path on start. For Stage 2, the file must be <code>~/kiet-bootcamp-3/data/team_details.db</code>, built in Stage 1. An empty <code>team_details.db</code> that appeared by accident can be deleted; then redo Stage 1 or run <code>sqlite3 team_details.db &lt; sample_team_details.sql</code>.</p></section><section id="sqlite3cmd"><h2>sqlite3: command not found</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sqlite3 team_details.db</span><span class="ln">bash: sqlite3: command not found</span></pre>
+</div><p>The command-line tool is not installed. Python's own copy does the same job.</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 -m sqlite3 team_details.db</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div><p>Everything after the prompt is identical. To run a <code>.sql</code> file: <code>.read all_students.sql</code> inside the shell.</p></section><section id="indent"><h2>IndentationError</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 server.py</span><span class="ln">  File "server.py", line 52</span><span class="ln">    response.status = 400</span><span class="ln">IndentationError: unexpected indent</span></pre>
+</div><p>In Python the indentation is the syntax. A line indented more or less than its neighbours, or a mix of tabs and spaces, is an error at the line it names. <code>expected an indented block</code> means a <code>def</code> or <code>if</code> has nothing under it — for example after commenting out the only line of a function.</p><p>Go to the line number. Make it line up with the lines around it, using spaces only (four per level, as the given files do). If you commented out a function body, comment out its <code>def</code> line too.</p></section><section id="crlf"><h2>SyntaxError or strange ^M after editing on another machine</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 server.py</span><span class="ln">  File "server.py", line 1</span><span class="ln">    # server.py — Stage 5.^M</span><span class="ln">SyntaxError: invalid non-printable character U+000D</span></pre>
+</div><p>The file was edited on Windows and saved with Windows line endings. Linux Python sees an extra character at the end of every line.</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sed -i 's/\r$//' server.py</span></pre>
+</div><p>Then run it again. Edit on the machine you run on, and this does not happen.</p></section><section id="stop"><h2>How to stop a server, and what happens if you close the terminal instead</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln">Hit Ctrl-C to quit.</span><span class="ln">^C</span><span class="ln cmd"><span class="p">$ </span></span></pre>
+</div><p>Ctrl+C in the server's terminal ends the process cleanly and frees the port. Closing the terminal window usually ends it too, but not always — on some desktops the process keeps running invisibly, still holding the port. That is where 'Address already in use' comes from.</p><p>Stop servers with Ctrl+C. If a port is stuck, see <a href="#inuse">Address already in use</a> above.</p></section><section id="cors"><h2>The browser says CORS, the server says 200</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln">Access to fetch at 'http://localhost:8080/students?college=…' from origin 'http://localhost:9000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.</span></pre>
+</div><p>The page came from port 9000 and asked port 8080. The browser will only hand the page that answer if the answer carries <code>Access-Control-Allow-Origin</code>. curl does not care; the browser always does. The server did its job — Terminal 1 logged a 200.</p><p>The hook in <code>code/stage5/server.py</code> must be present and uncommented, all three lines, and the server restarted after any edit. Stage 8 is about exactly this.</p></section><section id="500"><h2>Internal Server Error (500)</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/count</span><span class="ln dim">…</span><span class="ln">&lt;h1&gt;Error: 500 Internal Server Error&lt;/h1&gt;</span></pre>
+</div><p>Your route crashed while answering. With <code>debug=True</code> the full traceback is printed in Terminal 1, ending in a line that names the file and line number and the kind of error — <code>TypeError</code>, <code>KeyError</code>, <code>NameError</code>.</p><p>Read the last three lines in Terminal 1. A <code>NameError</code> is a variable you did not define; a <code>KeyError</code> is a dict key that is not there (use <code>.get</code>); a <code>TypeError … NoneType</code> usually means <code>request.json</code> or <code>.get()</code> gave None and you used it without the <code>is None</code> guard.</p></section><section id="space"><h2>curl: (3) URL rejected: Malformed input</h2><div class="panel">
+<div class="cap">what you see</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Narayana Junior College"</span><span class="ln">curl: (3) URL rejected: Malformed input to a URL function</span></pre>
+</div><p>A URL cannot contain a space.</p><p>Write <code>+</code> for each space: <code>college=Narayana+Junior+College</code>. And keep the quotes: without them a bare <code>&amp;</code> makes the shell run curl in the background and drop the rest.</p></section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

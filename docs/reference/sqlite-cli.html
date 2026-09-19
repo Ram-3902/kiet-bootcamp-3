@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sqlite3 command line — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html" class="cur">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>sqlite3 command line</h1>
+<p class="sub">Open a .db file, look inside, run a .sql script.</p>
+<p class="artifact">sqlite3 team_details.db</p>
+</header>
+<section id="open">
+<h2>Open a database</h2>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/data</span><span class="ln cmd"><span class="p">$ </span>sqlite3 team_details.db</span><span class="ln">SQLite version 3.45.1 2024-01-30 16:01:20</span><span class="ln">Enter ".help" for usage hints.</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div><p>The file is created if it does not exist. The prompt changes to <code>sqlite&gt;</code>: you are now typing SQL, not shell. Every SQL statement ends with <code>;</code>. Dot-commands do not.</p><p><strong>No <code>sqlite3</code> command?</strong> Python ships the same shell:</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 -m sqlite3 team_details.db</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div>
+</section><section id="dots">
+<h2>Dot-commands</h2>
+<div class="rules">
+<div class="rule"><div class="c"><code>.tables</code></div><div class="d">list the tables in this file</div></div>
+<div class="rule"><div class="c"><code>.schema</code></div><div class="d">print the CREATE TABLE statements</div></div>
+<div class="rule"><div class="c"><code>.headers on</code></div><div class="d">print column names above results</div></div>
+<div class="rule"><div class="c"><code>.mode column</code></div><div class="d">align results in columns (default is <code>a|b|c</code>)</div></div>
+<div class="rule"><div class="c"><code>.read schema.sql</code></div><div class="d">run every statement in a file</div></div>
+<div class="rule"><div class="c"><code>.quit</code></div><div class="d">leave (or Ctrl+D)</div></div>
+</div>
+</section><section id="file">
+<h2>Run a .sql file</h2>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sqlite3 all_students.db &lt; all_students.sql</span><span class="ln cmd"><span class="p">$ </span>sqlite3 all_students.db "SELECT COUNT(*) FROM students;"</span><span class="ln">200</span></pre>
+</div><p><code>&lt;</code> feeds the file to sqlite3 as if you typed it. The second form runs one statement and exits — handy for a quick count.</p><p>With the Python fallback, use <code>.read</code> from inside the shell:</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 -m sqlite3 all_students.db</span><span class="ln cmd"><span class="p">sqlite> </span>.read all_students.sql</span><span class="ln cmd"><span class="p">sqlite> </span>SELECT COUNT(*) FROM students;</span><span class="ln">200</span><span class="ln cmd"><span class="p">sqlite> </span>.quit</span></pre>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

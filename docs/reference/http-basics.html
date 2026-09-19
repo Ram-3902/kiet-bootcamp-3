@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTTP basics — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html" class="cur">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>HTTP basics</h1>
+<p class="sub">The request line, the status line, and the three doors.</p>
+<p class="artifact">GET /greet?name=Ravi HTTP/1.1</p>
+</header>
+<section id="req">
+<h2>A request</h2>
+<div class="panel">
+<div class="cap">what curl sends</div>
+<pre class="term"><span class="ln">GET /greet?name=Ravi&amp;lang=en HTTP/1.1</span><span class="ln">Host: localhost:8080</span><span class="ln">Accept: */*</span></pre>
+</div><p>First line: <strong>method</strong>, <strong>path</strong> with its <strong>query string</strong>, protocol version. Then headers, one per line. Then a blank line. Then the body, if any (a GET has none).</p><div class="panel">
+<div class="cap">what curl sends for a POST</div>
+<pre class="term"><span class="ln">POST /isprime HTTP/1.1</span><span class="ln">Host: localhost:8080</span><span class="ln">Content-Type: application/json</span><span class="ln">Content-Length: 14</span><span class="ln"> </span><span class="ln">{"number": 17}</span></pre>
+</div>
+</section><section id="res">
+<h2>A response</h2>
+<div class="panel">
+<div class="cap">what the server sends back</div>
+<pre class="term"><span class="ln">HTTP/1.0 200 OK</span><span class="ln">Content-Type: application/json</span><span class="ln">Content-Length: 32</span><span class="ln"> </span><span class="ln">{"number": 17, "is_prime": true}</span></pre>
+</div><p>First line: protocol, <strong>status code</strong>, reason. Then headers. Blank line. Body. <code>curl -i</code> shows exactly this; the browser's Network tab shows the same fields under Headers and Response.</p>
+</section><section id="doors">
+<h2>Three places data can be</h2>
+<div class="rules">
+<div class="rule"><div class="c">path</div><div class="d"><code>/hello/Ravi</code> — part of the address. Bottle: <code>@route("/hello/&lt;name&gt;")</code></div></div>
+<div class="rule"><div class="c">query string</div><div class="d"><code>/greet?name=Ravi&amp;lang=en</code> — after the <code>?</code>. Bottle: <code>request.query.get("name")</code></div></div>
+<div class="rule"><div class="c">body</div><div class="d"><code>-d '{"number": 17}'</code> — only with POST. Bottle: <code>request.json</code></div></div>
+</div>
+</section><section id="codes">
+<h2>Status codes you will see</h2>
+<div class="rules">
+<div class="rule"><div class="c"><code>200</code></div><div class="d">OK. The route ran and returned something.</div></div>
+<div class="rule"><div class="c"><code>400</code></div><div class="d">Bad request. The route ran and decided your request was missing or wrong. The body says what.</div></div>
+<div class="rule"><div class="c"><code>404</code></div><div class="d">Not found. No route has that path.</div></div>
+<div class="rule"><div class="c"><code>500</code></div><div class="d">The route crashed. With <code>debug=True</code> the traceback is in Terminal 1.</div></div>
+</div>
+</section><section id="ct">
+<h2>Content-Type</h2>
+<p>A header that says what the body is. <code>text/html</code> when a route returns a string, <code>application/json</code> when it returns a dict. When you POST JSON you must send it too, or the server will not parse the body.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

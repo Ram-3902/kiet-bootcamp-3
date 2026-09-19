@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html" class="cur">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>JSON</h1>
+<p class="sub">A dict, written down.</p>
+<p class="artifact">json.dumps(result)</p>
+</header>
+<section id="what">
+<h2>What it is</h2>
+<p>JSON is text that looks like a Python dict or list. It is how programs hand each other data over HTTP. Keys are strings in double quotes. Values are strings, numbers, <code>true</code>/<code>false</code>, <code>null</code>, lists <code>[ ]</code>, or objects <code>{ }</code>.</p><div class="panel">
+<div class="cap">json</div>
+<pre class="code"><span class="ln">{"count": 2, "students": [</span><span class="ln">  {"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"},</span><span class="ln">  {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}</span><span class="ln">]}</span></pre>
+</div>
+</section><section id="map">
+<h2>Python ↔ JSON</h2>
+<table class="prose"><thead><tr><th>Python</th><th>JSON</th></tr></thead><tbody><tr><td><code>dict</code></td><td><code>{ }</code> object</td></tr><tr><td><code>list</code></td><td><code>[ ]</code> array</td></tr><tr><td><code>str</code></td><td><code>"…"</code> string</td></tr><tr><td><code>int</code>, <code>float</code></td><td>number</td></tr><tr><td><code>True</code> / <code>False</code></td><td><code>true</code> / <code>false</code></td></tr><tr><td><code>None</code></td><td><code>null</code></td></tr></tbody></table>
+</section><section id="code">
+<h2>dumps and loads</h2>
+<div class="panel">
+<div class="cap">python</div>
+<pre class="code" data-copy=""><span class="ln">import json</span><span class="ln"> </span><span class="ln">answer = {"number": 17, "is_prime": True}</span><span class="ln">text = json.dumps(answer)          # dict -&gt; text:  {"number": 17, "is_prime": true}</span><span class="ln">print(text)</span><span class="ln"> </span><span class="ln">data = json.loads('{"number": 4}') # text -&gt; dict</span><span class="ln">print(data["number"] + 1)          # 5</span></pre>
+</div><p>In Bottle you rarely call these yourself: return a dict from a route and Bottle does <code>dumps</code>; read <code>request.json</code> and Bottle has done <code>loads</code>.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

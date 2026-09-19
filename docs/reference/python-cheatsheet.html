@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python cheatsheet — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html" class="cur">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>Python cheatsheet</h1>
+<p class="sub">Everything the eight stages use, nothing more. Python as deltas from C.</p>
+<p class="artifact">python3 file.py</p>
+</header>
+<section id="basics">
+<h2>Running, variables, print</h2>
+<p>No compile step, no main, no semicolons, no braces, no types on variables. Indentation is the block.</p><div class="panel">
+<div class="cap">hello.py</div>
+<pre class="code" data-copy=""><span class="ln">name = "Ravi Teja Kanchi"        # a string</span><span class="ln">count = 4                        # a number, no int keyword</span><span class="ln">print(name)</span><span class="ln">print(f"{name} has {count} rows")   # f-string: variables inside text</span><span class="ln">print("Namasthey " + name)          # + joins strings</span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 hello.py</span><span class="ln">Ravi Teja Kanchi</span><span class="ln">Ravi Teja Kanchi has 4 rows</span><span class="ln">Namasthey Ravi Teja Kanchi</span></pre>
+</div>
+</section><section id="lists">
+<h2>Lists, tuples, len, append, for, range</h2>
+<div class="panel">
+<div class="cap">rows.py</div>
+<pre class="code" data-copy=""><span class="ln">rows = [                                   # a list: [ ... ]</span><span class="ln">    ("Ravi Teja Kanchi", "Visakhapatnam"), # a tuple: ( ... )</span><span class="ln">    ("Lakshmi Prasanna Gudla", "Vijayawada"),</span><span class="ln">]</span><span class="ln">rows.append(("Sai Kiran Bommu", "Visakhapatnam"))   # add at the end</span><span class="ln">print(len(rows))                                     # 3</span><span class="ln"> </span><span class="ln">for row in rows:               # for each element, no index</span><span class="ln">    name, city = row           # unpacking: one name per item of the tuple</span><span class="ln">    print(f"{name} - {city}")</span><span class="ln"> </span><span class="ln">for i in range(3):             # 0, 1, 2  — the C for(i=0;i&lt;3;i++)</span><span class="ln">    print(i)</span><span class="ln">for d in range(2, 10):         # 2 .. 9</span><span class="ln">    print(d)</span><span class="ln"> </span><span class="ln">print(rows[0])                 # first item</span><span class="ln">print(rows[0][1])              # second item of the first tuple: "Visakhapatnam"</span></pre>
+</div><p><strong>SQLite gives you exactly this:</strong> <code>fetchall()</code> returns a list of tuples, one tuple per row, one item per column.</p>
+</section><section id="dicts">
+<h2>Dicts</h2>
+<div class="panel">
+<div class="cap">dicts.py</div>
+<pre class="code" data-copy=""><span class="ln">student = {"student_name": "Ravi Teja Kanchi",      # a dict: { "key": value }</span><span class="ln">           "inter_college": "Sri Chaitanya Junior College",</span><span class="ln">           "inter_city": "Visakhapatnam"}</span><span class="ln"> </span><span class="ln">print(student["student_name"])     # by key</span><span class="ln">print(student.get("phone"))        # missing key: None, no crash</span><span class="ln">student["inter_city"] = "Vizag"    # change a value</span><span class="ln">student["phone"] = "9999"          # add a key</span><span class="ln"> </span><span class="ln">import json</span><span class="ln">print(json.dumps(student))         # the dict as JSON text</span></pre>
+</div><p>A dict is a struct whose fields are named by strings. A dict <em>is</em> JSON, near enough. In Bottle, return a dict and the client receives JSON.</p>
+</section><section id="functions">
+<h2>Functions, if, %, int()</h2>
+<div class="panel">
+<div class="cap">funcs.py</div>
+<pre class="code" data-copy=""><span class="ln">def is_even(n):            # def, a name, the parameters. No types, no prototype.</span><span class="ln">    return n % 2 == 0      # % is remainder, same as C</span><span class="ln"> </span><span class="ln"> </span><span class="ln">def is_prime(n):</span><span class="ln">    if n &lt; 2:</span><span class="ln">        return False</span><span class="ln">    for d in range(2, n):</span><span class="ln">        if n % d == 0:</span><span class="ln">            return False</span><span class="ln">    return True</span><span class="ln"> </span><span class="ln"> </span><span class="ln">def greet(name, lang):</span><span class="ln">    if lang == "en":</span><span class="ln">        return f"Hello {name}"</span><span class="ln">    elif lang == "te":</span><span class="ln">        return f"Namasthey {name}"</span><span class="ln">    else:</span><span class="ln">        return f"? {name}"</span><span class="ln"> </span><span class="ln"> </span><span class="ln">print(is_prime(17), is_even(17))   # True False</span><span class="ln">print(int("17") + 1)               # int(): text to number, like atoi. Prints 18</span><span class="ln">print("17" + "1")                  # strings: prints 171</span></pre>
+</div><p>Comparisons: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;=</code>. Combine with <code>and</code>, <code>or</code>, <code>not</code>. There is no <code>&amp;&amp;</code>.</p>
+</section><section id="imports">
+<h2>import, sys.argv, None</h2>
+<div class="panel">
+<div class="cap">greet.py</div>
+<pre class="code" data-copy=""><span class="ln">import sys          # the standard library module for argv, exit, etc.</span><span class="ln">import sqlite3      # the SQLite driver, also standard library</span><span class="ln">import json         # dict &lt;-&gt; JSON text</span><span class="ln">from bottle import route, run, request, response   # from the bottle.py file sitting NEXT TO this file</span><span class="ln"> </span><span class="ln"># sys.argv is a list of strings. [0] is the file name, like C's argv.</span><span class="ln">if len(sys.argv) &lt; 2:</span><span class="ln">    print("usage: python3 greet.py &lt;name&gt;")</span><span class="ln">else:</span><span class="ln">    print(f"Namasthey {sys.argv[1]}")</span><span class="ln"> </span><span class="ln"># None is Python's NULL. Things that find nothing give None.</span><span class="ln">value = {"a": 1}.get("b")</span><span class="ln">if value is None:</span><span class="ln">    print("no b")</span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 greet.py Ravi</span><span class="ln">Namasthey Ravi</span><span class="ln">no b</span></pre>
+</div>
+</section><section id="later">
+<h2>Deliberately not here</h2>
+<p>You will meet these later; the bootcamp does not use them: classes, list comprehensions, <code>try/except</code>, <code>with</code>, <code>if __name__ == "__main__"</code>, lambdas, type hints, virtual environments, pip.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

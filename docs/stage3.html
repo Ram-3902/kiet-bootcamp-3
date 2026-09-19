@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a server actually is — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html" class="cur">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Stage 3 · Session 2 · afternoon · observe only</p>
+<h1>What a server actually is</h1>
+<p class="sub">A server is a program that waits. Nothing to write today: start one, poke it with curl, and read both terminals at once.</p>
+<p class="artifact">python3 demo_server.py   ·   curl localhost:8080/hai</p>
+</header>
+<section id="concept">
+<h2>Concept</h2>
+<p>A server is a program that waits. It starts, it prints one line, and then it does nothing until
+somebody asks it something. In C you have written programs that run top to bottom and exit. This one
+runs a loop you never see: wait for a request, answer it, wait again. <code>Ctrl+C</code> is the only
+way it ends.</p><p>The one asking is the <strong>client</strong>. Today that is <code>curl</code>, a small program
+that builds a request, sends it, and prints whatever comes back. A request has a <strong>method</strong>
+(<code>GET</code> to ask for something, <code>POST</code> to send something), a <strong>path</strong>
+(<code>/hai</code>), maybe a <strong>query string</strong> (everything after the <code>?</code>), and
+maybe a <strong>body</strong>. The server answers with a <strong>status code</strong> — <code>200</code>
+means fine, <code>400</code> means your request was wrong, <code>404</code> means no such path —
+and some content: text, or JSON.</p><p>Nothing is written in this stage. The point is to see both sides at once. Terminal 1 is the server's
+view: one log line per request, with the method, the path, the status and the size of the answer.
+Terminal 2 is the client's view: what curl got back. Same event, two windows. Every stage after this
+one is you standing in one of those two windows.</p><p>There are exactly three places data can travel into a server: in the path, after the <code>?</code>,
+or in the body. The four routes of <code>demo_server.py</code> use one door each. The route decides
+which door it reads from; the client has to use that door. Step through one request below.</p><div class="stepper">
+<div class="stage">
+<div><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term" id="s3curl"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?name=Ravi&amp;lang=en"</span><span class="ln">{"greeting": "Hello Ravi", "lang": "en"}</span></pre>
+</div><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term" id="s3log"><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:05] "GET /greet?name=Ravi&amp;lang=en HTTP/1.1" 200 40</span></pre>
+</div></div>
+<div><div class="panel">
+<div class="cap">the request, taken apart</div>
+<div class="slots">
+<div class="slot" id="s3m"><div class="k">method</div><div class="v "></div></div>
+<div class="slot" id="s3p"><div class="k">path</div><div class="v "></div></div>
+<div class="slot" id="s3q"><div class="k">query string</div><div class="v "></div></div>
+<div class="slot" id="s3b"><div class="k">body</div><div class="v "></div></div>
+<div class="slot" id="s3r"><div class="k">route that answers</div><div class="v "></div></div>
+<div class="slot" id="s3s"><div class="k">status</div><div class="v "></div></div>
+<div class="slot" id="s3c"><div class="k">content</div><div class="v "></div></div>
+</div>
+</div></div>
+</div>
+<div class="controls">
+<button class="back" type="button">Back</button>
+<button class="play" type="button">Play</button>
+<button class="fwd" type="button">Forward</button>
+<span class="counter"></span>
+</div>
+<div class="track"><span></span></div>
+<p class="narration"></p>
+<script type="application/json" class="steps">[{"note": "curl is about to send one request. Nothing has left the machine yet.", "hl": {"s3curl": 0}, "slots": {}}, {"note": "No -X, so the method is GET: \"give me something\". A POST would carry a body instead.", "hl": {"s3curl": 0}, "slots": {"s3m": {"v": "GET", "cls": "live"}}}, {"note": "The path is everything from the first / up to the ?. The server picks a function by this and nothing else.", "hl": {"s3curl": 0}, "slots": {"s3m": {"v": "GET", "cls": ""}, "s3p": {"v": "/greet", "cls": "live"}}}, {"note": "After the ? comes the query string: name=value pairs joined by &. This is why the URL is in quotes — the shell would otherwise treat & as its own instruction.", "hl": {"s3curl": 0}, "slots": {"s3p": {"v": "/greet", "cls": ""}, "s3q": {"v": "name=Ravi&lang=en", "cls": "live"}}}, {"note": "A GET has no body. The third door is closed for this request.", "hl": {"s3curl": 0}, "slots": {"s3q": {"v": "name=Ravi&lang=en", "cls": ""}, "s3b": {"v": "(none)", "cls": "dead"}}}, {"note": "The server receives it and writes one log line: who, when, the request line, then the status and the size. Compare the middle of the log line with the URL you typed.", "hl": {"s3curl": null, "s3log": 0}, "slots": {"s3b": {"v": "(none)", "cls": "dead"}, "s3r": {"v": "greet()  via  @route(\"/greet\")", "cls": "live"}}}, {"note": "greet() reads name and lang from the query string, builds a dict, returns it. Bottle turns the dict into JSON and sets the status to 200.", "hl": {"s3log": 0}, "slots": {"s3r": {"v": "greet()  via  @route(\"/greet\")", "cls": ""}, "s3s": {"v": "200 OK", "cls": "live"}}}, {"note": "curl prints the content it received. 40 bytes — the same 40 at the end of the server's log line.", "hl": {"s3curl": 1, "s3log": 0}, "slots": {"s3s": {"v": "200 OK", "cls": ""}, "s3c": {"v": "{\"greeting\": \"Hello Ravi\", \"lang\": \"en\"}", "cls": "live"}}}]</script>
+</div>
+</section>
+<section id="video">
+<h2>Demo video</h2>
+<div class="panel media">
+<div class="cap">videos/stage3.mp4</div>
+<video controls preload="metadata" src="videos/stage3.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
+</div>
+<p class="note">Starting demo_server.py, running every curl from the list while the server logs each one, then stopping it and watching curl fail.</p>
+</section>
+<section id="task">
+<h2>Task</h2>
+<ol class="steps">
+<li><p><strong>Terminal 1 — server.</strong> Go to the Stage 3 folder and start the server. It prints two things and then waits.</p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/code/stage3</span><span class="ln cmd"><span class="p">$ </span>python3 demo_server.py</span><span class="ln">Serving on http://localhost:8080  — Ctrl+C to stop</span><span class="ln">Bottle v0.13.4 server starting up (using WSGIRefServer())...</span><span class="ln">Listening on http://localhost:8080/</span><span class="ln">Hit Ctrl-C to quit.</span></pre>
+</div></li>
+<li><p><strong>Terminal 2 — curl.</strong> Open a second terminal. Nothing goes in, text comes out.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/hai</span><span class="ln">Namasthey!!!</span></pre>
+</div></li>
+<li><p>The name goes in the <strong>path</strong>.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/hello/Ravi</span><span class="ln">How are you doing Ravi</span></pre>
+</div></li>
+<li><p>The number goes in the <strong>body</strong>, as JSON. <code>-X POST</code> sets the method, <code>-H</code> says what kind of body it is, <code>-d</code> is the body.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8080/isprime -H "Content-Type: application/json" -d '{"number": 17}'</span><span class="ln">{"number": 17, "is_prime": true}</span><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8080/isprime -H "Content-Type: application/json" -d '{"number": 18}'</span><span class="ln">{"number": 18, "is_prime": false}</span></pre>
+</div></li>
+<li><p>Same route, no body at all. The server says no, with status 400 and an error that tells you what to send.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8080/isprime</span><span class="ln">{"error": "send JSON like {\"number\": 17}"}</span></pre>
+</div></li>
+<li><p><code>name</code> and <code>lang</code> go in the <strong>query string</strong>, after the <code>?</code>. Quote the URL: the shell treats a bare <code>&amp;</code> as its own instruction.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?name=Ravi&amp;lang=te"</span><span class="ln">{"greeting": "Namasthey Ravi", "lang": "te"}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?name=Ravi&amp;lang=en"</span><span class="ln">{"greeting": "Hello Ravi", "lang": "en"}</span></pre>
+</div></li>
+<li><p>Leave <code>lang</code> out: the server picks <code>te</code>. Leave <code>name</code> out: 400 again.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?name=Ravi"</span><span class="ln">{"greeting": "Namasthey Ravi", "lang": "te"}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?lang=te"</span><span class="ln">{"error": "name is required"}</span></pre>
+</div></li>
+<li><p><code>-i</code> shows the <strong>headers</strong> above the content: the status line first, then <code>Content-Type</code> and <code>Content-Length</code>. Your date and Python version will differ.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -i localhost:8080/hai</span><span class="ln">HTTP/1.0 200 OK</span><span class="ln">Date: Mon, 21 Sep 2026 04:43:35 GMT</span><span class="ln">Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">Content-Length: 12</span><span class="ln">Content-Type: text/html; charset=UTF-8</span><span class="ln"> </span><span class="ln">Namasthey!!!</span></pre>
+</div></li>
+<li><p>A path the server does not have. Bottle answers with its own HTML error page; the first line is what matters.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -i localhost:8080/nothing</span><span class="ln">HTTP/1.0 404 Not Found</span><span class="ln">Date: Mon, 21 Sep 2026 04:43:50 GMT</span><span class="ln">Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">Content-Length: 741</span><span class="ln">Content-Type: text/html; charset=UTF-8</span><span class="ln"> </span><span class="ln dim">…</span></pre>
+</div></li>
+<li><p>Go to Terminal 1 and press <kbd>Ctrl+C</kbd>. The server stops. Now ask again from Terminal 2.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/hai</span><span class="ln">curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server</span></pre>
+</div><p>No program is listening, so there is nobody to answer. Start it again in Terminal 1 with <code>python3 demo_server.py</code> and the same curl works.</p></li>
+</ol>
+</section>
+<section id="expected">
+<h2>Expected output</h2>
+<p>After all of the above, Terminal 1 shows one line per request. The method, the path with its query string, the status and the byte count are all there. The timestamps are yours.</p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln">Serving on http://localhost:8080  — Ctrl+C to stop</span><span class="ln">Bottle v0.13.4 server starting up (using WSGIRefServer())...</span><span class="ln">Listening on http://localhost:8080/</span><span class="ln">Hit Ctrl-C to quit.</span><span class="ln"> </span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:03] "GET /hai HTTP/1.1" 200 12</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:09] "GET /hello/Ravi HTTP/1.1" 200 22</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:20] "POST /isprime HTTP/1.1" 200 32</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:31] "POST /isprime HTTP/1.1" 200 33</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:44] "POST /isprime HTTP/1.1" 400 44</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:12:58] "GET /greet?name=Ravi&amp;lang=te HTTP/1.1" 200 44</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:05] "GET /greet?name=Ravi&amp;lang=en HTTP/1.1" 200 40</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:12] "GET /greet?name=Ravi HTTP/1.1" 200 44</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:20] "GET /greet?lang=te HTTP/1.1" 400 29</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:35] "GET /hai HTTP/1.1" 200 12</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:13:50] "GET /nothing HTTP/1.1" 404 741</span></pre>
+</div><p>Notice what is <em>not</em> in the log: the body of the POST, and the answer. The server logs the request line and the result, nothing more. Notice also that the two 400s and the 404 are logged just like the 200s — an error answer is still an answer.</p>
+</section>
+<section id="check">
+<h2>Check yourself</h2>
+<div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">PASS: GET /hai -&gt; Namasthey!!!</span><span class="ln">PASS: GET /hello/Ravi -&gt; How are you doing Ravi</span><span class="ln">PASS: POST /isprime 17 -&gt; is_prime true</span><span class="ln">PASS: POST /isprime 18 -&gt; is_prime false</span><span class="ln">PASS: POST /isprime with no body -&gt; 400 with an error</span><span class="ln">PASS: GET /greet?name=Ravi&amp;lang=te</span><span class="ln">PASS: GET /greet?name=Ravi&amp;lang=en</span><span class="ln">PASS: GET /greet?name=Ravi (lang defaults to te)</span><span class="ln">PASS: GET /greet without name -&gt; 400</span><span class="ln">PASS: GET /nothing -&gt; 404</span><span class="ln"> </span><span class="ln">10 passed, 0 failed</span></pre>
+</div><p>If it prints <code>Cannot connect to localhost:8080 — is the server running?</code>, Terminal 1 is not running the server. Start it and run the check again.</p>
+</section>
+<section id="takeaway">
+<h2>Takeaway</h2>
+<div class="callout"><p>Path, query string, body — three doors into the server. The terminal on the left is the server's view; the one on the right is the client's. Same event, two windows.</p></div>
+</section>
+<section id="stuck">
+<h2>Stuck?</h2>
+<p>All the curl lines, with a comment above each, are in <code>~/kiet-bootcamp-3/code/stage3/curl_commands.txt</code>. Open it beside Terminal 2 and copy one line at a time.</p><p>Reference: <a href="reference/curl.html">curl</a> · <a href="reference/http-basics.html">HTTP basics</a> · <a href="reference/bottle.html">Bottle</a> · <a href="troubleshooting.html">Troubleshooting</a> (address already in use, connection refused).</p>
+</section>
+<section id="quiz">
+<h2>Quiz</h2>
+<div class="quiz">
+<div class="q" data-answer="2">
+<p>Which part of <code>curl "localhost:8080/greet?name=Ravi&amp;lang=en"</code> decides which function in the server runs?</p>
+<button class="opt" type="button"><code>name=Ravi</code></button>
+<button class="opt" type="button"><code>/greet</code></button>
+<button class="opt" type="button"><code>lang=en</code></button>
+<button class="opt" type="button"><code>localhost:8080</code></button>
+<p class="exp">The path picks the route. The query string is data the route then reads; the host and port only pick which server program gets the request.</p>
+</div>
+<div class="q" data-answer="2">
+<p>The server log shows <code>"POST /isprime HTTP/1.1" 400 44</code>. What happened?</p>
+<button class="opt" type="button">The server crashed</button>
+<button class="opt" type="button">The server answered, saying the request was wrong</button>
+<button class="opt" type="button">curl could not connect</button>
+<button class="opt" type="button">The path does not exist</button>
+<p class="exp">400 is an answer. The server ran, decided the request was missing something, and said so. A crash would show a traceback in Terminal 1; a bad path would be 404; no connection would give no log line at all.</p>
+</div>
+<div class="q" data-answer="3">
+<p>You press Ctrl+C in Terminal 1 and run <code>curl localhost:8080/hai</code>. What do you see?</p>
+<button class="opt" type="button"><code>404 Not Found</code></button>
+<button class="opt" type="button"><code>Namasthey!!!</code> from the last time</button>
+<button class="opt" type="button"><code>curl: (7) Failed to connect …</code></button>
+<button class="opt" type="button">Nothing, curl waits forever</button>
+<p class="exp">A 404 needs a server to say it. With the process gone, nothing is listening on 8080, so the connection itself fails.</p>
+</div>
+<div class="q" data-answer="3">
+<p>Which door does <code>-d '{"number": 17}'</code> use?</p>
+<button class="opt" type="button">The path</button>
+<button class="opt" type="button">The query string</button>
+<button class="opt" type="button">The body</button>
+<button class="opt" type="button">The headers</button>
+<p class="exp">-d puts data in the body of the request. That is why it goes with -X POST: a GET has no body.</p>
+</div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

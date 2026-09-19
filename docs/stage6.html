@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swap the data, not the code — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html" class="cur">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Stage 6 · Session 3 · after dinner · short</p>
+<h1>Swap the data, not the code</h1>
+<p class="sub">Build a 200-row database from its .sql source, point the same server at it, and change nothing else.</p>
+<p class="artifact">python3 server.py --db ../../data/all_students.db</p>
+</header>
+<section id="concept">
+<h2>Concept</h2>
+<p>Your server has answered about four people. Now it will answer about two hundred, and you
+will not change a line. The server never knew which file it was reading. It knew the <em>shape</em> of
+the table — three text columns with three fixed names — and that is all the SQL in it depends on. Point
+it at a bigger file with the same shape and every route keeps working, the counts just get bigger.</p><p>The bigger file does not exist yet. What exists is <code>all_students.sql</code>: two hundred
+<code>INSERT</code> statements under the same <code>CREATE TABLE</code>, in a text file. A
+<code>.sql</code> file is a script — the database's equivalent of a <code>.c</code> source file. Running
+it through sqlite3 builds the <code>.db</code> the way compiling builds the binary. The source is small,
+readable, and goes in git; the built file is what programs open, and it can always be rebuilt.</p><p>That is also why <code>team_details.db</code> is not in the repository and yours was built by hand
+in Stage 1: <code>.db</code> files are outputs. The header of <code>all_students.sql</code> lists the
+exact counts per college and per city, so you can check the server's answers against the source.</p><p>The switch happens on the command line. <code>--db</code> is read by the same
+<code>sys.argv</code> loop from Stage 0 block 5, and the path it gives replaces the default. Restart
+with a different <code>--db</code> and the same code serves different data.</p>
+</section>
+<section id="video">
+<h2>Demo video</h2>
+<div class="panel media">
+<div class="cap">videos/stage6.mp4</div>
+<video controls preload="metadata" src="videos/stage6.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
+</div>
+<p class="note">Building all_students.db from the .sql file, counting rows, restarting the Stage 5 server with --db, and the same curls returning twelve colleges and dozens of rows.</p>
+</section>
+<section id="task">
+<h2>Task</h2>
+<ol class="steps">
+<li><p><strong>Terminal 1.</strong> Build the big database from its source. The <code>&lt;</code> feeds the file to sqlite3 as if you had typed it. It prints nothing. Then ask it how many rows it has.</p><div class="panel">
+<div class="cap">terminal 1</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/data</span><span class="ln cmd"><span class="p">$ </span>sqlite3 all_students.db &lt; all_students.sql</span><span class="ln cmd"><span class="p">$ </span>sqlite3 all_students.db "SELECT COUNT(*) FROM students;"</span><span class="ln">200</span><span class="ln cmd"><span class="p">$ </span>sqlite3 all_students.db "SELECT COUNT(DISTINCT inter_college) FROM students;"</span><span class="ln">12</span></pre>
+</div><p>No <code>sqlite3</code> command? <code>python3 -m sqlite3 all_students.db</code>, then <code>.read all_students.sql</code>, then the SELECT, then <code>.quit</code>.</p></li>
+<li><p>Look at the top of the source file. The counts you are about to see from the server are written there.</p><div class="panel">
+<div class="cap">terminal 1</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>head -30 all_students.sql</span><span class="ln">-- all_students.sql — 200 students across 12 intermediate colleges and 8 cities.</span><span class="ln">-- Build the database:   sqlite3 all_students.db &lt; all_students.sql</span><span class="ln">--</span><span class="ln">-- Exact counts (quoted by the material's Expected output blocks):</span><span class="ln">--   total rows: 200</span><span class="ln">--</span><span class="ln">--   per college (SELECT inter_college, COUNT(*) FROM students GROUP BY inter_college ORDER BY inter_college):</span><span class="ln">--     Aditya Junior College             13</span><span class="ln">--     Bhashyam Junior College           12</span><span class="ln">--     Government Junior College          6</span><span class="ln">--     Krishnaveni Junior College         5</span><span class="ln">--     NRI Junior College                18</span><span class="ln">--     Narayana Junior College           49</span><span class="ln">--     Sasi Junior College                3</span><span class="ln">--     Sri Chaitanya Junior College      57</span><span class="ln">--     Sri Gayatri Junior College        14</span><span class="ln">--     Sri Prakash Junior College         4</span><span class="ln">--     Tirumala Junior College            9</span><span class="ln">--     Vignan Junior College             10</span><span class="ln">--</span><span class="ln">--   per city (SELECT inter_city, COUNT(*) FROM students GROUP BY inter_city ORDER BY inter_city):</span><span class="ln">--     Guntur                            30</span><span class="ln">--     Kakinada                          24</span><span class="ln">--     Kurnool                            9</span><span class="ln">--     Nellore                           16</span><span class="ln">--     Rajahmundry                       20</span><span class="ln">--     Tirupati                          14</span><span class="ln">--     Vijayawada                        41</span><span class="ln">--     Visakhapatnam                     46</span><span class="ln">--</span></pre>
+</div></li>
+<li><p><strong>Terminal 1 — server.</strong> Go to Stage 5, stop the running server with Ctrl+C, and start it again with <code>--db</code> pointing at the new file. The start line names the file it will read. <em>Do not edit server.py.</em></p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/code/stage5</span><span class="ln cmd"><span class="p">$ </span>python3 server.py --db ../../data/all_students.db</span><span class="ln">Serving on http://localhost:8080  (DB: /home/kiet/kiet-bootcamp-3/data/all_students.db)  — Ctrl+C to stop</span><span class="ln">Bottle v0.13.4 server starting up (using WSGIRefServer())...</span><span class="ln">Listening on http://localhost:8080/</span><span class="ln">Hit Ctrl-C to quit.</span></pre>
+</div></li>
+<li><p><strong>Terminal 2.</strong> The same curls as Stage 5. Twelve colleges instead of two; a city query returns dozens of rows.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/colleges</span><span class="ln">{"colleges": ["Aditya Junior College", "Bhashyam Junior College", "Government Junior College", "Krishnaveni Junior College", "NRI Junior College", "Narayana Junior College", "Sasi Junior College", "Sri Chaitanya Junior College", "Sri Gayatri Junior College", "Sri Prakash Junior College", "Tirumala Junior College", "Vignan Junior College"]}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/count?college=Narayana+Junior+College"</span><span class="ln">{"college": "Narayana Junior College", "count": 49}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/count?college=Sri+Chaitanya+Junior+College"</span><span class="ln">{"college": "Sri Chaitanya Junior College", "count": 57}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/by-location?location=Kurnool"</span><span class="ln">{"count": 9, "students": [{"student_name": "Ravi Rama Ravella", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Gayathri Sri Gudla", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Supriya Varshini Nalluri", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Vasavi Prasanna Bommu", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Venkat Satya Kota", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Mounika Kumari Kondapalli", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Yamini Sai Sastry", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Rajesh Charan Kanchi", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}, {"student_name": "Arun Rama Sunkara", "inter_college": "Narayana Junior College", "inter_city": "Kurnool"}]}</span></pre>
+</div></li>
+<li><p>A college that exists in the big file but not in your team's. In Stage 5 this gave <code>count 0</code>; the code is identical, the data is not.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Sri+Prakash+Junior+College"</span><span class="ln">{"count": 4, "students": [{"student_name": "Sruthi Varshini Boddu", "inter_college": "Sri Prakash Junior College", "inter_city": "Kakinada"}, {"student_name": "Lakshmi Sai Gudla", "inter_college": "Sri Prakash Junior College", "inter_city": "Kakinada"}, {"student_name": "Pavan Kiran Puli", "inter_college": "Sri Prakash Junior College", "inter_city": "Kakinada"}, {"student_name": "Rohith Reddy Boddu", "inter_college": "Sri Prakash Junior College", "inter_city": "Kakinada"}]}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/search?college=Sri+Prakash+Junior+College&amp;location=Vijayawada"</span><span class="ln">{"count": 0, "students": []}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/search?college=Sasi+Junior+College&amp;location=Guntur"</span><span class="ln">{"count": 2, "students": [{"student_name": "Sudheer Chandra Gupta", "inter_college": "Sasi Junior College", "inter_city": "Guntur"}, {"student_name": "Tejaswini Harini Achari", "inter_college": "Sasi Junior College", "inter_city": "Guntur"}]}</span></pre>
+</div><p>Sri Prakash exists in exactly one city and Kurnool has exactly one college — the source file says so in its header. Use them to predict a search result before you run it.</p></li>
+</ol>
+</section>
+<section id="expected">
+<h2>Expected output</h2>
+<p>Every number the server returns matches the header of <code>all_students.sql</code>: 12 names from <code>/colleges</code>, 49 for Narayana, 57 for Sri Chaitanya, 9 rows for Kurnool, 4 for Sri Prakash. Terminal 1 logs the same shapes as Stage 5 with bigger byte counts:</p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:47] "GET /colleges HTTP/1.1" 200 341</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:47] "GET /count?college=Narayana+Junior+College HTTP/1.1" 200 51</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:47] "GET /count?college=Sri+Chaitanya+Junior+College HTTP/1.1" 200 56</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:48] "GET /students/by-location?location=Kurnool HTTP/1.1" 200 1021</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:47] "GET /students?college=Sri+Prakash+Junior+College HTTP/1.1" 200 478</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:48] "GET /students/search?college=Sri+Prakash+Junior+College&amp;location=Vijayawada HTTP/1.1" 200 28</span><span class="ln">127.0.0.1 - - [21/Sep/2026 11:58:48] "GET /students/search?college=Sasi+Junior+College&amp;location=Guntur HTTP/1.1" 200 242</span></pre>
+</div>
+</section>
+<section id="check">
+<h2>Check yourself</h2>
+<div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ../stage6/check.py</span><span class="ln">PASS: all_students.db exists at /home/kiet/kiet-bootcamp-3/data/all_students.db</span><span class="ln">PASS: all_students.db has 200 rows</span><span class="ln">PASS: all_students.db has 12 colleges</span><span class="ln">PASS: server on 8080 serves all_students.db: /colleges lists the same 12 colleges</span><span class="ln">PASS: /count?college=Narayana+Junior+College matches the file (49)</span><span class="ln"> </span><span class="ln">5 passed, 0 failed</span></pre>
+</div><p>If the fourth line says <code>2 — the server is still on team_details.db</code>, you restarted without <code>--db</code>.</p>
+</section>
+<section id="takeaway">
+<h2>Takeaway</h2>
+<div class="callout"><p>Code depends on the shape of the data, not the data itself. Zero lines changed.</p></div>
+</section>
+<section id="stuck">
+<h2>Stuck?</h2>
+<p>Nothing to write in this stage, so there is no solution folder. If <code>all_students.db</code> came out with 0 rows, delete it and run the build line again — a typo in the redirect creates an empty file.</p><p>Reference: <a href="reference/sqlite-cli.html">sqlite3 CLI</a> (running a .sql file) · <a href="troubleshooting.html">Troubleshooting</a> (no such table means the server opened a path that did not exist and SQLite created an empty file there).</p>
+</section>
+<section id="quiz">
+<h2>Quiz</h2>
+<div class="quiz">
+<div class="q" data-answer="3">
+<p>How many lines of <code>server.py</code> changed between Stage 5 and Stage 6?</p>
+<button class="opt" type="button">One: the database path</button>
+<button class="opt" type="button">Four: one per route</button>
+<button class="opt" type="button">Zero</button>
+<button class="opt" type="button">All the SQL</button>
+<p class="exp">The path came in through --db on the command line. The code depends on the table's shape, not on which file holds it.</p>
+</div>
+<div class="q" data-answer="2">
+<p>What is <code>all_students.sql</code>?</p>
+<button class="opt" type="button">The database</button>
+<button class="opt" type="button">A text file of SQL statements that builds the database</button>
+<button class="opt" type="button">A backup of team_details.db</button>
+<button class="opt" type="button">A Python script</button>
+<p class="exp">Source, not output. sqlite3 all_students.db < all_students.sql runs every statement and produces the .db file.</p>
+</div>
+<div class="q" data-answer="2">
+<p>You started the server with <code>--db ../../data/all_students.db</code> but <code>/colleges</code> still shows two names. Most likely cause?</p>
+<button class="opt" type="button">The big file has two colleges</button>
+<button class="opt" type="button">You did not stop the old server; the old process on 8080 is still answering</button>
+<button class="opt" type="button">curl caches</button>
+<button class="opt" type="button">The query needs ORDER BY</button>
+<p class="exp">If the old process still holds port 8080, the new one fails to start with 'Address already in use' and the old one keeps answering. Ctrl+C the old one first.</p>
+</div>
+<div class="q" data-answer="1">
+<p>Which query can you predict from the file header without running it?</p>
+<button class="opt" type="button"><code>/students/search?college=Sri+Prakash+Junior+College&location=Kakinada</code> → 4</button>
+<button class="opt" type="button"><code>/students?college=Narayana+Junior+College</code> → the names</button>
+<button class="opt" type="button"><code>/colleges</code> → the order</button>
+<button class="opt" type="button">None of them</button>
+<p class="exp">The header says Sri Prakash appears only in Kakinada with 4 rows. Names and byte counts you have to run for.</p>
+</div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

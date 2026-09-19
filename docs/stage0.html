@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Just enough Python — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html" class="cur">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Stage 0 · Session 1 · morning · about 2 hours</p>
+<h1>Just enough Python</h1>
+<p class="sub">You know C. Here is Python as a set of differences from C — only the parts the next eight stages use.</p>
+<p class="artifact">python3 01_hello.py</p>
+</header>
+<section id="concept">
+<h2>Concept</h2>
+<p>You know C. Python is the same ideas with less typing. There is no compile step:
+<code>python3 file.py</code> runs the file top to bottom, and that is the whole build. There is no
+<code>main()</code>, no semicolons, no braces. A block is whatever is indented under a line that ends
+with a colon, so the indentation you already do for readability is now the syntax.</p><p>Variables have no declared type: <code>x = 5</code> and later <code>x = "five"</code> are both fine.
+Strings are text in quotes, and an <em>f-string</em> puts a variable inside text:
+<code>f"Namasthey {name}"</code>. That replaces every <code>printf</code> format you have ever written.</p><p>Three containers do all the work in this bootcamp. A <strong>list</strong> is <code>[1, 2, 3]</code>: an
+array that grows with <code>.append</code>. A <strong>tuple</strong> is <code>("Ravi", "Vizag")</code>: a fixed
+group of values that you take apart with <code>name, city = row</code>. A <strong>dict</strong> is
+<code>{"student_name": "Ravi"}</code>: a struct whose fields are strings. Why these three? Because in
+Stage 2 SQLite hands you a list of tuples, and in Stage 5 you hand the browser a list of dicts. Everything
+between is a <code>for</code> loop with an <code>if</code> inside.</p><p>Two things will look strange. A line starting with <code>@</code> above a function is a
+<em>decorator</em>; in this bootcamp it means exactly one thing, "register this function at this
+address", and nothing more. And <code>None</code> is Python's <code>NULL</code>: what you get back when a
+lookup finds nothing, guarded with <code>if x is None:</code>.</p><p>Seven short exercises follow. Each is one file with a goal at the top and the expected output in a
+comment. Do them in order; each feeds a later stage. Everything <em>not</em> here — classes, try/except,
+list comprehensions, <code>with</code>, virtual environments — is deliberately left for later.</p><div class="panel">
+<div class="cap">C to Python</div>
+<table class="prose"><thead><tr><th>C</th><th>Python</th></tr></thead><tbody><tr><td><code>int x = 5;</code></td><td><code>x = 5</code></td></tr><tr><td><code>{ ... }</code></td><td>indentation</td></tr><tr><td><code>int arr[3]</code></td><td><code>arr = [1, 2, 3]</code></td></tr><tr><td><code>struct</code></td><td>dict</td></tr><tr><td><code>printf("%s", s)</code></td><td><code>print(f"{s}")</code></td></tr><tr><td><code>for (i=0; i&lt;n; i++)</code></td><td><code>for i in range(n):</code></td></tr><tr><td>for each element</td><td><code>for x in items:</code></td></tr><tr><td><code>strcmp(a, b) == 0</code></td><td><code>a == b</code></td></tr><tr><td><code>atoi(s)</code></td><td><code>int(s)</code></td></tr><tr><td><code>#include</code></td><td><code>import</code></td></tr><tr><td><code>NULL</code></td><td><code>None</code></td></tr><tr><td><code>argv</code></td><td><code>sys.argv</code></td></tr><tr><td><code>return 0;</code> at the end of main</td><td>nothing</td></tr></tbody></table>
+</div>
+</section>
+<section id="video">
+<h2>Demo video</h2>
+<div class="panel media">
+<div class="cap">videos/stage0.mp4</div>
+<video controls preload="metadata" src="videos/stage0.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
+</div>
+<p class="note">Running 01_hello.py before and after filling in the TODO, then the same for 02, 04 and 07, then check.py going from eight FAILs to eight PASSes.</p>
+</section>
+<section id="task">
+<h2>Task</h2>
+<p>Open a terminal in the Stage 0 folder. Each block: read the file, fill in the <code>TODO</code> lines with any editor, run it, compare with the expected output shown under the command.</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/code/stage0</span><span class="ln cmd"><span class="p">$ </span>ls</span><span class="ln">01_hello.py  03_dicts.py       05_greet.py      07_filter_pack.py  solution</span><span class="ln">02_rows.py   04_prime_even.py  06_read_only.py  check.py</span></pre>
+</div><h3>Block 1 — Running a program</h3><p>No compile, no main, no semicolons. <code>print</code> writes a line. An f-string puts variables inside text. Use the sample name first; once the check passes, put your own details in.</p><div class="panel">
+<div class="cap">code/stage0/01_hello.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 01_hello.py — Block 1: running a program, variables, print, f-strings.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 01_hello.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># No compiling. No main(). No semicolons. No braces. No types on variables.</span></span><span class="ln"><span class="cm"># A block is whatever is indented under the line that ends with a colon.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: print two lines using the three variables and f-strings.</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   My name is Ravi Teja Kanchi</span></span><span class="ln"><span class="cm">#   I studied at Sri Chaitanya Junior College, Visakhapatnam</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># (Use the sample name first so check.py can compare. Then put your own details in.)</span></span><span class="ln"> </span><span class="ln">name = "Ravi Teja Kanchi"</span><span class="ln">college = "Sri Chaitanya Junior College"</span><span class="ln">city = "Visakhapatnam"</span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: print the two lines. An f-string puts a variable inside text:  f"Hi {name}"</span></span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 01_hello.py</span><span class="ln">My name is Ravi Teja Kanchi</span><span class="ln">I studied at Sri Chaitanya Junior College, Visakhapatnam</span></pre>
+</div><p><em>Feeds:</em> Stage 4, <code>/wish/&lt;name&gt;</code></p><h3>Block 2 — Lists and tuples</h3><p>A list of tuples is exactly what SQLite gives back in Stage 2. <code>.append</code> adds to the end, <code>len</code> counts, <code>for row in rows</code> visits each one, <code>name, college, city = row</code> takes a tuple apart.</p><div class="panel">
+<div class="cap">code/stage0/02_rows.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 02_rows.py — Block 2: lists, tuples, len, append, for, unpacking.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 02_rows.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># A list is [ ... ]. A tuple is ( ... ). A list of tuples is exactly what</span></span><span class="ln"><span class="cm"># SQLite gives back in Stage 2: fetchall() returns a list, one tuple per row.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: add one more row with .append, then loop over the rows and print "name - city",</span></span><span class="ln"><span class="cm">#       then print how many rows there are.</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   Ravi Teja Kanchi - Visakhapatnam</span></span><span class="ln"><span class="cm">#   Lakshmi Prasanna Gudla - Vijayawada</span></span><span class="ln"><span class="cm">#   Sai Kiran Bommu - Visakhapatnam</span></span><span class="ln"><span class="cm">#   Divya Sree Pothula - Vijayawada</span></span><span class="ln"><span class="cm">#   4 rows</span></span><span class="ln"> </span><span class="ln">rows = [</span><span class="ln">    ("Ravi Teja Kanchi", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">    ("Lakshmi Prasanna Gudla", "Narayana Junior College", "Vijayawada"),</span><span class="ln">    ("Sai Kiran Bommu", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">]</span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: append the tuple ("Divya Sree Pothula", "Narayana Junior College", "Vijayawada") to rows</span></span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: for each row, unpack it into three names  (name, college, city = row)  and print f"{name} - {city}"</span></span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: print f"{len(rows)} rows"</span></span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 02_rows.py</span><span class="ln">Ravi Teja Kanchi - Visakhapatnam</span><span class="ln">Lakshmi Prasanna Gudla - Vijayawada</span><span class="ln">Sai Kiran Bommu - Visakhapatnam</span><span class="ln">Divya Sree Pothula - Vijayawada</span><span class="ln">4 rows</span></pre>
+</div><p><em>Feeds:</em> Stage 2</p><h3>Block 3 — Dicts</h3><p>A dict is a struct with string field names, and it is JSON near enough: <code>json.dumps</code> turns it into JSON text. <code>d["k"]</code> reads a field; <code>d.get("k")</code> gives <code>None</code> instead of crashing when the field is not there.</p><div class="panel">
+<div class="cap">code/stage0/03_dicts.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 03_dicts.py — Block 3: dicts, d["key"], d.get("key"), json.dumps.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 03_dicts.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># A dict is { "key": value, ... } — a struct whose field names are strings.</span></span><span class="ln"><span class="cm"># A dict IS JSON, near enough: json.dumps(d) prints it as JSON text.</span></span><span class="ln"><span class="cm"># In Stage 4 you will return a dict from a route and Bottle sends it as JSON.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: turn the list of tuples into a list of dicts with the three keys of the students table,</span></span><span class="ln"><span class="cm">#       show d["key"] and d.get("missing key"), then print the whole list as JSON.</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   Ravi Teja Kanchi</span></span><span class="ln"><span class="cm">#   None</span></span><span class="ln"><span class="cm">#   [{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}, {"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}]</span></span><span class="ln"> </span><span class="ln">import json</span><span class="ln"> </span><span class="ln">rows = [</span><span class="ln">    ("Ravi Teja Kanchi", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">    ("Lakshmi Prasanna Gudla", "Narayana Junior College", "Vijayawada"),</span><span class="ln">    ("Sai Kiran Bommu", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">]</span><span class="ln"> </span><span class="ln">result = []</span><span class="ln"><span class="cm"># TODO: for each row, unpack it and append a dict:</span></span><span class="ln"><span class="cm">#       {"student_name": name, "inter_college": college, "inter_city": city}</span></span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: first = result[0]</span></span><span class="ln"><span class="cm"># TODO: print first["student_name"]</span></span><span class="ln"><span class="cm"># TODO: print first.get("phone")      — a key that is not there: .get gives None, no crash</span></span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: print json.dumps(result)</span></span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 03_dicts.py</span><span class="ln">Ravi Teja Kanchi</span><span class="ln">None</span><span class="ln">[{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}, {"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}]</span></pre>
+</div><p><em>Feeds:</em> Stage 5, packing rows for the browser</p><h3>Block 4 — Functions, if, %, range, int()</h3><p><code>def</code> starts a function; no prototype, no return type. <code>%</code> is remainder. <code>range(2, n)</code> is the C counting loop. <code>int("17")</code> is <code>atoi</code>.</p><div class="panel">
+<div class="cap">code/stage0/04_prime_even.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 04_prime_even.py — Block 4: def / return, if / elif / else, %, range, int().</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 04_prime_even.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># def starts a function. No prototype, no return type. return gives the value back.</span></span><span class="ln"><span class="cm"># % is remainder, same as C.  int("17") turns text into a number, like atoi.</span></span><span class="ln"><span class="cm"># range(2, n) counts 2, 3, ..., n-1 — the C for-loop with i++.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: fill in is_prime and is_even so the loop at the bottom prints:</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   18</span></span><span class="ln"><span class="cm">#   2 prime=True even=True</span></span><span class="ln"><span class="cm">#   4 prime=False even=True</span></span><span class="ln"><span class="cm">#   17 prime=True even=False</span></span><span class="ln"><span class="cm">#   18 prime=False even=True</span></span><span class="ln"><span class="cm">#   1 prime=False even=False</span></span><span class="ln"> </span><span class="ln"> </span><span class="ln">def is_prime(n):</span><span class="ln"><span class="cm">    # TODO: less than 2 -&gt; False. Otherwise, for d in range(2, n): if n % d == 0 -&gt; False. Else True.</span></span><span class="ln">    return False</span><span class="ln"> </span><span class="ln"> </span><span class="ln">def is_even(n):</span><span class="ln"><span class="cm">    # TODO: True when n % 2 == 0</span></span><span class="ln">    return False</span><span class="ln"> </span><span class="ln"> </span><span class="ln">print(int("17") + 1)</span><span class="ln"> </span><span class="ln">for n in [2, 4, 17, 18, 1]:</span><span class="ln">    print(f"{n} prime={is_prime(n)} even={is_even(n)}")</span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 04_prime_even.py</span><span class="ln">18</span><span class="ln">2 prime=True even=True</span><span class="ln">4 prime=False even=True</span><span class="ln">17 prime=True even=False</span><span class="ln">18 prime=False even=True</span><span class="ln">1 prime=False even=False</span></pre>
+</div><p><em>Feeds:</em> Stage 3 and 4, the POST routes</p><h3>Block 5 — Imports and argv</h3><p><code>import</code> brings in a module: from the standard library, or a file sitting next to yours. <code>sys.argv</code> is C's <code>argv</code>, a list of strings.</p><div class="panel">
+<div class="cap">code/stage0/05_greet.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 05_greet.py — Block 5: import, sys.argv.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 05_greet.py Ravi</span></span><span class="ln"><span class="cm">#   python3 05_greet.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># import brings in a module: something from the standard library (sys, sqlite3, json)</span></span><span class="ln"><span class="cm"># or a file sitting next to yours (from bottle import route, run — Stage 3).</span></span><span class="ln"><span class="cm"># sys.argv is the C argv: a list of strings, sys.argv[0] is the file name.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: greet the name given on the command line; print a usage line if there is none.</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   $ python3 05_greet.py Ravi</span></span><span class="ln"><span class="cm">#   Namasthey Ravi</span></span><span class="ln"><span class="cm">#   $ python3 05_greet.py</span></span><span class="ln"><span class="cm">#   usage: python3 05_greet.py &lt;name&gt;</span></span><span class="ln"> </span><span class="ln">import sys</span><span class="ln"> </span><span class="ln"><span class="cm"># TODO: if len(sys.argv) &lt; 2, print the usage line. Otherwise print f"Namasthey {sys.argv[1]}".</span></span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 05_greet.py Ravi</span><span class="ln">Namasthey Ravi</span><span class="ln cmd"><span class="p">$ </span>python3 05_greet.py</span><span class="ln">usage: python3 05_greet.py &lt;name&gt;</span></pre>
+</div><p><em>Feeds:</em> Stage 2, <code>by_college.py</code></p><h3>Block 6 — Two strange things</h3><p>Read only. Do not run it: <code>bottle.py</code> is not in this folder, on purpose. Answer the four questions at the bottom of the file in the comments.</p><div class="panel">
+<div class="cap">code/stage0/06_read_only.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 06_read_only.py — Block 6: two strange things. READ this file. Do not run it (bottle.py is not in this folder).</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Strange thing 1: the line starting with @.</span></span><span class="ln"><span class="cm">#   @route("/hai") is a decorator. It means one thing only:</span></span><span class="ln"><span class="cm">#   "register the function below at the address /hai". Nothing more.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Strange thing 2: None.</span></span><span class="ln"><span class="cm">#   None is Python's NULL. A function that finds nothing gives you None.</span></span><span class="ln"><span class="cm">#   You guard against it with:   if x is None:</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Goal: answer the four questions at the bottom, in comments. Nothing to print.</span></span><span class="ln"> </span><span class="ln">from bottle import route, run, request</span><span class="ln"> </span><span class="ln">@route("/hai")</span><span class="ln">def hai():</span><span class="ln">    return "Namasthey!!!"</span><span class="ln"> </span><span class="ln">@route("/greet")</span><span class="ln">def greet():</span><span class="ln">    name = request.query.get("name")</span><span class="ln">    if name is None:</span><span class="ln">        return "name is required"</span><span class="ln">    return f"Namasthey {name}"</span><span class="ln"> </span><span class="ln">run(host="localhost", port=8080)</span><span class="ln"> </span><span class="ln"><span class="cm"># Q1. Which function runs when a browser asks for /greet?name=Ravi ?</span></span><span class="ln"><span class="cm"># A1: TODO</span></span><span class="ln"><span class="cm"># Q2. What does request.query.get("name") return when the URL is just /greet ?</span></span><span class="ln"><span class="cm"># A2: TODO</span></span><span class="ln"><span class="cm"># Q3. Which line stops that from crashing?</span></span><span class="ln"><span class="cm"># A3: TODO</span></span><span class="ln"><span class="cm"># Q4. What would you change so /hai answers "Hello" instead?</span></span><span class="ln"><span class="cm"># A4: TODO</span></span></pre>
+</div><p><em>Feeds:</em> Stage 3, reading <code>demo_server.py</code>.</p><h3>Block 7 — Put it together</h3><p>Rows in, a filter with <code>if</code>, dicts out, JSON printed. This is Stage 5 with the SQL and the HTTP taken away.</p><div class="panel">
+<div class="cap">code/stage0/07_filter_pack.py</div>
+<pre class="code"><span class="ln"><span class="cm"># 07_filter_pack.py — Block 7: put it together. This is Stage 5 without SQL and without HTTP.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm">#   python3 07_filter_pack.py</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Take rows (list of tuples) -&gt; keep only one city (the for-loop with the if inside)</span></span><span class="ln"><span class="cm"># -&gt; pack the kept rows into a list of dicts -&gt; print the answer as JSON.</span></span><span class="ln"><span class="cm">#</span></span><span class="ln"><span class="cm"># Expected output:</span></span><span class="ln"><span class="cm">#   {"count": 2, "students": [{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}, {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}]}</span></span><span class="ln"> </span><span class="ln">import json</span><span class="ln"> </span><span class="ln">rows = [</span><span class="ln">    ("Ravi Teja Kanchi", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">    ("Lakshmi Prasanna Gudla", "Narayana Junior College", "Vijayawada"),</span><span class="ln">    ("Sai Kiran Bommu", "Sri Chaitanya Junior College", "Visakhapatnam"),</span><span class="ln">    ("Divya Sree Pothula", "Narayana Junior College", "Vijayawada"),</span><span class="ln">]</span><span class="ln"> </span><span class="ln">wanted_city = "Visakhapatnam"</span><span class="ln"> </span><span class="ln">students = []</span><span class="ln"><span class="cm"># TODO: for each row: unpack; if city == wanted_city, append the dict with the three keys to students</span></span><span class="ln"> </span><span class="ln">answer = {"count": len(students), "students": students}</span><span class="ln"><span class="cm"># TODO: print json.dumps(answer)</span></span></pre>
+</div><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 07_filter_pack.py</span><span class="ln">{"count": 2, "students": [{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}, {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}]}</span></pre>
+</div><p><em>Feeds:</em> Stage 5, every route</p>
+</section>
+<section id="expected">
+<h2>Expected output</h2>
+<p>The output of each file is shown under its command above and repeated in the comment at the top of the file. The two lines of Block 1 will differ once you put your own name in; everything else must match exactly, character for character. Spaces and capital letters count.</p>
+</section>
+<section id="check">
+<h2>Check yourself</h2>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">PASS: 01_hello.py prints 'My name is ...' and 'I studied at ..., ...'</span><span class="ln">PASS: 02_rows.py prints the expected output</span><span class="ln">PASS: 03_dicts.py prints the expected output</span><span class="ln">PASS: 04_prime_even.py prints the expected output</span><span class="ln">PASS: 05_greet.py Ravi prints the expected output</span><span class="ln">PASS: 05_greet.py prints the expected output</span><span class="ln">PASS: 06_read_only.py has all four answers filled in</span><span class="ln">PASS: 07_filter_pack.py prints the expected output</span><span class="ln"> </span><span class="ln">8 passed, 0 failed</span></pre>
+</div><p>A FAIL line names the file and shows the first line that differs. Before you start, running the check shows eight FAILs — that is the starting point, not a problem.</p>
+</section>
+<section id="takeaway">
+<h2>Takeaway</h2>
+<div class="callout"><p>Python is C with the ceremony removed. A list of tuples comes out of the database; a list of dicts goes to the browser; a for-loop with an if inside connects them.</p></div>
+</section>
+<section id="stuck">
+<h2>Stuck?</h2>
+<p>Solutions: <code>~/kiet-bootcamp-3/code/stage0/solution/</code>. Compare line by line before copying. <code>python3 check.py solution</code> runs the check against them.</p><p>Reference: <a href="reference/python-cheatsheet.html">Python cheatsheet</a> · <a href="reference/c-to-python.html">C to Python</a> · <a href="reference/json.html">JSON</a>.</p>
+</section>
+<section id="quiz">
+<h2>Quiz</h2>
+<div class="quiz">
+<div class="q" data-answer="3">
+<p><code>rows = [("Ravi", "Vizag"), ("Divya", "Vijayawada")]</code>. What is <code>rows[1][0]</code>?</p>
+<button class="opt" type="button"><code>"Ravi"</code></button>
+<button class="opt" type="button"><code>"Vizag"</code></button>
+<button class="opt" type="button"><code>"Divya"</code></button>
+<button class="opt" type="button"><code>("Divya", "Vijayawada")</code></button>
+<p class="exp">rows[1] is the second tuple; [0] is its first item. Indexes start at 0, as in C.</p>
+</div>
+<div class="q" data-answer="3">
+<p><code>d = {"name": "Ravi"}</code>. Which line crashes?</p>
+<button class="opt" type="button"><code>d["name"]</code></button>
+<button class="opt" type="button"><code>d.get("city")</code></button>
+<button class="opt" type="button"><code>d["city"]</code></button>
+<button class="opt" type="button"><code>d.get("name")</code></button>
+<p class="exp">d["city"] raises KeyError because there is no such key. d.get("city") returns None instead.</p>
+</div>
+<div class="q" data-answer="2">
+<p>What does <code>@route("/hai")</code> above a function do?</p>
+<button class="opt" type="button">Calls the function once, now</button>
+<button class="opt" type="button">Registers the function at the address /hai</button>
+<button class="opt" type="button">Makes the function return JSON</button>
+<button class="opt" type="button">Starts the server</button>
+<p class="exp">A decorator here means one thing: register this function at that path. It runs later, when a request for /hai arrives.</p>
+</div>
+<div class="q" data-answer="2">
+<p>What does <code>print(int("4") + 1)</code> print?</p>
+<button class="opt" type="button"><code>41</code></button>
+<button class="opt" type="button"><code>5</code></button>
+<button class="opt" type="button">an error</button>
+<button class="opt" type="button"><code>4 + 1</code></button>
+<p class="exp">int() turns the text "4" into the number 4. Without int(), "4" + 1 would be an error: you cannot add a string and a number.</p>
+</div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

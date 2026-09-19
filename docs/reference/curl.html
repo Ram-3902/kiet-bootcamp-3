@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>curl — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html" class="cur">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>curl</h1>
+<p class="sub">The client you can see through.</p>
+<p class="artifact">curl -i localhost:8080/hai</p>
+</header>
+<section id="forms">
+<h2>The forms you need</h2>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/hai</span><span class="ln">Namasthey!!!</span><span class="ln cmd"><span class="p">$ </span>curl -i localhost:8080/hai</span><span class="ln">HTTP/1.0 200 OK</span><span class="ln">Date: Mon, 21 Sep 2026 04:43:35 GMT</span><span class="ln">Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">Content-Length: 12</span><span class="ln">Content-Type: text/html; charset=UTF-8</span><span class="ln"> </span><span class="ln">Namasthey!!!</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/greet?name=Ravi&amp;lang=te"</span><span class="ln">{"greeting": "Namasthey Ravi", "lang": "te"}</span><span class="ln cmd"><span class="p">$ </span>curl -X POST localhost:8080/isprime -H "Content-Type: application/json" -d '{"number": 17}'</span><span class="ln">{"number": 17, "is_prime": true}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Narayana+Junior+College"</span><span class="ln">{"count": 2, "students": [...]}</span><span class="ln cmd"><span class="p">$ </span>curl -s localhost:8080/colleges</span><span class="ln">{"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}</span></pre>
+</div>
+</section><section id="flags">
+<h2>Flags</h2>
+<div class="rules">
+<div class="rule"><div class="c"><code>-i</code></div><div class="d">show the response headers (status line first) above the body</div></div>
+<div class="rule"><div class="c"><code>-X POST</code></div><div class="d">use the POST method instead of GET</div></div>
+<div class="rule"><div class="c"><code>-H "Content-Type: application/json"</code></div><div class="d">tell the server the body is JSON</div></div>
+<div class="rule"><div class="c"><code>-d '{"number": 17}'</code></div><div class="d">the body. Single quotes outside so the double quotes inside survive the shell</div></div>
+<div class="rule"><div class="c"><code>-s</code></div><div class="d">silent: no progress bar when you pipe or save the output</div></div>
+</div>
+</section><section id="quoting">
+<h2>Quoting and spaces</h2>
+<p><strong>Quote any URL with <code>&amp;</code> or <code>?</code> in it.</strong> Unquoted, the shell reads <code>&amp;</code> as "run in background" and the second parameter never reaches curl.</p><p><strong>Spaces are not allowed in a URL.</strong> Write <code>+</code> instead: <code>college=Narayana+Junior+College</code>. The server turns it back into a space. The browser does the same thing for you, spelling it <code>%20</code>.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

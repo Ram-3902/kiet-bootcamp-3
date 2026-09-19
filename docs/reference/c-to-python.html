@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C to Python — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html" class="cur">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>C to Python</h1>
+<p class="sub">The same ideas, the new spelling.</p>
+<p class="artifact">strcmp(a, b) == 0   →   a == b</p>
+</header>
+<section id="table">
+<h2>The translation table</h2>
+<table class="prose"><thead><tr><th>C</th><th>Python</th></tr></thead><tbody><tr><td><code>int x = 5;</code></td><td><code>x = 5</code></td></tr><tr><td><code>{ ... }</code></td><td>indentation</td></tr><tr><td><code>int arr[3] = {1, 2, 3};</code></td><td><code>arr = [1, 2, 3]</code></td></tr><tr><td><code>struct</code></td><td>dict: <code>{"student_name": "Ravi", ...}</code></td></tr><tr><td><code>printf("%s\n", s);</code></td><td><code>print(f"{s}")</code></td></tr><tr><td><code>for (i = 0; i &lt; n; i++)</code></td><td><code>for i in range(n):</code></td></tr><tr><td>for each element</td><td><code>for x in items:</code></td></tr><tr><td><code>strcmp(a, b) == 0</code></td><td><code>a == b</code></td></tr><tr><td><code>atoi(s)</code></td><td><code>int(s)</code></td></tr><tr><td><code>#include &lt;stdio.h&gt;</code></td><td><code>import sys</code></td></tr><tr><td><code>NULL</code></td><td><code>None</code></td></tr><tr><td><code>argv[1]</code></td><td><code>sys.argv[1]</code></td></tr><tr><td><code>return 0;</code> at the end of main</td><td>nothing</td></tr><tr><td><code>int f(int n) { ... }</code></td><td><code>def f(n):</code></td></tr><tr><td><code>a &amp;&amp; b</code>, <code>a || b</code>, <code>!a</code></td><td><code>a and b</code>, <code>a or b</code>, <code>not a</code></td></tr><tr><td><code>// comment</code></td><td><code># comment</code></td></tr><tr><td><code>FILE *f = fopen(...)</code></td><td><code>connection = sqlite3.connect(...)</code></td></tr><tr><td><code>fclose(f)</code></td><td><code>connection.close()</code></td></tr></tbody></table>
+</section><section id="side">
+<h2>Side by side</h2>
+<div class="panel">
+<div class="cap">filter.c</div>
+<pre class="code"><span class="ln">struct student { char name[64]; char city[32]; };</span><span class="ln">struct student rows[4] = { ... };</span><span class="ln"> </span><span class="ln">for (int i = 0; i &lt; 4; i++) {</span><span class="ln">    if (strcmp(rows[i].city, "Visakhapatnam") == 0) {</span><span class="ln">        printf("%s\n", rows[i].name);</span><span class="ln">    }</span><span class="ln">}</span></pre>
+</div><div class="panel">
+<div class="cap">filter.py</div>
+<pre class="code"><span class="ln">rows = [("Ravi Teja Kanchi", "Visakhapatnam"), ("Lakshmi Prasanna Gudla", "Vijayawada"), ...]</span><span class="ln"> </span><span class="ln">for row in rows:</span><span class="ln">    name, city = row</span><span class="ln">    if city == "Visakhapatnam":</span><span class="ln">        print(name)</span></pre>
+</div><p>Same loop, same if. No indexes, no sizes, no string functions. In Stage 1 you see that <code>SELECT student_name FROM students WHERE inter_city = 'Visakhapatnam'</code> is this loop too.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

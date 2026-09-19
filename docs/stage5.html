@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join the two halves — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html" class="cur">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Stage 5 · Session 2 · afternoon</p>
+<h1>Join the two halves</h1>
+<p class="sub">Request in, SQL in the middle, JSON out — one function, repeated four times with different SQL.</p>
+<p class="artifact">rows = query("... WHERE inter_college = ?", [college])</p>
+</header>
+<section id="concept">
+<h2>Concept</h2>
+<p>Everything so far was one half. Stage 2 read rows out of a file and printed them. Stage 4
+took a request and returned a dict. This stage joins them, and the join is one function long. Read the
+given route <code>/students</code> line by line before you write anything, because the four routes you
+add are the same function with different SQL.</p><p><strong>Unpack.</strong> <code>request.query.get("college")</code> pulls the value after
+<code>?college=</code>. If it is <code>None</code>, the client forgot it: set the status to 400 and return
+an error dict. That is the whole of input checking today.</p><p><strong>Query.</strong> <code>query(sql, params)</code> is a helper written for you — the only
+function in this stage you do not write. It opens the connection, makes the cursor, runs
+<code>execute</code> with your <code>?</code> values, does <code>fetchall</code>, closes, and hands back
+the list of tuples. Stage 2, folded into five lines you can reuse.</p><p><strong>Pack.</strong> <code>pack(rows)</code> turns the list of tuples into a list of dicts with
+the three column names as keys. Stage 0 block 7, with the loop already written. Then you return a dict
+around it: <code>{"count": len(rows), "students": pack(rows)}</code>. Bottle makes it JSON. Step through
+one request to watch the dict grow.</p><p>One more line sits in the file: a hook that adds a header to every response. The comment says to
+ignore it, and today that is right. Stage 8 is about that line.</p><div class="stepper">
+<div class="stage">
+<div><div class="panel">
+<div class="cap">server.py — the given route</div>
+<pre class="code" id="s5code"><span class="ln">@route("/students")</span><span class="ln">def students_by_college():</span><span class="ln">    college = request.query.get("college")</span><span class="ln">    if college is None:</span><span class="ln">        response.status = 400</span><span class="ln">        return {"error": "college parameter is required"}</span><span class="ln">    rows = query("SELECT student_name, inter_college, inter_city "</span><span class="ln">                 "FROM students WHERE inter_college = ?", [college])</span><span class="ln">    return {"count": len(rows), "students": pack(rows)}</span></pre>
+</div><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term" id="s5curl"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Narayana+Junior+College"</span><span class="ln">{"count": 2, "students": [{"student_name": "Lakshmi Prasanna Gudla", …}, {"student_name": "Divya Sree Pothula", …}]}</span></pre>
+</div></div>
+<div><div class="panel">
+<div class="cap">state</div>
+<div class="slots">
+<div class="slot" id="s5q"><div class="k">request.query</div><div class="v "></div></div>
+<div class="slot" id="s5c"><div class="k">college</div><div class="v "></div></div>
+<div class="slot" id="s5r"><div class="k">rows  (list of tuples)</div><div class="v "></div></div>
+<div class="slot" id="s5p"><div class="k">pack(rows)  (list of dicts)</div><div class="v "></div></div>
+<div class="slot" id="s5d"><div class="k">returned dict</div><div class="v "></div></div>
+</div>
+</div></div>
+</div>
+<div class="controls">
+<button class="back" type="button">Back</button>
+<button class="play" type="button">Play</button>
+<button class="fwd" type="button">Forward</button>
+<span class="counter"></span>
+</div>
+<div class="track"><span></span></div>
+<p class="narration"></p>
+<script type="application/json" class="steps">[{"note": "The request arrives. The path /students picked this function; the query string is waiting to be read.", "hl": {"s5curl": 0, "s5code": 1}, "slots": {"s5q": {"v": "college=Narayana+Junior+College", "cls": "live"}}}, {"note": "Unpack. .get gives the value with the + already turned back into spaces. Had it been missing, this would be None.", "hl": {"s5code": 2}, "slots": {"s5q": {"v": "college=Narayana+Junior+College", "cls": ""}, "s5c": {"v": "'Narayana Junior College'", "cls": "live"}}}, {"note": "The guard. college is a string, not None, so the 400 branch is skipped.", "hl": {"s5code": 3}, "slots": {"s5c": {"v": "'Narayana Junior College'", "cls": ""}}}, {"note": "Query. The ? takes the college from the list. query() connects, executes, fetches, closes — Stage 2 in one call.", "hl": {"s5code": 6}, "slots": {"s5r": {"v": "[('Lakshmi Prasanna Gudla', 'Narayana Junior College', 'Vijayawada'), ('Divya Sree Pothula', 'Narayana Junior College', 'Vijayawada')]", "cls": "live"}}}, {"note": "Pack. Each tuple becomes a dict with the three column names as keys.", "hl": {"s5code": 8}, "slots": {"s5r": {"v": "2 tuples", "cls": ""}, "s5p": {"v": "[{'student_name': 'Lakshmi Prasanna Gudla', 'inter_college': …, 'inter_city': …}, {'student_name': 'Divya Sree Pothula', …}]", "cls": "live"}}}, {"note": "Return. The dict wraps the count and the list. Bottle turns it into JSON and sends it with status 200.", "hl": {"s5code": 8, "s5curl": 1}, "slots": {"s5p": {"v": "2 dicts", "cls": ""}, "s5d": {"v": "{'count': 2, 'students': [...]}", "cls": "live"}}}]</script>
+</div>
+</section>
+<section id="video">
+<h2>Demo video</h2>
+<div class="panel media">
+<div class="cap">videos/stage5.mp4</div>
+<video controls preload="metadata" src="videos/stage5.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
+</div>
+<p class="note">Starting server.py on the team database, the three curls on the given route, then writing each of the four routes and curling it, then check.py with the --db restart.</p>
+</section>
+<section id="task">
+<h2>Task</h2>
+<p><strong>Before the first curl:</strong> spaces are not allowed in a URL. Write <code>+</code> for each space in a value: <code>college=Narayana+Junior+College</code>. The server turns it back. curl refuses a URL with a bare space in it.</p><ol class="steps">
+<li><p><strong>Terminal 1 — server.</strong> Stop the Stage 3 and 4 servers if they are still running (port 8080 must be free). Start the Stage 5 server; it reads your Stage 1 database by default.</p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/code/stage5</span><span class="ln cmd"><span class="p">$ </span>python3 server.py</span><span class="ln">Serving on http://localhost:8080  (DB: /home/kiet/kiet-bootcamp-3/data/team_details.db)  — Ctrl+C to stop</span><span class="ln">Bottle v0.13.4 server starting up (using WSGIRefServer())...</span><span class="ln">Listening on http://localhost:8080/</span><span class="ln">Hit Ctrl-C to quit.</span></pre>
+</div><p>Terminal 2: the given route, with a college from your team, then with the parameter left out.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Narayana+Junior+College"</span><span class="ln">{"count": 2, "students": [{"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Divya Sree Pothula", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}]}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students?college=Vignan+Junior+College"</span><span class="ln">{"count": 0, "students": []}</span><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/students</span><span class="ln">{"error": "college parameter is required"}</span></pre>
+</div><p>Now open <code>server.py</code>. Read <code>query</code>, <code>pack</code>, and the given route against the stepper. Then the four TODOs:</p><div class="panel">
+<div class="cap">code/stage5/server.py — the part you edit</div>
+<pre class="code"><span class="ln"><span class="cm"># ---- the given route: read it line by line ------------------------------</span></span><span class="ln">@route("/students")</span><span class="ln">def students_by_college():</span><span class="ln">    college = request.query.get("college")                           # unpack</span><span class="ln">    if college is None:</span><span class="ln">        response.status = 400</span><span class="ln">        return {"error": "college parameter is required"}</span><span class="ln">    rows = query("SELECT student_name, inter_college, inter_city "</span><span class="ln">                 "FROM students WHERE inter_college = ?", [college])  # query</span><span class="ln">    return {"count": len(rows), "students": pack(rows)}               # pack</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 1: GET /students/by-location?location=Y  -&gt;  same shape as /students</span></span><span class="ln">@route("/students/by-location")</span><span class="ln">def students_by_location():</span><span class="ln"><span class="cm">    # TODO (Task 1): unpack "location"; 400 with {"error": "location parameter is required"} if missing;</span></span><span class="ln"><span class="cm">    #                query WHERE inter_city = ?; return {"count": ..., "students": pack(rows)}</span></span><span class="ln">    return {"todo": "Task 1"}</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 2: GET /students/search?college=X&amp;location=Y  -&gt;  both required</span></span><span class="ln">@route("/students/search")</span><span class="ln">def students_search():</span><span class="ln"><span class="cm">    # TODO (Task 2): unpack both; if either is None -&gt; 400 {"error": "college and location parameters are required"};</span></span><span class="ln"><span class="cm">    #                query WHERE inter_college = ? AND inter_city = ?  with [college, location]</span></span><span class="ln">    return {"todo": "Task 2"}</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 3: GET /colleges  -&gt;  {"colleges": ["...", "..."]} ----------------</span></span><span class="ln">@route("/colleges")</span><span class="ln">def colleges():</span><span class="ln"><span class="cm">    # TODO (Task 3): query "SELECT DISTINCT inter_college FROM students ORDER BY inter_college" with []</span></span><span class="ln"><span class="cm">    #                each row is a tuple with one item: row[0]. Collect them into a list.</span></span><span class="ln">    return {"todo": "Task 3"}</span><span class="ln"> </span><span class="ln"> </span><span class="ln"><span class="cm"># ---- Task 4: GET /count?college=X  -&gt;  {"college": "X", "count": n} ---------</span></span><span class="ln">@route("/count")</span><span class="ln">def count():</span><span class="ln"><span class="cm">    # TODO (Task 4): unpack "college" (400 if missing, same message as /students);</span></span><span class="ln"><span class="cm">    #                query "SELECT COUNT(*) FROM students WHERE inter_college = ?"; the number is rows[0][0]</span></span><span class="ln">    return {"todo": "Task 4"}</span></pre>
+</div></li>
+<li><p><strong>Task 1.</strong> <code>/students/by-location?location=Y</code>. Same shape as the given route; the parameter is <code>location</code>, the column is <code>inter_city</code>. Restart the server after the edit.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/by-location?location=Vijayawada"</span><span class="ln">{"count": 2, "students": [{"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Divya Sree Pothula", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}]}</span><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/students/by-location</span><span class="ln">{"error": "location parameter is required"}</span></pre>
+</div></li>
+<li><p><strong>Task 2.</strong> <code>/students/search?college=X&amp;location=Y</code>. Both required. Two <code>?</code>s, two values in the list, in that order.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/search?college=Narayana+Junior+College&amp;location=Vijayawada"</span><span class="ln">{"count": 2, "students": [{"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Divya Sree Pothula", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}]}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/search?college=Narayana+Junior+College&amp;location=Visakhapatnam"</span><span class="ln">{"count": 0, "students": []}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/students/search?college=Narayana+Junior+College"</span><span class="ln">{"error": "college and location parameters are required"}</span></pre>
+</div></li>
+<li><p><strong>Task 3.</strong> <code>/colleges</code>. No parameter. <code>SELECT DISTINCT inter_college FROM students ORDER BY inter_college</code> gives one-item tuples; collect <code>row[0]</code> of each into a list.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/colleges</span><span class="ln">{"colleges": ["Narayana Junior College", "Sri Chaitanya Junior College"]}</span></pre>
+</div></li>
+<li><p><strong>Task 4.</strong> <code>/count?college=X</code>. <code>SELECT COUNT(*)</code> gives one row with one number: <code>rows[0][0]</code>.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/count?college=Sri+Chaitanya+Junior+College"</span><span class="ln">{"college": "Sri Chaitanya Junior College", "count": 2}</span><span class="ln cmd"><span class="p">$ </span>curl "localhost:8080/count?college=Vignan+Junior+College"</span><span class="ln">{"college": "Vignan Junior College", "count": 0}</span><span class="ln cmd"><span class="p">$ </span>curl localhost:8080/count</span><span class="ln">{"error": "college parameter is required"}</span></pre>
+</div></li>
+</ol>
+</section>
+<section id="expected">
+<h2>Expected output</h2>
+<p>Terminal 1 after the run above, for the example team. Yours shows your team's college names in the query strings and different byte counts.</p><div class="panel">
+<div class="cap">terminal 1 — server</div>
+<pre class="term"><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students?college=Narayana+Junior+College HTTP/1.1" 200 254</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students?college=Vignan+Junior+College HTTP/1.1" 200 28</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students HTTP/1.1" 400 42</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students/by-location?location=Vijayawada HTTP/1.1" 200 254</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students/by-location HTTP/1.1" 400 43</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students/search?college=Narayana+Junior+College&amp;location=Vijayawada HTTP/1.1" 200 254</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students/search?college=Narayana+Junior+College&amp;location=Visakhapatnam HTTP/1.1" 200 28</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /students/search?college=Narayana+Junior+College HTTP/1.1" 400 57</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /colleges HTTP/1.1" 200 73</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /count?college=Sri+Chaitanya+Junior+College HTTP/1.1" 200 55</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /count?college=Vignan+Junior+College HTTP/1.1" 200 48</span><span class="ln">127.0.0.1 - - [21/Sep/2026 10:58:41] "GET /count HTTP/1.1" 400 42</span></pre>
+</div><p>Three shapes and no others: <code>{"count", "students"}</code> for the three list routes, <code>{"colleges"}</code>, <code>{"college", "count"}</code>. A wrong college is not an error — it is a correct answer with zero rows. A missing parameter is an error: 400 and <code>{"error": …}</code>.</p>
+</section>
+<section id="check">
+<h2>Check yourself</h2>
+<p>This check builds a temporary database with the four-row example team and tells you how to start your server against it, so the expected answers are the same on every machine.</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">Check database: /tmp/kiet_stage5_check.db</span><span class="ln">Start your server against it in Terminal 1:  python3 server.py --db /tmp/kiet_stage5_check.db</span><span class="ln"> </span><span class="ln">Cannot connect to localhost:8080 — is the server running?</span><span class="ln">  Terminal 1 (in this folder):  python3 server.py --db /tmp/kiet_stage5_check.db</span></pre>
+</div><p>Do what it says in Terminal 1 — Ctrl+C the running server, start it with that <code>--db</code> — then run the check again:</p><div class="panel">
+<div class="cap">terminal 2 — curl</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 check.py</span><span class="ln">Check database: /tmp/kiet_stage5_check.db</span><span class="ln">Start your server against it in Terminal 1:  python3 server.py --db /tmp/kiet_stage5_check.db</span><span class="ln"> </span><span class="ln">PASS: GET /students?college=Narayana+Junior+College (given route, server is on the check DB)</span><span class="ln">PASS: GET /students without college -&gt; 400</span><span class="ln">PASS: Task 1: GET /students/by-location?location=Visakhapatnam -&gt; 2 students</span><span class="ln">PASS: Task 1: GET /students/by-location?location=Guntur -&gt; 0 students</span><span class="ln">PASS: Task 1: GET /students/by-location without location -&gt; 400</span><span class="ln">PASS: Task 2: GET /students/search Narayana + Vijayawada -&gt; 2 students</span><span class="ln">PASS: Task 2: GET /students/search Narayana + Visakhapatnam -&gt; 0 students</span><span class="ln">PASS: Task 2: GET /students/search with only college -&gt; 400</span><span class="ln">PASS: Task 3: GET /colleges -&gt; the 2 colleges, sorted</span><span class="ln">PASS: Task 4: GET /count?college=Sri+Chaitanya+Junior+College -&gt; 2</span><span class="ln">PASS: Task 4: GET /count?college=Vignan+Junior+College -&gt; 0</span><span class="ln">PASS: Task 4: GET /count without college -&gt; 400</span><span class="ln"> </span><span class="ln">12 passed, 0 failed</span></pre>
+</div>
+</section>
+<section id="takeaway">
+<h2>Takeaway</h2>
+<div class="callout"><p>Every endpoint is unpack → query → pack. You have now written all three.</p></div>
+</section>
+<section id="stuck">
+<h2>Stuck?</h2>
+<p>Solution: <code>~/kiet-bootcamp-3/code/stage5/solution/server.py</code>. Its default database path has one more <code>..</code> because it sits one folder deeper; everything else should match yours.</p><p>Reference: <a href="reference/bottle.html">Bottle</a> · <a href="reference/sql-for-students-table.html">SQL for the students table</a> · <a href="reference/curl.html">curl</a> (spaces as +) · <a href="troubleshooting.html">Troubleshooting</a> (no such table, address already in use).</p>
+</section>
+<section id="quiz">
+<h2>Quiz</h2>
+<div class="quiz">
+<div class="q" data-answer="2">
+<p><code>/students/search?college=Narayana+Junior+College</code> with no location. Which line answers?</p>
+<button class="opt" type="button"><code>query(...)</code> with one value</button>
+<button class="opt" type="button">The <code>if college is None or location is None</code> guard, with a 400</button>
+<button class="opt" type="button">Bottle's 404 page</button>
+<button class="opt" type="button"><code>pack(rows)</code> with an empty list</button>
+<p class="exp">Unpack found location missing. The guard returns the error dict before any SQL runs.</p>
+</div>
+<div class="q" data-answer="2">
+<p><code>query("SELECT COUNT(*) FROM students WHERE inter_college = ?", [college])</code> returns what?</p>
+<button class="opt" type="button">A number</button>
+<button class="opt" type="button">A list with one tuple holding one number: <code>[(2,)]</code></button>
+<button class="opt" type="button">A dict</button>
+<button class="opt" type="button"><code>None</code></button>
+<p class="exp">query() always returns what fetchall() returns: a list of tuples. COUNT gives one row with one column, so rows[0][0] is the number.</p>
+</div>
+<div class="q" data-answer="2">
+<p>Why does <code>curl "localhost:8080/students?college=Narayana Junior College"</code> fail before reaching the server?</p>
+<button class="opt" type="button">The server rejects spaces</button>
+<button class="opt" type="button">A URL cannot contain a space; write + instead</button>
+<button class="opt" type="button">The college is not in the database</button>
+<button class="opt" type="button">Missing -X GET</button>
+<p class="exp">curl stops with a malformed-URL error. Spaces must be written as + (or %20). The server decodes them back to spaces.</p>
+</div>
+<div class="q" data-answer="3">
+<p>What does <code>{"count": 0, "students": []}</code> mean?</p>
+<button class="opt" type="button">The database is missing</button>
+<button class="opt" type="button">The parameter was missing</button>
+<button class="opt" type="button">The query ran and matched no rows</button>
+<button class="opt" type="button">pack() crashed</button>
+<p class="exp">A correct question with an empty answer. Missing parameters give 400; missing files give a traceback; this is a clean 200.</p>
+</div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

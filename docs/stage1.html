@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data that survives: SQLite and SQL — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html" class="cur">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Stage 1 · Session 1 · morning</p>
+<h1>Data that survives: SQLite and SQL</h1>
+<p class="sub">An array of structs that lives in a file and does its own searching. Build your team's table by hand, then watch it outlive the program.</p>
+<p class="artifact">SELECT student_name FROM students WHERE inter_city = 'Vijayawada';</p>
+</header>
+<section id="concept">
+<h2>Concept</h2>
+<p>Start from an array of structs — four students, each with a name, a college, a city. It works
+until the program ends: then the data is gone. So you write it to a file. Now searching needs a loop that
+reads the file. Add a field and you rewrite the file format and every loop. A second program wants the same
+data and you copy the loops there too. None of this code is about students; all of it is about
+storage.</p><p>A <strong>table</strong> is that struct array, living in a file, that does its own searching.
+A <strong>database</strong> is a file holding tables plus the search, add and update code, so no program
+has to write those loops again. <strong>SQLite</strong> is a database that is one ordinary file on disk,
+no server, no install: it is already inside Python, and inside your phone.</p><p>You talk to it in <strong>SQL</strong>. Four verbs for now. <code>CREATE TABLE</code> defines the
+struct. <code>INSERT</code> appends a row. <code>SELECT … WHERE</code> is the for-loop with the if inside
+it. <code>UPDATE</code> and <code>DELETE</code> come later. Look at
+<code>SELECT student_name FROM students WHERE inter_city = 'Vijayawada'</code> and then at the C loop
+next to it below: same walk over the rows, same comparison, same output. The database runs the loop so
+you do not have to write it. Step through it.</p><div class="stepper">
+<div class="stage">
+<div><div class="panel">
+<div class="cap">sql</div>
+<pre class="code" id="s1sql"><span class="ln">SELECT student_name FROM students WHERE inter_city = 'Vijayawada';</span></pre>
+</div><div class="panel">
+<div class="cap">the same thing in C</div>
+<pre class="code" id="s1c"><span class="ln">for (int i = 0; i &lt; 4; i++) {</span><span class="ln">    if (strcmp(rows[i].city, "Vijayawada") == 0) {</span><span class="ln">        printf("%s\n", rows[i].name);</span><span class="ln">    }</span><span class="ln">}</span></pre>
+</div></div>
+<div><div class="panel">
+<div class="cap">students</div>
+<table id="s1t"><thead><tr><th>student_name</th><th>inter_college</th><th>inter_city</th></tr></thead><tbody><tr><td>Ravi Teja Kanchi</td><td>Sri Chaitanya Junior College</td><td>Visakhapatnam</td></tr><tr><td>Lakshmi Prasanna Gudla</td><td>Narayana Junior College</td><td>Vijayawada</td></tr><tr><td>Sai Kiran Bommu</td><td>Sri Chaitanya Junior College</td><td>Visakhapatnam</td></tr><tr><td>Divya Sree Pothula</td><td>Narayana Junior College</td><td>Vijayawada</td></tr></tbody></table>
+</div><div class="panel">
+<div class="cap">result</div>
+<table id="s1r"><thead><tr><th>student_name</th></tr></thead><tbody><tr id="s1r1" hidden><td>Lakshmi Prasanna Gudla</td></tr><tr id="s1r2" hidden><td>Divya Sree Pothula</td></tr></tbody></table>
+</div></div>
+</div>
+<div class="controls">
+<button class="back" type="button">Back</button>
+<button class="play" type="button">Play</button>
+<button class="fwd" type="button">Forward</button>
+<span class="counter"></span>
+</div>
+<div class="track"><span></span></div>
+<p class="narration"></p>
+<script type="application/json" class="steps">[{"note": "One statement. FROM names the table, WHERE gives the test, SELECT student_name says which column to keep. Nothing has run yet.", "hl": {"s1sql": 0, "s1c": 0}, "show": {"s1r1": false, "s1r2": false}}, {"note": "Row 0. The database looks at inter_city — Visakhapatnam. The test is false. The C version is the strcmp on this row.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [0]}}}, {"note": "Row 0 is skipped. It fades; it is still in the table, just not in this answer.", "hl": {"s1c": 0}, "table": {"s1t": {"skip": [0]}}}, {"note": "Row 1. inter_city is Vijayawada. The test is true.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [1], "skip": [0]}}}, {"note": "So student_name from row 1 goes into the result. That is the printf.", "hl": {"s1c": 2}, "table": {"s1t": {"cur": [1], "skip": [0]}}, "show": {"s1r1": true}}, {"note": "Row 2. Visakhapatnam again. Skipped.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [2], "skip": [0]}}}, {"note": "Row 3. Vijayawada. Kept — the second row of the result.", "hl": {"s1c": 2}, "table": {"s1t": {"cur": [3], "skip": [0, 2]}}, "show": {"s1r2": true}}, {"note": "No more rows. The result has two names. You wrote one line; the database wrote the loop.", "hl": {"s1sql": 0}, "table": {"s1t": {"skip": [0, 2]}}, "show": {"s1r1": true, "s1r2": true}}]</script>
+</div>
+</section>
+<section id="video">
+<h2>Demo video</h2>
+<div class="panel media">
+<div class="cap">videos/stage1.mp4</div>
+<video controls preload="metadata" src="videos/stage1.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
+</div>
+<p class="note">Creating team_details.db in the sqlite3 shell: CREATE TABLE, four INSERTs, SELECT with and without .mode column, .quit, ls -l, reopen, COUNT(*).</p>
+</section>
+<section id="task">
+<h2>Task</h2>
+<ol class="steps">
+<li><p><strong>Terminal 1.</strong> Go to the data folder and open a new database file. The prompt changes to <code>sqlite&gt;</code>: from here on you are typing SQL, and every statement ends with <code>;</code>.</p><div class="panel">
+<div class="cap">terminal 1</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/data</span><span class="ln cmd"><span class="p">$ </span>sqlite3 team_details.db</span><span class="ln">SQLite version 3.45.1 2024-01-30 16:01:20</span><span class="ln">Enter ".help" for usage hints.</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div><p>No <code>sqlite3</code> command? Use <code>python3 -m sqlite3 team_details.db</code> instead; the prompt and everything after it are the same.</p></li>
+<li><p>Paste the <code>CREATE TABLE</code> from <code>schema.sql</code>. This defines the struct: three text columns.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>CREATE TABLE students (</span><span class="ln cmd"><span class="p">   ...> </span>    student_name TEXT,</span><span class="ln cmd"><span class="p">   ...> </span>    inter_college TEXT,</span><span class="ln cmd"><span class="p">   ...> </span>    inter_city TEXT</span><span class="ln cmd"><span class="p">   ...> </span>);</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div></li>
+<li><p><code>INSERT</code> one row per person on your team — real name, real intermediate college, real city. The example team has four. Text goes in single quotes.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>INSERT INTO students VALUES ('Ravi Teja Kanchi', 'Sri Chaitanya Junior College', 'Visakhapatnam');</span><span class="ln cmd"><span class="p">sqlite> </span>INSERT INTO students VALUES ('Lakshmi Prasanna Gudla', 'Narayana Junior College', 'Vijayawada');</span><span class="ln cmd"><span class="p">sqlite> </span>INSERT INTO students VALUES ('Sai Kiran Bommu', 'Sri Chaitanya Junior College', 'Visakhapatnam');</span><span class="ln cmd"><span class="p">sqlite> </span>INSERT INTO students VALUES ('Divya Sree Pothula', 'Narayana Junior College', 'Vijayawada');</span><span class="ln cmd"><span class="p">sqlite> </span></span></pre>
+</div></li>
+<li><p>Read everything back. <code>*</code> means every column.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>SELECT * FROM students;</span><span class="ln">Ravi Teja Kanchi|Sri Chaitanya Junior College|Visakhapatnam</span><span class="ln">Lakshmi Prasanna Gudla|Narayana Junior College|Vijayawada</span><span class="ln">Sai Kiran Bommu|Sri Chaitanya Junior College|Visakhapatnam</span><span class="ln">Divya Sree Pothula|Narayana Junior College|Vijayawada</span></pre>
+</div></li>
+<li><p>Two dot-commands make it readable. They are settings for this session, not SQL, so no <code>;</code>.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>.headers on</span><span class="ln cmd"><span class="p">sqlite> </span>.mode column</span><span class="ln cmd"><span class="p">sqlite> </span>SELECT * FROM students;</span><span class="ln">student_name            inter_college                 inter_city</span><span class="ln">----------------------  ----------------------------  -------------</span><span class="ln">Ravi Teja Kanchi        Sri Chaitanya Junior College  Visakhapatnam</span><span class="ln">Lakshmi Prasanna Gudla  Narayana Junior College       Vijayawada</span><span class="ln">Sai Kiran Bommu         Sri Chaitanya Junior College  Visakhapatnam</span><span class="ln">Divya Sree Pothula      Narayana Junior College       Vijayawada   </span></pre>
+</div></li>
+<li><p>The loop with the if inside. Use one of your own cities.</p><div class="panel">
+<div class="cap">terminal 1 — sqlite&gt;</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>SELECT student_name FROM students WHERE inter_city = 'Vijayawada';</span><span class="ln">student_name</span><span class="ln">----------------------</span><span class="ln">Lakshmi Prasanna Gudla</span><span class="ln">Divya Sree Pothula    </span></pre>
+</div></li>
+<li><p>Leave, and look at the folder. There is a new file. That file <em>is</em> the database.</p><div class="panel">
+<div class="cap">terminal 1</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>.quit</span><span class="ln cmd"><span class="p">$ </span>ls -l</span><span class="ln">total 56</span><span class="ln">-rw-r--r-- 1 kiet kiet 21593 Sep 21 09:40 all_students.sql</span><span class="ln">-rw-r--r-- 1 kiet kiet   697 Sep 21 09:40 sample_team_details.sql</span><span class="ln">-rw-r--r-- 1 kiet kiet   238 Sep 21 09:40 schema.sql</span><span class="ln">-rw-r--r-- 1 kiet kiet  8192 Sep 21 10:02 team_details.db</span></pre>
+</div></li>
+<li><p>Open it again. The rows are still there — they were never in the program, they were in the file.</p><div class="panel">
+<div class="cap">terminal 1</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sqlite3 team_details.db</span><span class="ln">SQLite version 3.45.1 2024-01-30 16:01:20</span><span class="ln">Enter ".help" for usage hints.</span><span class="ln cmd"><span class="p">sqlite> </span>SELECT COUNT(*) FROM students;</span><span class="ln">4</span><span class="ln cmd"><span class="p">sqlite> </span>.quit</span></pre>
+</div></li>
+</ol>
+</section>
+<section id="expected">
+<h2>Expected output</h2>
+<p>Your names and cities will differ; the shape will not. Four things to confirm: the <code>CREATE TABLE</code> printed nothing (silence is success in SQL), each <code>INSERT</code> printed nothing, <code>SELECT *</code> printed exactly one line per person, and <code>COUNT(*)</code> after reopening equals the number of people.</p><p>The file size will be 8192 or 12288 bytes — SQLite writes in 4 KB pages. Your date and user name replace <code>kiet</code>.</p>
+</section>
+<section id="check">
+<h2>Check yourself</h2>
+<div class="panel">
+<div class="cap">terminal 1 — in the data folder</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ../code/stage1/check.py</span><span class="ln">PASS: database file exists at /home/kiet/kiet-bootcamp-3/data/team_details.db</span><span class="ln">PASS: table 'students' exists</span><span class="ln">PASS: students has the three columns in order</span><span class="ln">PASS: at least 3 rows (one per team member)</span><span class="ln">PASS: no empty names, colleges or cities</span><span class="ln"> </span><span class="ln">5 passed, 0 failed</span></pre>
+</div>
+</section>
+<section id="takeaway">
+<h2>Takeaway</h2>
+<div class="callout"><p>A database is a file that stores tables and does the searching for you. SELECT … WHERE is the for-loop with the if inside it.</p></div>
+</section>
+<section id="stuck">
+<h2>Stuck?</h2>
+<p>Skipped the typing? <code>sqlite3 team_details.db &lt; sample_team_details.sql</code> in the data folder builds the four-row example team in one go. Made a typo in the table? <code>DROP TABLE students;</code> and paste the CREATE again, or delete the file and start over.</p><p>Reference: <a href="reference/sqlite-cli.html">sqlite3 CLI</a> · <a href="reference/sql-for-students-table.html">SQL for the students table</a> · <a href="troubleshooting.html">Troubleshooting</a> (no such table, sqlite3 not found).</p>
+</section>
+<section id="quiz">
+<h2>Quiz</h2>
+<div class="quiz">
+<div class="q" data-answer="2">
+<p>Which C construct is <code>SELECT student_name FROM students WHERE inter_city = 'Vijayawada'</code> closest to?</p>
+<button class="opt" type="button">A struct definition</button>
+<button class="opt" type="button">A for loop with an if inside, printing one field</button>
+<button class="opt" type="button">A function prototype</button>
+<button class="opt" type="button">A file open</button>
+<p class="exp">FROM is the array, WHERE is the if, SELECT student_name is what gets printed for each row that passes.</p>
+</div>
+<div class="q" data-answer="2">
+<p>You run <code>CREATE TABLE students (...)</code> and nothing is printed. What happened?</p>
+<button class="opt" type="button">It failed silently</button>
+<button class="opt" type="button">It worked; SQL says nothing on success</button>
+<button class="opt" type="button">It is waiting for more input</button>
+<button class="opt" type="button">The file is read-only</button>
+<p class="exp">CREATE and INSERT print nothing when they succeed. An error would print a message starting with 'Parse error' or 'Runtime error'.</p>
+</div>
+<div class="q" data-answer="3">
+<p>After <code>.quit</code>, where are the four rows?</p>
+<button class="opt" type="button">Gone — the program ended</button>
+<button class="opt" type="button">In the terminal's memory</button>
+<button class="opt" type="button">In the file team_details.db</button>
+<button class="opt" type="button">In schema.sql</button>
+<p class="exp">The database is the file. Reopening it and running COUNT(*) proves the rows were written to disk.</p>
+</div>
+<div class="q" data-answer="2">
+<p>Which line is not SQL?</p>
+<button class="opt" type="button"><code>SELECT COUNT(*) FROM students;</code></button>
+<button class="opt" type="button"><code>.headers on</code></button>
+<button class="opt" type="button"><code>INSERT INTO students VALUES (...);</code></button>
+<button class="opt" type="button"><code>CREATE TABLE students (...);</code></button>
+<p class="exp">Lines starting with a dot are sqlite3 shell settings. They do not end with ; and they would mean nothing to Python's sqlite3 module.</p>
+</div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

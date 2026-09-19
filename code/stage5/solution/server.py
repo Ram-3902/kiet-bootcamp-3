@@ -1,0 +1,115 @@
+# server.py — Stage 5 (solution). The whole backend: HTTP in, SQL in the middle, JSON out.
+#
+#   Terminal 1:  python3 server.py                                   (port 8080, data/team_details.db)
+#                python3 server.py --db ../../data/all_students.db   (Stage 6)
+#                python3 server.py --port 8090 --db some/other.db
+#
+# Every route does the same three things:
+#   unpack  — read the parameter from the request
+#   query   — run SQL with ? for the value
+#   pack    — turn the rows (tuples) into a list of dicts, return it
+
+import os
+import sys
+import sqlite3
+from bottle import route, run, request, response, hook
+
+# ---- read --port and --db from the command line -------------------------
+here = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(here, "..", "..", "..", "data", "team_details.db")
+port = 8080
+previous = ""
+for word in sys.argv:
+    if previous == "--port":
+        port = int(word)
+    if previous == "--db":
+        db_path = word
+    previous = word
+db_path = os.path.abspath(db_path)
+
+
+# ---- the two helpers you reuse in every route ----------------------------
+def query(sql, params):
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
+    cursor.execute(sql, params)
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
+
+
+def pack(rows):
+    result = []
+    for row in rows:
+        name, college, city = row
+        result.append({"student_name": name, "inter_college": college, "inter_city": city})
+    return result
+
+
+# ---- runs after every response ------------------------------------------
+@hook("after_request")
+def allow_browser():
+    response.headers["Access-Control-Allow-Origin"] = "*"   # This line matters in Stage 8. Ignore it for now.
+
+
+# ---- the given route: read it line by line ------------------------------
+@route("/students")
+def students_by_college():
+    college = request.query.get("college")                           # unpack
+    if college is None:
+        response.status = 400
+        return {"error": "college parameter is required"}
+    rows = query("SELECT student_name, inter_college, inter_city "
+                 "FROM students WHERE inter_college = ?", [college])  # query
+    return {"count": len(rows), "students": pack(rows)}               # pack
+
+
+# ---- Task 1 ---------------------------------------------------------------
+@route("/students/by-location")
+def students_by_location():
+    location = request.query.get("location")
+    if location is None:
+        response.status = 400
+        return {"error": "location parameter is required"}
+    rows = query("SELECT student_name, inter_college, inter_city "
+                 "FROM students WHERE inter_city = ?", [location])
+    return {"count": len(rows), "students": pack(rows)}
+
+
+# ---- Task 2 ---------------------------------------------------------------
+@route("/students/search")
+def students_search():
+    college = request.query.get("college")
+    location = request.query.get("location")
+    if college is None or location is None:
+        response.status = 400
+        return {"error": "college and location parameters are required"}
+    rows = query("SELECT student_name, inter_college, inter_city "
+                 "FROM students WHERE inter_college = ? AND inter_city = ?", [college, location])
+    return {"count": len(rows), "students": pack(rows)}
+
+
+# ---- Task 3 ---------------------------------------------------------------
+@route("/colleges")
+def colleges():
+    rows = query("SELECT DISTINCT inter_college FROM students ORDER BY inter_college", [])
+    names = []
+    for row in rows:
+        names.append(row[0])
+    return {"colleges": names}
+
+
+# ---- Task 4 ---------------------------------------------------------------
+@route("/count")
+def count():
+    college = request.query.get("college")
+    if college is None:
+        response.status = 400
+        return {"error": "college parameter is required"}
+    rows = query("SELECT COUNT(*) FROM students WHERE inter_college = ?", [college])
+    return {"college": college, "count": rows[0][0]}
+
+
+# ---- start --------------------------------------------------------------
+print(f"Serving on http://localhost:{port}  (DB: {db_path})  — Ctrl+C to stop")
+run(host="localhost", port=port, debug=True)

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bottle — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html" class="cur">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>Bottle</h1>
+<p class="sub">Everything from bottle.py that the stages use.</p>
+<p class="artifact">from bottle import route, run, request, response, hook</p>
+</header>
+<section id="min">
+<h2>The smallest server</h2>
+<div class="panel">
+<div class="cap">server.py</div>
+<pre class="code" data-copy=""><span class="ln">from bottle import route, run, request, response, hook</span><span class="ln"> </span><span class="ln">@route("/hai")</span><span class="ln">def hai():</span><span class="ln">    return "Namasthey!!!"          # a string -&gt; text response</span><span class="ln"> </span><span class="ln">run(host="localhost", port=8080, debug=True)</span></pre>
+</div><p><code>bottle.py</code> must sit in the same folder as your file. <code>debug=True</code> makes every request print a log line in the terminal.</p>
+</section><section id="routes">
+<h2>Ways to take input</h2>
+<div class="panel">
+<div class="cap">server.py</div>
+<pre class="code" data-copy=""><span class="ln">@route("/hello/&lt;name&gt;")               # path parameter -&gt; function argument</span><span class="ln">def hello(name):</span><span class="ln">    return f"How are you doing {name}"</span><span class="ln"> </span><span class="ln">@route("/greet")                      # query string: /greet?name=Ravi&amp;lang=te</span><span class="ln">def greet():</span><span class="ln">    name = request.query.get("name")  # None if it is not there</span><span class="ln">    if name is None:</span><span class="ln">        response.status = 400</span><span class="ln">        return {"error": "name is required"}</span><span class="ln">    return {"greeting": f"Namasthey {name}"}   # a dict -&gt; JSON response</span><span class="ln"> </span><span class="ln">@route("/isprime", method="POST")     # body: -d '{"number": 17}'</span><span class="ln">def isprime():</span><span class="ln">    data = request.json               # the body as a dict, or None</span><span class="ln">    if data is None:</span><span class="ln">        response.status = 400</span><span class="ln">        return {"error": "send JSON like {\"number\": 17}"}</span><span class="ln">    return {"number": data.get("number")}</span></pre>
+</div>
+</section><section id="hook">
+<h2>After every response</h2>
+<div class="panel">
+<div class="cap">server.py</div>
+<pre class="code" data-copy=""><span class="ln">@hook("after_request")</span><span class="ln">def allow_browser():</span><span class="ln">    response.headers["Access-Control-Allow-Origin"] = "*"</span></pre>
+</div><p>Runs after each route, before the answer leaves. This header is what lets a web page on another port read the answer (Stage 8).</p>
+</section><section id="summary">
+<h2>In one table</h2>
+<div class="rules">
+<div class="rule"><div class="c"><code>@route("/path")</code></div><div class="d">register the function below at that path, for GET</div></div>
+<div class="rule"><div class="c"><code>@route("/p", method="POST")</code></div><div class="d">same, for POST</div></div>
+<div class="rule"><div class="c"><code>&lt;name&gt;</code> in a path</div><div class="d">becomes a function argument</div></div>
+<div class="rule"><div class="c"><code>request.query.get("k")</code></div><div class="d">value after <code>?k=</code>, or None</div></div>
+<div class="rule"><div class="c"><code>request.json</code></div><div class="d">the JSON body as a dict, or None</div></div>
+<div class="rule"><div class="c"><code>return "text"</code></div><div class="d">text response, 200</div></div>
+<div class="rule"><div class="c"><code>return {...}</code></div><div class="d">JSON response, 200</div></div>
+<div class="rule"><div class="c"><code>response.status = 400</code></div><div class="d">set the status before returning</div></div>
+<div class="rule"><div class="c"><code>response.headers["X"] = "y"</code></div><div class="d">add a response header</div></div>
+<div class="rule"><div class="c"><code>run(host, port, debug)</code></div><div class="d">start waiting; Ctrl+C stops</div></div>
+</div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

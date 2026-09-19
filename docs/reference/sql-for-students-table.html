@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL for the students table — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html" class="cur">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">Reference</p>
+<h1>SQL for the students table</h1>
+<p class="sub">Every statement this bootcamp uses, all against the one table.</p>
+<p class="artifact">SELECT * FROM students WHERE inter_city = 'Vijayawada';</p>
+</header>
+<section id="create">
+<h2>CREATE TABLE</h2>
+<div class="panel">
+<div class="cap">schema.sql</div>
+<pre class="code" data-copy=""><span class="ln">CREATE TABLE students (</span><span class="ln">    student_name TEXT,</span><span class="ln">    inter_college TEXT,</span><span class="ln">    inter_city TEXT</span><span class="ln">);</span></pre>
+</div><p>Defines the struct. Three columns, all text. Run once per database file.</p>
+</section><section id="insert">
+<h2>INSERT</h2>
+<div class="panel">
+<div class="cap">sql</div>
+<pre class="code" data-copy=""><span class="ln">INSERT INTO students VALUES ('Ravi Teja Kanchi', 'Sri Chaitanya Junior College', 'Visakhapatnam');</span><span class="ln"> </span><span class="ln">INSERT INTO students VALUES</span><span class="ln">  ('Lakshmi Prasanna Gudla', 'Narayana Junior College', 'Vijayawada'),</span><span class="ln">  ('Sai Kiran Bommu', 'Sri Chaitanya Junior College', 'Visakhapatnam');</span></pre>
+</div><p>Values in the column order. Text in single quotes. The second form adds several rows in one statement.</p>
+</section><section id="select">
+<h2>SELECT</h2>
+<div class="panel">
+<div class="cap">sql</div>
+<pre class="code" data-copy=""><span class="ln">SELECT * FROM students;                                   -- every column, every row</span><span class="ln">SELECT student_name FROM students;                        -- one column</span><span class="ln">SELECT student_name, inter_city FROM students;            -- two columns</span><span class="ln"> </span><span class="ln">SELECT * FROM students WHERE inter_city = 'Vijayawada';   -- the for-loop with the if inside</span><span class="ln">SELECT student_name FROM students</span><span class="ln">  WHERE inter_college = 'Narayana Junior College' AND inter_city = 'Vijayawada';</span><span class="ln">SELECT * FROM students WHERE student_name LIKE 'Sai%';    -- % matches anything: names starting with Sai</span><span class="ln">SELECT * FROM students WHERE student_name LIKE '%Reddy%';</span><span class="ln"> </span><span class="ln">SELECT DISTINCT inter_college FROM students;              -- each college once</span><span class="ln">SELECT DISTINCT inter_college FROM students ORDER BY inter_college;</span><span class="ln">SELECT COUNT(*) FROM students;                            -- how many rows</span><span class="ln">SELECT COUNT(*) FROM students WHERE inter_city = 'Kurnool';</span><span class="ln">SELECT * FROM students ORDER BY student_name;             -- sorted</span></pre>
+</div><div class="panel">
+<div class="cap">sqlite&gt; with .headers on and .mode column</div>
+<pre class="term"><span class="ln cmd"><span class="p">sqlite> </span>SELECT student_name, inter_city FROM students WHERE inter_city = 'Vijayawada';</span><span class="ln">student_name            inter_city</span><span class="ln">----------------------  ----------</span><span class="ln">Lakshmi Prasanna Gudla  Vijayawada</span><span class="ln">Divya Sree Pothula      Vijayawada</span></pre>
+</div>
+</section><section id="update">
+<h2>UPDATE and DELETE</h2>
+<div class="panel">
+<div class="cap">sql</div>
+<pre class="code" data-copy=""><span class="ln">UPDATE students SET inter_city = 'Visakhapatnam' WHERE inter_city = 'Vizag';</span><span class="ln">DELETE FROM students WHERE student_name = 'Sai Kiran Bommu';</span></pre>
+</div><p>Both take the same <code>WHERE</code> as SELECT. <strong>Without a WHERE they touch every row.</strong></p>
+</section><section id="q">
+<h2>The ? in Python</h2>
+<div class="panel">
+<div class="cap">python</div>
+<pre class="code"><span class="ln">cursor.execute("SELECT student_name FROM students WHERE inter_college = ?", [college])</span></pre>
+</div><p>Never paste a value into the SQL string. <code>?</code> is the slot; the list after the SQL fills it. One <code>?</code>, one item. Two <code>?</code>s, two items, in order.</p>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

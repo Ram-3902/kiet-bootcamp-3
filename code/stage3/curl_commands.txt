@@ -1,0 +1,38 @@
+# Stage 3 — every curl for demo_server.py, in order. Run each in Terminal 2
+# while demo_server.py runs in Terminal 1. Copy one line at a time.
+
+# 1. Nothing goes in. Text comes out.
+curl localhost:8080/hai
+
+# 2. The name goes in the PATH.
+curl localhost:8080/hello/Ravi
+
+# 3. The number goes in the BODY, as JSON. -X POST sets the method, -H says what the body is, -d is the body.
+curl -X POST localhost:8080/isprime -H "Content-Type: application/json" -d '{"number": 17}'
+
+# 4. Same route, different body.
+curl -X POST localhost:8080/isprime -H "Content-Type: application/json" -d '{"number": 18}'
+
+# 5. Same route, no body at all. The server says no with status 400.
+curl -X POST localhost:8080/isprime
+
+# 6. name and lang go in the QUERY STRING, after the ?. Quote the URL because of the &.
+curl "localhost:8080/greet?name=Ravi&lang=te"
+
+# 7. Same route, lang=en.
+curl "localhost:8080/greet?name=Ravi&lang=en"
+
+# 8. lang left out: the server picks te.
+curl "localhost:8080/greet?name=Ravi"
+
+# 9. name left out: 400 again.
+curl "localhost:8080/greet?lang=te"
+
+# 10. -i shows the response headers above the body: status line, Content-Type, Content-Length.
+curl -i localhost:8080/hai
+
+# 11. A path the server does not have: 404.
+curl -i localhost:8080/nothing
+
+# 12. Now press Ctrl+C in Terminal 1 to stop the server, then run this. Then start it again.
+curl localhost:8080/hai

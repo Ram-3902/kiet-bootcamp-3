@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python backend with Bottle + SQLite — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="index.html" class=cur>Home</a>
+<div class="group">Session 1 · morning</div>
+<a href="stage0.html">Stage 0 · Python</a>
+<a href="stage1.html">Stage 1 · SQLite</a>
+<a href="stage2.html">Stage 2 · Python + SQL</a>
+<div class="group">Session 2 · afternoon</div>
+<a href="stage3.html">Stage 3 · A server</a>
+<a href="stage4.html">Stage 4 · Your server</a>
+<a href="stage5.html">Stage 5 · The backend</a>
+<div class="group">Session 3 · after dinner</div>
+<a href="stage6.html">Stage 6 · Big data</a>
+<a href="stage7.html">Stage 7 · Browser</a>
+<a href="stage8.html">Stage 8 · Inspector</a>
+<div class="group">Reference</div>
+<a href="reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="reference/c-to-python.html">C to Python</a>
+<a href="reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="reference/sql-for-students-table.html">SQL for students</a>
+<a href="reference/json.html">JSON</a>
+<a href="reference/bottle.html">Bottle</a>
+<a href="reference/curl.html">curl</a>
+<a href="reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="troubleshooting.html">Troubleshooting</a>
+</nav>
+<main>
+<header class="page">
+<h1>Python backend with Bottle + SQLite</h1>
+<p class="sub">KIET Bootcamp 3 · 21 September 2026, three sessions · AI Karyashala</p>
+<p class="artifact">HTTP in  →  SQL in the middle  →  JSON out</p>
+</header>
+<section id="about">
+<h2>What this is</h2>
+<p>One day, three sessions. You arrive knowing C. You leave with a Python program that answers HTTP requests
+with JSON read from a SQLite database, and a web page that uses it. Every stage is one new idea, one
+task, one self-check, one quiz. Everything on this site and in <code>~/kiet-bootcamp-3</code> works
+with the network off. Day 2 is not on this site: team presentations, then Omarchy customization.</p><div class="panel">
+<div class="cap">port plan — four programs, one machine</div>
+<table><thead><tr><th>port</th><th>program</th><th>started in</th><th>used from</th></tr></thead><tbody><tr><td>8000</td><td>this material site</td><td><code>docs/</code> · <code>python3 -m http.server 8000</code></td><td>your browser, all day</td></tr><tr><td>8080</td><td>the given servers</td><td><code>code/stage3</code>, <code>code/stage5</code></td><td>Stage 3, 5, 6, 7, 8</td></tr><tr><td>8081</td><td>your own server</td><td><code>code/stage4</code></td><td>Stage 4</td></tr><tr><td>9000</td><td>the frontend page</td><td><code>code/frontend</code> · <code>python3 -m http.server 9000</code></td><td>Stage 7, 8</td></tr></tbody></table>
+</div>
+</section>
+<section id="before">
+<h2>Before you start</h2>
+<p>Before the bootcamp, on a machine with internet: run the setup from
+<a href="https://aikaryashala.com/kiet/bootcamp-03/setup.html">aikaryashala.com/kiet/bootcamp-03/setup.html</a>.
+It installs git, curl and sqlite3, clones this repository to <code>~/kiet-bootcamp-3</code>, and runs
+<code>check_env.py</code>. On the day, run the check again, then start this site:</p><div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ~/kiet-bootcamp-3/check_env.py</span><span class="ln dim">…</span><span class="ln">Ready. Start the material site with:</span><span class="ln">    cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span></pre>
+</div><p>Then open <a href="http://localhost:8000">http://localhost:8000</a>. That is this page, served from your own machine.</p>
+</section>
+<section id="s1">
+<h2>Session 1 · morning</h2>
+<div class="cards"><a class="card" href="stage0.html"><div class="num">Stage 0 · ~2 h</div><h3>Just enough Python</h3><p>C with the ceremony removed. Seven small exercises that feed the later stages.</p><div class="go">Open →</div></a><a class="card" href="stage1.html"><div class="num">Stage 1</div><h3>Data that survives</h3><p>SQLite and four SQL verbs. Build your team's table by hand and watch it outlive the program.</p><div class="go">Open →</div></a><a class="card" href="stage2.html"><div class="num">Stage 2</div><h3>Python talks to the database</h3><p>Module, connection, cursor. execute positions, fetchall reads, ? carries the value.</p><div class="go">Open →</div></a></div>
+</section>
+<section id="s2">
+<h2>Session 2 · afternoon</h2>
+<div class="cards"><a class="card" href="stage3.html"><div class="num">Stage 3</div><h3>What a server actually is</h3><p>Observe only. A program that waits, poked with curl, both terminals in view.</p><div class="go">Open →</div></a><a class="card" href="stage4.html"><div class="num">Stage 4</div><h3>Write your own server</h3><p>Three routes on port 8081. Return a string for text, a dict for JSON.</p><div class="go">Open →</div></a><a class="card" href="stage5.html"><div class="num">Stage 5</div><h3>Join the two halves</h3><p>Unpack, query, pack. The whole backend in one function, four times.</p><div class="go">Open →</div></a></div>
+</section>
+<section id="s3">
+<h2>Session 3 · after dinner, until 11:30 pm</h2>
+<div class="cards"><a class="card" href="stage6.html"><div class="num">Stage 6 · short</div><h3>Swap the data, not the code</h3><p>200 rows from a .sql source. Zero lines changed.</p><div class="go">Open →</div></a><a class="card" href="stage7.html"><div class="num">Stage 7</div><h3>Someone else's client</h3><p>A plain web page calls your backend. The server cannot tell it from curl.</p><div class="go">Open →</div></a><a class="card" href="stage8.html"><div class="num">Stage 8</div><h3>The inspector</h3><p>The Network tab is curl -i with a mouse. Break CORS on purpose, then fix it.</p><div class="go">Open →</div></a></div>
+</section>
+<section id="day2">
+<h2>Day 2 · 22 September</h2>
+<p>Not on this site. Each team presents what it built; then the Omarchy customization sessions.</p>
+</section>
+<section id="reference">
+<h2>Reference and help</h2>
+<div class="cards"><a class="card" href="reference/python-cheatsheet.html"><div class="num">ref</div><h3>Python cheatsheet</h3><p>Every construct the stages use.</p><div class="go">Open →</div></a><a class="card" href="reference/c-to-python.html"><div class="num">ref</div><h3>C to Python</h3><p>The translation table.</p><div class="go">Open →</div></a><a class="card" href="reference/sqlite-cli.html"><div class="num">ref</div><h3>sqlite3 CLI</h3><p>Open, look, run a script, quit.</p><div class="go">Open →</div></a><a class="card" href="reference/sql-for-students-table.html"><div class="num">ref</div><h3>SQL for students</h3><p>Every statement, against the one table.</p><div class="go">Open →</div></a><a class="card" href="reference/json.html"><div class="num">ref</div><h3>JSON</h3><p>A dict, written down.</p><div class="go">Open →</div></a><a class="card" href="reference/bottle.html"><div class="num">ref</div><h3>Bottle</h3><p>route, request, response, run, hook.</p><div class="go">Open →</div></a><a class="card" href="reference/curl.html"><div class="num">ref</div><h3>curl</h3><p>The flags, the quoting, the + for spaces.</p><div class="go">Open →</div></a><a class="card" href="reference/http-basics.html"><div class="num">ref</div><h3>HTTP basics</h3><p>Request line, status line, three doors.</p><div class="go">Open →</div></a><a class="card" href="troubleshooting.html"><div class="num">help</div><h3>Troubleshooting</h3><p>Address in use, connection refused, no such table, CORS.</p><div class="go">Open →</div></a></div>
+</section>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>
