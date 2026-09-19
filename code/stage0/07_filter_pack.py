@@ -2,9 +2,6 @@
 #
 #   python3 07_filter_pack.py
 #
-# Take rows (list of tuples) -> keep only one city (the for-loop with the if inside)
-# -> pack the kept rows into a list of dicts -> print the answer as JSON.
-#
 # Expected output:
 #   {"count": 2, "students": [{"student_name": "Ravi Teja Kanchi", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}, {"student_name": "Sai Kiran Bommu", "inter_college": "Sri Chaitanya Junior College", "inter_city": "Visakhapatnam"}]}
 
@@ -20,7 +17,10 @@ rows = [
 wanted_city = "Visakhapatnam"
 
 students = []
-# TODO: for each row: unpack; if city == wanted_city, append the dict with the three keys to students
+for row in rows:
+    name, college, city = row
+    if city == wanted_city:
+        students.append({"student_name": name, "inter_college": college, "inter_city": city})
 
 answer = {"count": len(students), "students": students}
-# TODO: print json.dumps(answer)
+print(json.dumps(answer))

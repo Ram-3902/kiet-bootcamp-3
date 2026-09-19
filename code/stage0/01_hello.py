@@ -3,17 +3,15 @@
 #   python3 01_hello.py
 #
 # No compiling. No main(). No semicolons. No braces. No types on variables.
-# A block is whatever is indented under the line that ends with a colon.
+# Read it, run it, and step through it on the Stage 0 page.
 #
-# Goal: print two lines using the three variables and f-strings.
 # Expected output:
 #   My name is Ravi Teja Kanchi
 #   I studied at Sri Chaitanya Junior College, Visakhapatnam
-#
-# (Use the sample name first so check.py can compare. Then put your own details in.)
 
 name = "Ravi Teja Kanchi"
 college = "Sri Chaitanya Junior College"
 city = "Visakhapatnam"
 
-# TODO: print the two lines. An f-string puts a variable inside text:  f"Hi {name}"
+print(f"My name is {name}")
+print(f"I studied at {college}, {city}")

@@ -7,8 +7,6 @@
 # Strange thing 2: None.
 #   None is Python's NULL. A function that finds nothing gives you None.
 #   You guard against it with:   if x is None:
-#
-# Goal: answer the four questions at the bottom, in comments. Nothing to print.
 
 from bottle import route, run, request
 
@@ -26,10 +24,10 @@ def greet():
 run(host="localhost", port=8080)
 
 # Q1. Which function runs when a browser asks for /greet?name=Ravi ?
-# A1: TODO
+# A1: greet() — because of the @route("/greet") line above it.
 # Q2. What does request.query.get("name") return when the URL is just /greet ?
-# A2: TODO
+# A2: None — there is no name in the query string.
 # Q3. Which line stops that from crashing?
-# A3: TODO
+# A3: if name is None:  — it returns before the f-string tries to use name.
 # Q4. What would you change so /hai answers "Hello" instead?
-# A4: TODO
+# A4: Only the return line inside hai(): return "Hello". The @route line stays the same.

@@ -2,12 +2,6 @@
 #
 #   python3 03_dicts.py
 #
-# A dict is { "key": value, ... } — a struct whose field names are strings.
-# A dict IS JSON, near enough: json.dumps(d) prints it as JSON text.
-# In Stage 4 you will return a dict from a route and Bottle sends it as JSON.
-#
-# Goal: turn the list of tuples into a list of dicts with the three keys of the students table,
-#       show d["key"] and d.get("missing key"), then print the whole list as JSON.
 # Expected output:
 #   Ravi Teja Kanchi
 #   None
@@ -22,11 +16,12 @@ rows = [
 ]
 
 result = []
-# TODO: for each row, unpack it and append a dict:
-#       {"student_name": name, "inter_college": college, "inter_city": city}
+for row in rows:
+    name, college, city = row
+    result.append({"student_name": name, "inter_college": college, "inter_city": city})
 
-# TODO: first = result[0]
-# TODO: print first["student_name"]
-# TODO: print first.get("phone")      — a key that is not there: .get gives None, no crash
+first = result[0]
+print(first["student_name"])
+print(first.get("phone"))
 
-# TODO: print json.dumps(result)
+print(json.dumps(result))

@@ -2,11 +2,6 @@
 #
 #   python3 04_prime_even.py
 #
-# def starts a function. No prototype, no return type. return gives the value back.
-# % is remainder, same as C.  int("17") turns text into a number, like atoi.
-# range(2, n) counts 2, 3, ..., n-1 — the C for-loop with i++.
-#
-# Goal: fill in is_prime and is_even so the loop at the bottom prints:
 # Expected output:
 #   18
 #   2 prime=True even=True
@@ -17,13 +12,16 @@
 
 
 def is_prime(n):
-    # TODO: less than 2 -> False. Otherwise, for d in range(2, n): if n % d == 0 -> False. Else True.
-    return False
+    if n < 2:
+        return False
+    for d in range(2, n):
+        if n % d == 0:
+            return False
+    return True
 
 
 def is_even(n):
-    # TODO: True when n % 2 == 0
-    return False
+    return n % 2 == 0
 
 
 print(int("17") + 1)
