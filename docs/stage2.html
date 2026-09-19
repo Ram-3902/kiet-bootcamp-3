@@ -87,14 +87,6 @@ serves any college, and text with a quote in it cannot break or hijack your SQL.
 <script type="application/json" class="steps">[{"note": "connect() opens the file. Like fopen: if the file is not there, SQLite creates an empty one — which is why a wrong path gives 'no such table' later, not 'no such file' now.", "hl": {"s2code": 0}, "slots": {"s2conn": {"v": "open: team_details.db", "cls": "live"}}, "show": {"s2o1": false, "s2o2": false, "s2o3": false, "s2o4": false}}, {"note": "A cursor from the connection. Queries run through it; results come back through it.", "hl": {"s2code": 1}, "slots": {"s2conn": {"v": "open: team_details.db", "cls": ""}, "s2cur": {"v": "ready", "cls": "live"}}}, {"note": "execute() runs the SELECT. Notice: nothing is assigned. The cursor is now positioned at the result, but you have not read anything.", "hl": {"s2code": 2}, "slots": {"s2cur": {"v": "positioned at 4 rows", "cls": "live"}, "s2rows": {"v": "", "cls": ""}}}, {"note": "fetchall() reads. rows is a list of 4 tuples, each with 3 strings, in the column order of the SELECT.", "hl": {"s2code": 3}, "slots": {"s2cur": {"v": "positioned at 4 rows", "cls": ""}, "s2rows": {"v": "[('Ravi Teja Kanchi', 'Sri Chaitanya Junior College', 'Visakhapatnam'), ('Lakshmi Prasanna Gudla', …), ('Sai Kiran Bommu', …), ('Divya Sree Pothula', …)]", "cls": "live"}}}, {"note": "First time through the loop: row is the first tuple. Unpacking gives the three names.", "hl": {"s2code": 5}, "slots": {"s2rows": {"v": "4 tuples", "cls": ""}, "s2row": {"v": "'Ravi Teja Kanchi', 'Sri Chaitanya Junior College', 'Visakhapatnam'", "cls": "live"}}}, {"note": "print writes one line. Then back to the top of the for.", "hl": {"s2code": 6}, "show": {"s2o1": true}}, {"note": "Second tuple, second line.", "hl": {"s2code": 6}, "slots": {"s2row": {"v": "'Lakshmi Prasanna Gudla', 'Narayana Junior College', 'Vijayawada'", "cls": "live"}}, "show": {"s2o2": true}}, {"note": "Third and fourth. The loop ends when the list is exhausted; no index, no length check.", "hl": {"s2code": 6}, "slots": {"s2row": {"v": "'Divya Sree Pothula', 'Narayana Junior College', 'Vijayawada'", "cls": "live"}}, "show": {"s2o3": true, "s2o4": true}}, {"note": "close() releases the file. Like fclose. Do it once, at the end.", "hl": {"s2code": 7}, "slots": {"s2conn": {"v": "closed", "cls": "dead"}, "s2cur": {"v": "gone", "cls": "dead"}, "s2row": {"v": "", "cls": ""}}}]</script>
 </div>
 </section>
-<section id="video">
-<h2>Demo video</h2>
-<div class="panel media">
-<div class="cap">videos/stage2.mp4</div>
-<video controls preload="metadata" src="videos/stage2.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
-</div>
-<p class="note">Running read_all.py, then filling the TODO in by_college.py in an editor, running it with a real college and with an unknown one, and check.py.</p>
-</section>
 <section id="task">
 <h2>Task</h2>
 <ol class="steps">

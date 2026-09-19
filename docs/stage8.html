@@ -85,26 +85,12 @@ tab shows it in.</p><div class="stepper">
 <script type="application/json" class="steps">[{"note": "The command line is the Request URL. The Network tab shows the same URL, with %20 where you typed +.", "hl": {"s8curl": 0}, "slots": {"s8url": {"v": "http://localhost:8080/students?college=Sasi%20Junior%20College", "cls": "live"}, "s8m": {"v": "GET", "cls": "live"}}}, {"note": "The status line. curl prints it first; the Network tab shows it as Status Code, and colours the row red when it is not 2xx.", "hl": {"s8curl": 1}, "slots": {"s8url": {"v": "http://localhost:8080/students?college=Sasi%20Junior%20College", "cls": ""}, "s8m": {"v": "GET", "cls": ""}, "s8s": {"v": "200 OK", "cls": "live"}}}, {"note": "Response headers, one per line. Date and Server are housekeeping.", "hl": {"s8curl": 3}, "slots": {"s8s": {"v": "200 OK", "cls": ""}}}, {"note": "Content-Type tells the browser the body is JSON — this is why fetch's response.json() works.", "hl": {"s8curl": 4}, "slots": {"s8ct": {"v": "application/json", "cls": "live"}}}, {"note": "The CORS header. Without it the browser still receives everything below, and then refuses to give it to the page.", "hl": {"s8curl": 5}, "slots": {"s8ct": {"v": "application/json", "cls": ""}, "s8acao": {"v": "*", "cls": "live"}}}, {"note": "A blank line ends the headers. Everything after it is the body: the Response sub-tab.", "hl": {"s8curl": 8}, "slots": {"s8acao": {"v": "*", "cls": ""}, "s8body": {"v": "{\"count\": 3, \"students\": [...]}", "cls": "live"}}}]</script>
 </div>
 </section>
-<section id="video">
-<h2>Demo video</h2>
-<div class="panel media">
-<div class="cap">videos/stage8.mp4</div>
-<video controls preload="metadata" src="videos/stage8.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
-</div>
-<p class="note">Opening the inspector, clicking a Network row, reading Headers and Response beside curl -i, commenting the hook, the red row and the Console error, then restoring it.</p>
-</section>
 <section id="task">
 <h2>Task</h2>
 <p>Everything from Stage 7 stays running: the backend on 8080 in Terminal 1, the frontend on 9000 in Terminal 2, the page open in the browser.</p><ol class="steps">
 <li><p><strong>Browser.</strong> Press <kbd>F12</kbd> (or <kbd>Ctrl+Shift+I</kbd>) to open the inspector. Click the <strong>Network</strong> tab. Now click <strong>Fetch by college</strong> on the page. One row appears: <code>students?college=…</code>.</p></li>
-<li><p>Click that row. Under <strong>Headers</strong>: Request URL, Request Method <code>GET</code>, Status Code <code>200</code>. Scroll down to Response Headers: <code>content-type: application/json</code> and <code>access-control-allow-origin: *</code>.</p><div class="panel media">
-<div class="cap">img/stage8-network-headers.png</div>
-<img src="img/stage8-network-headers.png" alt="The browser inspector's Network tab with the students?college= row selected. The Headers sub-tab shows General: Request URL http://localhost:8080/students?college=Sasi%20Junior%20College, Request Method GET, Status Code 200 OK; and under Response Headers the lines access-control-allow-origin: * and content-type: application/json.">
-</div></li>
-<li><p>Click the <strong>Response</strong> sub-tab. The JSON, exactly as curl printed it.</p><div class="panel media">
-<div class="cap">img/stage8-network-response.png</div>
-<img src="img/stage8-network-response.png" alt="The same Network row with the Response sub-tab selected, showing the JSON body starting with {"count": 3, "students": [ and the first student object.">
-</div></li>
+<li><p>Click that row. Under <strong>Headers</strong>: Request URL, Request Method <code>GET</code>, Status Code <code>200</code>. Scroll down to Response Headers: <code>content-type: application/json</code> and <code>access-control-allow-origin: *</code>.</p></li>
+<li><p>Click the <strong>Response</strong> sub-tab. The JSON, exactly as curl printed it.</p></li>
 <li><p><strong>Terminal 3 — curl.</strong> The same request with <code>-i</code>. Put the terminal beside the inspector and match line to field.</p><div class="panel">
 <div class="cap">terminal 3 — curl</div>
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -i "localhost:8080/students?college=Sasi+Junior+College"</span><span class="ln">HTTP/1.0 200 OK</span><span class="ln">Date: Mon, 21 Sep 2026 09:37:39 GMT</span><span class="ln">Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">Content-Type: application/json</span><span class="ln">Access-Control-Allow-Origin: *</span><span class="ln">Content-Length: 351</span><span class="ln"> </span><span class="ln">{"count": 3, "students": [{"student_name": "Sruthi Sai Ravella", "inter_college": "Sasi Junior College", "inter_city": "Rajahmundry"}, {"student_name": "Sudheer Chandra Gupta", "inter_college": "Sasi Junior College", "inter_city": "Guntur"}, {"student_name": "Tejaswini Harini Achari", "inter_college": "Sasi Junior College", "inter_city": "Guntur"}]}</span></pre>
@@ -116,9 +102,6 @@ tab shows it in.</p><div class="stepper">
 </div><p>Terminal 1: Ctrl+C, start the server again with <code>--db ../../data/all_students.db</code>. Browser: click <strong>Fetch by college</strong>.</p><p>The table does not change. The yellow banner appears. The Request log says <code>FAILED (see the Console tab)</code>. In the Network tab the new row is red, with status <code>(failed)</code> or <code>CORS error</code>. Click the <strong>Console</strong> tab:</p><div class="panel">
 <div class="cap">browser — console tab</div>
 <pre class="term"><span class="ln">Access to fetch at 'http://localhost:8080/students?college=Sasi%20Junior%20College' from origin 'http://localhost:9000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.</span><span class="ln">GET http://localhost:8080/students?college=Sasi%20Junior%20College net::ERR_FAILED 200 (OK)</span><span class="ln">TypeError: Failed to fetch</span></pre>
-</div><div class="panel media">
-<div class="cap">img/stage8-cors-error.png</div>
-<img src="img/stage8-cors-error.png" alt="The Console tab showing a red error: Access to fetch at 'http://localhost:8080/students?college=...' from origin 'http://localhost:9000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. Below it, TypeError: Failed to fetch. In the page behind, the yellow banner is visible.">
 </div><p>Read the second line again: <code>net::ERR_FAILED 200 (OK)</code>. The server said 200. Now look at Terminal 1:</p><div class="panel">
 <div class="cap">terminal 1 — backend</div>
 <pre class="term"><span class="ln">127.0.0.1 - - [21/Sep/2026 15:07:44] "GET /students?college=Sasi%20Junior%20College HTTP/1.1" 200 351</span></pre>

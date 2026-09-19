@@ -88,14 +88,6 @@ ignore it, and today that is right. Stage 8 is about that line.</p><div class="s
 <script type="application/json" class="steps">[{"note": "The request arrives. The path /students picked this function; the query string is waiting to be read.", "hl": {"s5curl": 0, "s5code": 1}, "slots": {"s5q": {"v": "college=Narayana+Junior+College", "cls": "live"}}}, {"note": "Unpack. .get gives the value with the + already turned back into spaces. Had it been missing, this would be None.", "hl": {"s5code": 2}, "slots": {"s5q": {"v": "college=Narayana+Junior+College", "cls": ""}, "s5c": {"v": "'Narayana Junior College'", "cls": "live"}}}, {"note": "The guard. college is a string, not None, so the 400 branch is skipped.", "hl": {"s5code": 3}, "slots": {"s5c": {"v": "'Narayana Junior College'", "cls": ""}}}, {"note": "Query. The ? takes the college from the list. query() connects, executes, fetches, closes — Stage 2 in one call.", "hl": {"s5code": 6}, "slots": {"s5r": {"v": "[('Lakshmi Prasanna Gudla', 'Narayana Junior College', 'Vijayawada'), ('Divya Sree Pothula', 'Narayana Junior College', 'Vijayawada')]", "cls": "live"}}}, {"note": "Pack. Each tuple becomes a dict with the three column names as keys.", "hl": {"s5code": 8}, "slots": {"s5r": {"v": "2 tuples", "cls": ""}, "s5p": {"v": "[{'student_name': 'Lakshmi Prasanna Gudla', 'inter_college': …, 'inter_city': …}, {'student_name': 'Divya Sree Pothula', …}]", "cls": "live"}}}, {"note": "Return. The dict wraps the count and the list. Bottle turns it into JSON and sends it with status 200.", "hl": {"s5code": 8, "s5curl": 1}, "slots": {"s5p": {"v": "2 dicts", "cls": ""}, "s5d": {"v": "{'count': 2, 'students': [...]}", "cls": "live"}}}]</script>
 </div>
 </section>
-<section id="video">
-<h2>Demo video</h2>
-<div class="panel media">
-<div class="cap">videos/stage5.mp4</div>
-<video controls preload="metadata" src="videos/stage5.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
-</div>
-<p class="note">Starting server.py on the team database, the three curls on the given route, then writing each of the four routes and curling it, then check.py with the --db restart.</p>
-</section>
 <section id="task">
 <h2>Task</h2>
 <p><strong>Before the first curl:</strong> spaces are not allowed in a URL. Write <code>+</code> for each space in a value: <code>college=Narayana+Junior+College</code>. The server turns it back. curl refuses a URL with a bare space in it.</p><ol class="steps">

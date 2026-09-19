@@ -92,14 +92,6 @@ which door it reads from; the client has to use that door. Step through one requ
 <script type="application/json" class="steps">[{"note": "curl is about to send one request. Nothing has left the machine yet.", "hl": {"s3curl": 0}, "slots": {}}, {"note": "No -X, so the method is GET: \"give me something\". A POST would carry a body instead.", "hl": {"s3curl": 0}, "slots": {"s3m": {"v": "GET", "cls": "live"}}}, {"note": "The path is everything from the first / up to the ?. The server picks a function by this and nothing else.", "hl": {"s3curl": 0}, "slots": {"s3m": {"v": "GET", "cls": ""}, "s3p": {"v": "/greet", "cls": "live"}}}, {"note": "After the ? comes the query string: name=value pairs joined by &. This is why the URL is in quotes — the shell would otherwise treat & as its own instruction.", "hl": {"s3curl": 0}, "slots": {"s3p": {"v": "/greet", "cls": ""}, "s3q": {"v": "name=Ravi&lang=en", "cls": "live"}}}, {"note": "A GET has no body. The third door is closed for this request.", "hl": {"s3curl": 0}, "slots": {"s3q": {"v": "name=Ravi&lang=en", "cls": ""}, "s3b": {"v": "(none)", "cls": "dead"}}}, {"note": "The server receives it and writes one log line: who, when, the request line, then the status and the size. Compare the middle of the log line with the URL you typed.", "hl": {"s3curl": null, "s3log": 0}, "slots": {"s3b": {"v": "(none)", "cls": "dead"}, "s3r": {"v": "greet()  via  @route(\"/greet\")", "cls": "live"}}}, {"note": "greet() reads name and lang from the query string, builds a dict, returns it. Bottle turns the dict into JSON and sets the status to 200.", "hl": {"s3log": 0}, "slots": {"s3r": {"v": "greet()  via  @route(\"/greet\")", "cls": ""}, "s3s": {"v": "200 OK", "cls": "live"}}}, {"note": "curl prints the content it received. 40 bytes — the same 40 at the end of the server's log line.", "hl": {"s3curl": 1, "s3log": 0}, "slots": {"s3s": {"v": "200 OK", "cls": ""}, "s3c": {"v": "{\"greeting\": \"Hello Ravi\", \"lang\": \"en\"}", "cls": "live"}}}]</script>
 </div>
 </section>
-<section id="video">
-<h2>Demo video</h2>
-<div class="panel media">
-<div class="cap">videos/stage3.mp4</div>
-<video controls preload="metadata" src="videos/stage3.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
-</div>
-<p class="note">Starting demo_server.py, running every curl from the list while the server logs each one, then stopping it and watching curl fail.</p>
-</section>
 <section id="task">
 <h2>Task</h2>
 <ol class="steps">

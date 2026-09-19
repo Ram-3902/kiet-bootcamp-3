@@ -85,14 +85,6 @@ you do not have to write it. Step through it.</p><div class="stepper">
 <script type="application/json" class="steps">[{"note": "One statement. FROM names the table, WHERE gives the test, SELECT student_name says which column to keep. Nothing has run yet.", "hl": {"s1sql": 0, "s1c": 0}, "show": {"s1r1": false, "s1r2": false}}, {"note": "Row 0. The database looks at inter_city — Visakhapatnam. The test is false. The C version is the strcmp on this row.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [0]}}}, {"note": "Row 0 is skipped. It fades; it is still in the table, just not in this answer.", "hl": {"s1c": 0}, "table": {"s1t": {"skip": [0]}}}, {"note": "Row 1. inter_city is Vijayawada. The test is true.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [1], "skip": [0]}}}, {"note": "So student_name from row 1 goes into the result. That is the printf.", "hl": {"s1c": 2}, "table": {"s1t": {"cur": [1], "skip": [0]}}, "show": {"s1r1": true}}, {"note": "Row 2. Visakhapatnam again. Skipped.", "hl": {"s1c": 1}, "table": {"s1t": {"cur": [2], "skip": [0]}}}, {"note": "Row 3. Vijayawada. Kept — the second row of the result.", "hl": {"s1c": 2}, "table": {"s1t": {"cur": [3], "skip": [0, 2]}}, "show": {"s1r2": true}}, {"note": "No more rows. The result has two names. You wrote one line; the database wrote the loop.", "hl": {"s1sql": 0}, "table": {"s1t": {"skip": [0, 2]}}, "show": {"s1r1": true, "s1r2": true}}]</script>
 </div>
 </section>
-<section id="video">
-<h2>Demo video</h2>
-<div class="panel media">
-<div class="cap">videos/stage1.mp4</div>
-<video controls preload="metadata" src="videos/stage1.mp4"><span class="missing">Demo video not available yet — follow the written steps below.</span></video>
-</div>
-<p class="note">Creating team_details.db in the sqlite3 shell: CREATE TABLE, four INSERTs, SELECT with and without .mode column, .quit, ls -l, reopen, COUNT(*).</p>
-</section>
 <section id="task">
 <h2>Task</h2>
 <ol class="steps">
