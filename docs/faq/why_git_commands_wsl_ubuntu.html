@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Do We Work With Git Through Commands in WSL Ubuntu? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 3 of 15 · Terminal</p>
+<h1>Why Do We Work With Git Through Commands in WSL Ubuntu?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-understand-what-is-happening-here">
+<h2>First, Let Us Understand What Is Happening Here</h2>
+<p>When you start learning Git, your teacher or tutorial will ask you to open something called <strong>WSL Ubuntu</strong> and start typing commands like:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git init</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "first commit"</span></pre>
+</div>
+<p>And you are sitting there thinking —</p>
+<blockquote><p>"Why are we typing all this? Can't we just click some buttons somewhere? What even is this black screen? Why Ubuntu? I have Windows!"</p></blockquote>
+<p>These are all very valid questions. Let us answer every single one of them, properly.</p>
+</section>
+<section id="part-1-what-is-this-black-screen-we-are-typing-in">
+<h2>Part 1 — What is This Black Screen We Are Typing In?</h2>
+<p>That black screen is called a <strong>Terminal</strong> (also called Command Line or Command Prompt or Shell).</p>
+<p>It is a way to talk to your computer <strong>using text commands</strong> instead of clicking buttons.</p>
+<p>Normally, you use your computer by:</p>
+<ul><li>Clicking icons</li><li>Opening folders by double-clicking</li><li>Dragging and dropping files</li></ul>
+<p>But there is another way — you can <strong>type instructions directly</strong> to your computer, and it will obey those instructions immediately.</p>
+<p>The terminal is that place where you type those instructions.</p>
+<h3>Simple Example</h3>
+<p>Normally you would:</p>
+<ul><li>Open File Explorer</li><li>Navigate to a folder</li><li>Right-click → New Folder</li><li>Type the name</li></ul>
+<p>In the terminal, you just type:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>mkdir my_project</span></pre>
+</div>
+<p>And the folder is created. Done. Same result, but much faster.</p>
+</section>
+<section id="part-2-what-is-wsl">
+<h2>Part 2 — What is WSL?</h2>
+<p><strong>WSL = Windows Subsystem for Linux</strong></p>
+<p>Here is the situation:</p>
+<p>You have a <strong>Windows laptop</strong>. But most developers in the real world use a system called <strong>Linux</strong> for their work — because Linux is more powerful, more stable, and almost all servers in the world run on Linux.</p>
+<p>Now, earlier, if you had Windows and you wanted to use Linux, you had to:</p>
+<ul><li>Buy a separate computer</li><li>Or delete Windows and install Linux</li><li>Or use complicated virtual machines</li></ul>
+<p>Microsoft understood this problem. So they created <strong>WSL</strong> — a way to <strong>run Linux directly inside Windows</strong>, without any of that trouble.</p>
+<p>So WSL is basically Microsoft saying:</p>
+<blockquote><p>"We know developers need Linux. So we are putting Linux inside Windows itself. You do not have to do anything complicated. Just enable WSL and you have Linux running on your Windows machine."</p></blockquote>
+</section>
+<section id="part-3-what-is-ubuntu">
+<h2>Part 3 — What is Ubuntu?</h2>
+<p><strong>Ubuntu</strong> is one type (called a "distribution") of Linux.</p>
+<p>Think of it like this:</p>
+<ul><li><strong>Linux</strong> is like a category — like "Soft Drinks"</li><li><strong>Ubuntu</strong> is a specific brand inside that category — like "Coca-Cola"</li></ul>
+<p>Other Linux distributions exist too — like Fedora, Debian, Kali Linux — but <strong>Ubuntu is the most beginner-friendly</strong> and most popular one, especially in India for learning purposes.</p>
+<p>So when your teacher says "Open WSL Ubuntu" — they mean:</p>
+<blockquote><p>"Open the Ubuntu Linux terminal that is running inside your Windows laptop through WSL."</p></blockquote>
+</section>
+<section id="part-4-why-do-we-use-commands-instead-of-clicking-buttons">
+<h2>Part 4 — Why Do We Use Commands Instead of Clicking Buttons?</h2>
+<p>This is the most important question. Let us answer it properly.</p>
+<h3>Reason 1 — Git Was Built for the Terminal</h3>
+<p>Git was created in <strong>2005 by Linus Torvalds</strong> (the same person who created Linux).</p>
+<p>He built Git as a <strong>command-line tool</strong> — meaning, it was designed from the beginning to be used by typing commands in a terminal.</p>
+<p>This is Git's natural home. This is where Git is most powerful and has all its features available.</p>
+<p>GUI tools (graphical tools with buttons and clicks) for Git exist — like GitHub Desktop, GitKraken, Sourcetree — but they are built <strong>on top of</strong> the command line. They are just a visual wrapper around the same commands.</p>
+<p>And those GUI tools do not have all the features. The terminal has everything.</p>
+<h3>Reason 2 — Every Computer in the World Has a Terminal</h3>
+<p>Whether it is:</p>
+<ul><li>Your Windows laptop</li><li>A Mac</li><li>A Linux server at Amazon or Google</li><li>A cloud machine you are renting online</li></ul>
+<p><strong>Every single one of them has a terminal.</strong></p>
+<p>Not every computer has GitHub Desktop installed. Not every computer has a graphical interface even.</p>
+<p>But every computer understands terminal commands.</p>
+<p>So once you learn Git through commands, <strong>you can use it anywhere</strong> — on any machine, in any company, in any country.</p>
+<h3>Reason 3 — Commands Are Faster</h3>
+<p>Once you get comfortable, typing commands is <strong>much faster</strong> than clicking through menus.</p>
+<p>Compare:</p>
+<p><strong>GUI way:</strong></p>
+<ul><li>Open GitHub Desktop</li><li>Click "Repository" menu</li><li>Click "Open in Terminal"</li><li>Find the "Commit" button</li><li>Type commit message</li><li>Click "Commit to main"</li><li>Click "Push origin"</li></ul>
+<p><strong>Command way:</strong></p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "your message"</span><span class="ln cmd"><span class="p">$ </span>git push</span></pre>
+</div>
+<p>Three lines. Done. Experienced developers do this in seconds.</p>
+<h3>Reason 4 — You Understand What Is Actually Happening</h3>
+<p>When you click a button in a GUI tool, the tool does something behind the scenes — but you do not know what.</p>
+<p>When you type a command yourself, you <strong>know exactly what is happening</strong>. You are in control. You understand the process.</p>
+<p>This understanding is very important when something goes wrong — because in GUI tools, when there is an error, you have no idea what happened or how to fix it.</p>
+<p>In the terminal, the error message tells you exactly what went wrong, and you can fix it.</p>
+<h3>Reason 5 — Every Company Expects This</h3>
+<p>In any software job in India or abroad — at TCS, Infosys, Wipro, startups, product companies, or FAANG companies — developers use Git through the terminal every single day.</p>
+<p>It is a basic skill that is expected. If you go for an interview and you only know how to use GitHub Desktop and click buttons, it will show that you are a beginner.</p>
+<p>But if you can comfortably type Git commands, it shows confidence and real understanding.</p>
+</section>
+<section id="part-5-why-specifically-ubuntu-and-not-windows-command-promp">
+<h2>Part 5 — Why Specifically Ubuntu and Not Windows Command Prompt?</h2>
+<p>Good question. Windows has its own terminal too — called <strong>Command Prompt</strong> or <strong>PowerShell</strong>. So why are we using Ubuntu?</p>
+<p>Here are the reasons:</p>
+<h3>Reason 1 — Linux Commands Are the Industry Standard</h3>
+<p>In professional development, almost every tutorial, documentation, YouTube video, and course uses Linux-style commands.</p>
+<p>When you Google "how to do X in Git", the answer will be a Linux command.</p>
+<p>When your senior developer or your teacher tells you what to type, it will be a Linux command.</p>
+<p>Windows Command Prompt uses <strong>different syntax</strong> for many things. So if you learn on Windows CMD, you will always have to "translate" — which is confusing.</p>
+<p>Ubuntu gives you the <strong>same commands</strong> you will see everywhere in the industry.</p>
+<h3>Reason 2 — Development Tools Work Better on Linux</h3>
+<p>Many development tools — Node.js, Python, Ruby, Docker, and many others — are built for Linux first.</p>
+<p>On Linux (Ubuntu), installing and running these tools is smooth and simple.</p>
+<p>On Windows CMD or PowerShell, you often run into permission errors, path issues, and compatibility problems.</p>
+<p>WSL Ubuntu solves all of this — you get Linux's smoothness while still using your Windows laptop.</p>
+<h3>Reason 3 — Real Servers Run Linux</h3>
+<p>As we mentioned before — web servers run Linux. If you develop on Ubuntu WSL, you are already working in an environment that is <strong>similar to the real server</strong> your project will eventually run on.</p>
+<p>This reduces surprises when you deploy your project.</p>
+<h3>Reason 4 — Ubuntu is Beginner Friendly</h3>
+<p>Among all Linux distributions, Ubuntu is the easiest to use and learn. It has the largest community, the most tutorials, and the best support for beginners.</p>
+<p>That is why your teacher chose Ubuntu specifically.</p>
+</section>
+<section id="part-6-some-basic-commands-you-will-use-every-day">
+<h2>Part 6 — Some Basic Commands You Will Use Every Day</h2>
+<p>Here is a quick look at some basic terminal commands — just so the terminal does not feel scary:</p>
+<div class="panel"><table class="prose"><thead><tr><th>Command</th><th>What It Does</th><th>Example</th></tr></thead><tbody><tr><td><code>pwd</code></td><td>Shows which folder you are currently in</td><td><code>pwd</code> → <code>/home/yourname</code></td></tr><tr><td><code>ls</code></td><td>Lists all files and folders in current location</td><td><code>ls</code></td></tr><tr><td><code>cd</code></td><td>Move into a folder</td><td><code>cd Desktop</code></td></tr><tr><td><code>cd ..</code></td><td>Go back one folder</td><td><code>cd ..</code></td></tr><tr><td><code>mkdir</code></td><td>Create a new folder</td><td><code>mkdir my_project</code></td></tr><tr><td><code>clear</code></td><td>Clears the terminal screen</td><td><code>clear</code></td></tr></tbody></table></div>
+<p>And Git commands you will use:</p>
+<div class="panel"><table class="prose"><thead><tr><th>Git Command</th><th>What It Does</th></tr></thead><tbody><tr><td><code>git init</code></td><td>Start tracking a project with Git</td></tr><tr><td><code>git status</code></td><td>Check what files have changed</td></tr><tr><td><code>git add .</code></td><td>Stage all changes for saving</td></tr><tr><td><code>git commit -m "message"</code></td><td>Save a snapshot with a description</td></tr><tr><td><code>git push</code></td><td>Send your work to GitHub</td></tr><tr><td><code>git pull</code></td><td>Get latest changes from GitHub</td></tr></tbody></table></div>
+<p>Do not worry about memorising all of these right now. You will remember them naturally as you use them every day.</p>
+</section>
+<section id="part-7-is-the-terminal-scary">
+<h2>Part 7 — Is the Terminal Scary?</h2>
+<p>Honestly — yes, it feels scary at first. That is completely normal.</p>
+<p>When you first saw a computer, clicking a mouse also felt confusing. But now it is second nature.</p>
+<p>The terminal is the same. In the beginning:</p>
+<ul><li>Everything looks unfamiliar</li><li>You will make mistakes</li><li>Commands will give errors</li></ul>
+<p>That is okay. Every developer in the world went through this same phase.</p>
+<p>With just 2-3 weeks of regular practice, the terminal will start feeling comfortable and even fast.</p>
+<p>The secret is — <strong>do not just read, keep typing</strong>. Open Ubuntu, type the commands, make mistakes, see the errors, fix them. That is the only way to get comfortable.</p>
+</section>
+<section id="summary-everything-in-one-place">
+<h2>Summary — Everything in One Place</h2>
+<blockquote><p><strong>WSL</strong> is a Microsoft feature that lets you run Linux inside your Windows laptop without any complicated setup. <strong>Ubuntu</strong> is the beginner-friendly version of Linux we use. We work with Git through the <strong>terminal and commands</strong> instead of clicking buttons because — Git was built for the terminal, every computer in the world has a terminal, servers only have terminals (no GUI), commands are faster once you learn them, you understand exactly what is happening, and every company in the real world expects developers to know this. Learning Git through Ubuntu WSL means you are learning the right way from the beginning — the same way professional developers all over the world work every day.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you know why we use the terminal and Ubuntu, the next steps are:</p>
+<ul><li>What do the commands <code>ls</code>, <code>pwd</code>, <code>cd</code>, and <code>mkdir</code> do in detail?</li><li>What does <code>sudo</code> mean and when do we use it?</li><li>How do we actually use Git commands step by step in Ubuntu?</li></ul>
+<p>Let us keep building on this, one step at a time. You are learning the right things! 💪</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="git_vs_github.html">← Previous: What is the Difference Between Git and GitHub, and When Do We Use Each One?</a><a href="ls_pwd_cd_mkdir_commands.html">Next: What Do the Commands ls, pwd, cd, and mkdir Do, and When Would I Use Each One? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

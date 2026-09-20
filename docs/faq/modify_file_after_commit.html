@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Happens if I Modify a File After I've Already Committed It? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 7 of 15 · Git</p>
+<h1>What Happens if I Modify a File After I've Already Committed It?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-set-the-scene">
+<h2>First, Let Us Set the Scene</h2>
+<p>You have been working on your project.</p>
+<p>You wrote some code. You saved it. You did your first commit:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "first commit"</span></pre>
+</div>
+<p>You feel good. You think — okay, Git has saved my work. Done.</p>
+<p>Then you open the file again and make some changes.</p>
+<p>Now you are confused —</p>
+<blockquote><p>"Wait. I already committed this file. What happens now? Did Git automatically save my new changes? Is my old commit gone? Did I break something? What is happening?"</p></blockquote>
+<p>These are completely normal questions. Let us answer all of them clearly.</p>
+</section>
+<section id="the-most-important-thing-to-understand-first">
+<h2>The Most Important Thing to Understand First</h2>
+<p><strong>Git does NOT automatically track every change you make.</strong></p>
+<p>This is the biggest misunderstanding beginners have.</p>
+<p>Git does NOT work like that.</p>
+<p>Git only saves a snapshot of your work <strong>when YOU tell it to</strong> — by running <code>git add</code> and <code>git commit</code>.</p>
+<p>Between your commits, you can change files as many times as you want — Git watches but does NOT save automatically.</p>
+</section>
+<section id="so-what-actually-happens-when-you-modify-a-file-after-commit">
+<h2>So What Actually Happens When You Modify a File After Committing?</h2>
+<p>Here is the simple answer:</p>
+<blockquote><p><strong>Your old commit stays exactly as it was. Your new changes are NOT saved yet. Git knows something changed, but it is waiting for you to tell it what to do.</strong></p></blockquote>
+<p>Your old commit is safe. Nothing is broken. Nothing is lost.</p>
+<p>You just have new <strong>uncommitted changes</strong> sitting in your working area — waiting to be committed.</p>
+</section>
+<section id="understanding-the-three-areas-of-git">
+<h2>Understanding the Three Areas of Git</h2>
+<p>To fully understand this, you need to know that Git has <strong>three areas</strong> where your files can exist at any point:</p>
+<h3>Area 1 — Working Directory (Your Actual Files)</h3>
+<p>This is simply — your project folder on your computer.</p>
+<p>The files you see, open, and edit in VS Code or any editor — those are in the Working Directory.</p>
+<p>When you modify a file after committing — <strong>the change lives here first.</strong></p>
+<h3>Area 2 — Staging Area (Also Called Index)</h3>
+<p>This is a middle zone — a preparation area.</p>
+<p>Before Git saves a snapshot, you first tell Git — "these are the files I want to include in my next commit." That act of telling Git is called <strong>staging</strong>.</p>
+<p>You do this with:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add filename</span></pre>
+</div>
+<p>or</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span></pre>
+</div>
+<h3>Area 3 — Repository (Committed History)</h3>
+<p>This is where Git permanently stores your snapshots — your commits.</p>
+<p>Once you run <code>git commit</code>, the staged changes move here and are saved forever in Git's history.</p>
+<p>Every commit has a unique ID, a message, a timestamp, and a record of exactly what changed.</p>
+<h3>The Flow — How Files Move Between Areas</h3>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Working Directory  →  (git add)  →  Staging Area  →  (git commit)  →  Repository</span><span class="ln">   (you edit here)                  (ready to save)                   (saved forever)</span></pre>
+</div>
+<p>When you modify a file after committing — you are back in the <strong>Working Directory</strong> with new changes. Those changes have NOT moved to Staging or Repository yet.</p>
+</section>
+<section id="what-does-git-diff-show-you">
+<h2>What Does git diff Show You?</h2>
+<p>Before you decide what to do, you can see exactly what changed using:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git diff</span></pre>
+</div>
+<p>Output looks something like:</p>
+<div class="panel">
+<div class="cap">git diff</div>
+<pre class="code"><span class="ln">diff --git a/index.html b/index.html</span><span class="ln">index 1234567..abcdefg 100644</span><span class="ln">--- a/index.html</span><span class="ln">+++ b/index.html</span><span class="ln">@@ -1 +1,2 @@</span><span class="ln"> Hello, this is my website</span><span class="ln">+This is a new line I added</span></pre>
+</div>
+<p>Reading this output:</p>
+<ul><li>Lines starting with <strong><code>-</code></strong> (in red) = what was there before (old version)</li><li>Lines starting with <strong><code>+</code></strong> (in green) = what is there now (new version)</li><li>Lines with no symbol = unchanged lines (context)</li></ul>
+<p>This is very useful — you can review exactly what changed before deciding whether to commit or discard.</p>
+</section>
+<section id="what-if-you-modified-multiple-files">
+<h2>What if You Modified Multiple Files?</h2>
+<p>Same concept — just with more files.</p>
+<p>Let us say you modified <code>index.html</code>, <code>style.css</code>, and <code>script.js</code> after your last commit.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git status</span></pre>
+</div>
+<p>Output:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Changes not staged for commit:</span><span class="ln">        modified:   index.html</span><span class="ln">        modified:   style.css</span><span class="ln">        modified:   script.js</span></pre>
+</div>
+<p>Now you have options:</p>
+<p><strong>Option 1 — Commit all changes together</strong></p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "updated HTML, CSS and JS files"</span></pre>
+</div>
+<p><strong>Option 2 — Commit only some files separately</strong></p>
+<p>Maybe you want to commit the HTML and CSS changes as one commit, and the JS changes as a separate commit:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln"># First commit — only HTML and CSS</span><span class="ln cmd"><span class="p">$ </span>git add index.html style.css</span><span class="ln cmd"><span class="p">$ </span>git commit -m "updated HTML and CSS layout"</span><span class="ln"> </span><span class="ln"># Second commit — only JS</span><span class="ln cmd"><span class="p">$ </span>git add script.js</span><span class="ln cmd"><span class="p">$ </span>git commit -m "fixed bug in script.js"</span></pre>
+</div>
+<p>This gives you a cleaner, more organised history — each commit has a clear purpose.</p>
+<p>This is actually <strong>good practice</strong> — small, focused commits are much better than one big commit with everything mixed together.</p>
+</section>
+<section id="the-cycle-you-will-do-every-day-as-a-developer">
+<h2>The Cycle You Will Do Every Day as a Developer</h2>
+<p>Once you understand all of this, the pattern becomes very clear.</p>
+<p>Development is just this cycle, repeated over and over:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">1. Make changes to your files</span><span class="ln">         ↓</span><span class="ln">2. Check what changed → git status</span><span class="ln">         ↓</span><span class="ln">3. Review the changes → git diff</span><span class="ln">         ↓</span><span class="ln">4. Stage the changes → git add .</span><span class="ln">         ↓</span><span class="ln">5. Save a snapshot → git commit -m "message"</span><span class="ln">         ↓</span><span class="ln">6. Make more changes to your files</span><span class="ln">         ↓</span><span class="ln">   (repeat from Step 1)</span></pre>
+</div>
+<p>Every time you finish a small meaningful piece of work — you commit. Then you continue working. Then you commit again.</p>
+<p>Your project history becomes a beautiful timeline of your progress.</p>
+</section>
+<section id="a-full-visual-of-what-git-history-looks-like">
+<h2>A Full Visual of What Git History Looks Like</h2>
+<p>Imagine you are building a website. Here is what your commit history might look like after a few days of work:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Commit 1 — "initialised project with blank files"</span><span class="ln">     ↓</span><span class="ln">Commit 2 — "added basic HTML structure to index.html"</span><span class="ln">     ↓</span><span class="ln">Commit 3 — "added CSS styling for navbar"</span><span class="ln">     ↓</span><span class="ln">Commit 4 — "fixed navbar colour from blue to white"</span><span class="ln">     ↓</span><span class="ln">Commit 5 — "added hero section with heading and button"</span><span class="ln">     ↓</span><span class="ln">Commit 6 — "made website mobile responsive"</span><span class="ln">     ↓</span><span class="ln">Commit 7 — "added contact form to contact.html"</span><span class="ln">     ↓</span><span class="ln">     (you are here, working on the next change)</span></pre>
+</div>
+<p>Every dot in this timeline is a safe point. At any moment, you can jump back to any of these commits and see exactly how your project looked at that point.</p>
+<p>This is the power of Git — your entire journey is saved.</p>
+</section>
+<section id="quick-reference-commands-for-this-situation">
+<h2>Quick Reference — Commands for This Situation</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Situation</th><th>Command</th></tr></thead><tbody><tr><td>Check what has changed since last commit</td><td><code>git status</code></td></tr><tr><td>See the exact lines that changed</td><td><code>git diff</code></td></tr><tr><td>Stage all changed files</td><td><code>git add .</code></td></tr><tr><td>Stage one specific file</td><td><code>git add filename</code></td></tr><tr><td>Save a new commit</td><td><code>git commit -m "your message"</code></td></tr><tr><td>Throw away changes in a file (go back to last commit)</td><td><code>git restore filename</code></td></tr><tr><td>Fix the most recent commit message</td><td><code>git commit --amend -m "new message"</code></td></tr><tr><td>Add a forgotten file to the last commit</td><td><code>git add file</code> then <code>git commit --amend --no-edit</code></td></tr><tr><td>See full commit history</td><td><code>git log</code></td></tr><tr><td>See commit history in one line each</td><td><code>git log --oneline</code></td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>When you modify a file after committing it, nothing bad happens. Your old commit stays exactly as it was — safe in Git history. Your new changes sit in the Working Directory as "uncommitted changes." Git notices the difference and shows it when you run <code>git status</code>. You then choose what to do — either stage and commit the new changes to create a new snapshot, or discard them with <code>git restore</code> to go back to the last committed version. This cycle of edit → status → add → commit is the heartbeat of working with Git. Every commit is a safe checkpoint in your project's journey, and the history of all your commits builds up over time into a complete timeline of your entire project.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you understand what happens when you modify a file after committing, the next natural questions are:</p>
+<ul><li>How does Git help me recover an older version of my project?</li><li>What happens if two developers modify the same part of the same file?</li><li>What is a branch and how does it help me work on new features safely?</li></ul>
+<p>Each of these builds directly on what you just learned. Keep going — you are thinking like a developer now! 🚀</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="sudo_command.html">← Previous: What is sudo, and When Do I Actually Need It?</a><a href="recover_older_version_git.html">Next: How Does Git Help Me Recover an Older Version of My Project? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

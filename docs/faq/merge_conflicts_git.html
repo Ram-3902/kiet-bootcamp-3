@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Happens if Two Developers Modify the Same Part of the Same File? How Does Git Handle That? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 9 of 15 · Git</p>
+<h1>What Happens if Two Developers Modify the Same Part of the Same File? How Does Git Handle That?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-start-with-a-real-life-story">
+<h2>First, Let Us Start With a Real Life Story</h2>
+<p>Imagine you and your classmate Ravi are working together on a college project.</p>
+<p>You both have a copy of the same Word document — <code>project_report.docx</code></p>
+<p>You open the document and change the introduction paragraph. At the same time, Ravi also opens the same document and changes the same introduction paragraph — but writes something completely different.</p>
+<p>Now you both try to save your versions.</p>
+<p>Whose version do we keep? Do we keep yours? Do we keep Ravi's? Do we somehow combine both?</p>
+<p>If you were sharing a single file on Google Docs — Google would handle this automatically, because only one file exists online and everyone edits the same copy in real time.</p>
+<p>But in Git — everyone works on their own <strong>local copy</strong> of the project. Changes are only shared when someone pushes to GitHub. So it is very possible for two people to change the same part of a file at the same time — without knowing the other person also changed it.</p>
+<p>When this happens — Git calls it a <strong>MERGE CONFLICT.</strong></p>
+<p>And this is exactly what we are going to understand today — completely, from scratch.</p>
+</section>
+<section id="what-is-a-merge-conflict">
+<h2>What is a Merge Conflict?</h2>
+<p>A <strong>merge conflict</strong> happens when:</p>
+<ol><li>Two people (or even you yourself on two branches) changed the <strong>same lines</strong> in the <strong>same file</strong></li><li>Both changes were committed separately</li><li>Now Git is trying to combine (merge) those two versions</li><li>Git does not know which version to keep — so it <strong>stops and asks you to decide</strong></li></ol>
+<p>Git is very smart — it can automatically combine most changes. But when two people changed the <strong>exact same lines</strong> — Git genuinely cannot decide whose version is correct. Only a human can make that call.</p>
+<p>So Git marks the conflict clearly in the file and says:</p>
+<blockquote><p>"I found a conflict here. You two figure it out. Tell me what the final version should look like and I will continue."</p></blockquote>
+<h3>The Setup — Two Developers, One Project</h3>
+<p>Let us say you and your friend Priya are both working on the same project that is on GitHub.</p>
+<p>Both of you cloned (downloaded) the project on Monday morning.</p>
+<p>At that moment — both your laptops have the exact same code.</p>
+<h3>What You Did</h3>
+<p>You opened <code>index.html</code> and changed line 5 from:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Website&lt;/h1&gt;</span></pre>
+</div>
+<p>to:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio&lt;/h1&gt;</span></pre>
+</div>
+<p>You committed this change:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add index.html</span><span class="ln cmd"><span class="p">$ </span>git commit -m "updated heading to Amazing Portfolio"</span></pre>
+</div>
+<h3>What Priya Did — At the Same Time</h3>
+<p>Priya also opened <code>index.html</code> and changed the same line 5 from:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Website&lt;/h1&gt;</span></pre>
+</div>
+<p>to:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Team Innovators&lt;/h1&gt;</span></pre>
+</div>
+<p>Priya committed her change:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add index.html</span><span class="ln cmd"><span class="p">$ </span>git commit -m "updated heading to Team Innovators"</span></pre>
+</div>
+<h3>Now the Conflict Happens</h3>
+<p>Priya pushes her changes to GitHub first:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git push</span></pre>
+</div>
+<p>Priya's version is now on GitHub.</p>
+<p>Now you try to push your changes:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git push</span></pre>
+</div>
+<p>Git gives you an error:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">! [rejected]        main -&gt; main (fetch first)</span><span class="ln">error: failed to push some refs to 'github.com/yourproject'</span><span class="ln">hint: Updates were rejected because the remote contains work that you do</span><span class="ln">hint: not have locally. Integrate the remote changes before pushing.</span></pre>
+</div>
+<p>Git is saying — "Wait. Someone else already pushed changes to GitHub that you do not have on your laptop. You need to get those changes first before you can push yours."</p>
+<p>So you do:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git pull</span></pre>
+</div>
+<p>And THIS is when the conflict appears:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Auto-merging index.html</span><span class="ln">CONFLICT (content): Merge conflict in index.html</span><span class="ln">Automatic merge failed; fix conflicts and then commit the result.</span></pre>
+</div>
+<p>Git tried to combine Priya's changes with your changes — but both of you changed the same line. Git could not automatically decide which one to keep.</p>
+<p>So it stopped. It modified the file to show you exactly where the conflict is. And it is waiting for you to fix it.</p>
+</section>
+<section id="what-does-the-conflicted-file-actually-look-like">
+<h2>What Does the Conflicted File Actually Look Like?</h2>
+<p>This is the most important part to understand. Open <code>index.html</code> now and you will see something like this:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio&lt;/h1&gt;</span><span class="ln">=======</span><span class="ln">&lt;h1&gt;Welcome to Team Innovators&lt;/h1&gt;</span><span class="ln">&gt;&gt;&gt;&gt;&gt;&gt;&gt; b2c3d4e (updated heading to Team Innovators)</span></pre>
+</div>
+<p>Let us break down every single part of this:</p>
+<h3><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code></h3>
+<p>This marker means — <strong>"Here starts YOUR version"</strong> (the version on your local machine, your current branch)</p>
+<p>Everything between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> is <strong>your change.</strong></p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio&lt;/h1&gt;</span></pre>
+</div>
+<p>This is what YOU wrote.</p>
+<h3><code>=======</code></h3>
+<p>This is the <strong>dividing line</strong> — it separates your version from the other person's version.</p>
+<h3><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; b2c3d4e (updated heading to Team Innovators)</code></h3>
+<p>This marker means — <strong>"Here ends the OTHER person's version"</strong> (the version that came from GitHub — Priya's commit)</p>
+<p>Everything between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; b2c3d4e</code> is <strong>Priya's change.</strong></p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Team Innovators&lt;/h1&gt;</span></pre>
+</div>
+<p>This is what Priya wrote.</p>
+<h3>The Full Picture</h3>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD                              ← Your version starts here</span><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio&lt;/h1&gt; ← Your change</span><span class="ln">=======                                   ← Dividing line</span><span class="ln">&lt;h1&gt;Welcome to Team Innovators&lt;/h1&gt;       ← Priya's change</span><span class="ln">&gt;&gt;&gt;&gt;&gt;&gt;&gt; b2c3d4e (Priya's commit)          ← Priya's version ends here</span></pre>
+</div>
+<p>Git is showing you both versions side by side and saying:</p>
+<blockquote><p>"Both of you changed this line. I do not know which one is right. You decide. Then clean up these markers and tell me the final version."</p></blockquote>
+</section>
+<section id="how-do-you-fix-a-merge-conflict">
+<h2>How Do You Fix a Merge Conflict?</h2>
+<p>Now comes the part where YOU take over from Git.</p>
+<p>Fixing a conflict has 3 steps:</p>
+<h3>Step 1 — Open the Conflicted File and Decide</h3>
+<p>Open the file in your editor. Find all the conflict markers (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>).</p>
+<p>Now you have four choices for what the final version should look like:</p>
+<p><strong>Choice A — Keep YOUR version only</strong></p>
+<p>Delete Priya's version and all the markers. Keep only your line:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio&lt;/h1&gt;</span></pre>
+</div>
+<p><strong>Choice B — Keep PRIYA's version only</strong></p>
+<p>Delete your version and all the markers. Keep only Priya's line:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Team Innovators&lt;/h1&gt;</span></pre>
+</div>
+<p><strong>Choice C — Keep BOTH versions (combine them)</strong></p>
+<p>Sometimes both changes make sense together. You can keep both:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Welcome to Our Amazing Portfolio — Team Innovators&lt;/h1&gt;</span></pre>
+</div>
+<p>Or arrange them differently — whatever makes sense for the project.</p>
+<p><strong>Choice D — Write something completely new</strong></p>
+<p>Sometimes neither version is right and you need a fresh version that considers both people's ideas:</p>
+<div class="panel">
+<div class="cap">HTML</div>
+<pre class="code"><span class="ln">&lt;h1&gt;Team Innovators — Building Amazing Things&lt;/h1&gt;</span></pre>
+</div>
+<h3>The Only Rule — Remove ALL the Conflict Markers</h3>
+<p>After you decide, the final file should have:</p>
+<ul><li>✅ The content you decided on</li><li>❌ NO <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> lines</li><li>❌ NO <code>=======</code> lines</li><li>❌ NO <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines</li></ul>
+<p>If you leave even one marker in the file — Git will not accept the commit and your code will also have those ugly markers in it.</p>
+<h3>Step 2 — Stage the Fixed File</h3>
+<p>After fixing the conflict in the file and saving it — tell Git you have resolved it:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add index.html</span></pre>
+</div>
+<p>If there were conflicts in multiple files — fix all of them, then:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span></pre>
+</div>
+<h3>Step 3 — Complete the Merge With a Commit</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git commit -m "resolved merge conflict in index.html"</span></pre>
+</div>
+<p>Git will create a special <strong>merge commit</strong> that combines both people's histories together.</p>
+<p>Now push to GitHub:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git push</span></pre>
+</div>
+<p>Done. The conflict is resolved. Both your change and Priya's change are part of the history — and the final agreed version is in the file.</p>
+</section>
+<section id="what-if-there-are-conflicts-in-multiple-files">
+<h2>What if There Are Conflicts in Multiple Files?</h2>
+<p>Same process — just repeated for each file.</p>
+<p>When you run <code>git pull</code> and there are conflicts in 3 files:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">CONFLICT (content): Merge conflict in index.html</span><span class="ln">CONFLICT (content): Merge conflict in style.css</span><span class="ln">CONFLICT (content): Merge conflict in script.js</span></pre>
+</div>
+<p>You need to:</p>
+<ol><li>Open <code>index.html</code> — fix conflict — save</li><li>Open <code>style.css</code> — fix conflict — save</li><li>Open <code>script.js</code> — fix conflict — save</li><li><code>git add .</code></li><li><code>git commit -m "resolved all merge conflicts"</code></li></ol>
+<p>Fix one file at a time. Do not rush. Read both versions carefully before deciding.</p>
+</section>
+<section id="using-vs-code-to-resolve-conflicts-easily">
+<h2>Using VS Code to Resolve Conflicts Easily</h2>
+<p>If you are using VS Code as your editor — it has a very helpful built-in tool for resolving conflicts.</p>
+<p>When you open a conflicted file in VS Code, it highlights the conflict and shows you four clickable options right above the conflict markers:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Accept Current Change | Accept Incoming Change | Accept Both Changes | Compare Changes</span></pre>
+</div>
+<ul><li><strong>Accept Current Change</strong> — keeps your version (HEAD), removes Priya's</li><li><strong>Accept Incoming Change</strong> — keeps Priya's version, removes yours</li><li><strong>Accept Both Changes</strong> — keeps both versions one after the other</li><li><strong>Compare Changes</strong> — opens a side-by-side view of both versions</li></ul>
+<p>You just click the option you want — VS Code removes all the markers and applies your choice automatically.</p>
+<p>This is much easier than manually editing the markers in the file. Most beginners find this very helpful when starting out.</p>
+</section>
+<section id="quick-reference-all-commands-for-conflicts">
+<h2>Quick Reference — All Commands for Conflicts</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Situation</th><th>Command</th></tr></thead><tbody><tr><td>Get latest changes from GitHub</td><td><code>git pull</code></td></tr><tr><td>See which files have conflicts</td><td><code>git status</code></td></tr><tr><td>After fixing all conflicts — stage them</td><td><code>git add .</code></td></tr><tr><td>Complete the merge</td><td><code>git commit -m "resolved conflict"</code></td></tr><tr><td>Cancel the merge — go back to before</td><td><code>git merge --abort</code></td></tr><tr><td>See the conflict markers in a file</td><td>Open the file in any editor</td></tr><tr><td>Push after resolving</td><td><code>git push</code></td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>A merge conflict happens when two developers change the same lines in the same file, commit their changes separately, and then try to combine (merge) those changes. Git is smart enough to automatically merge changes in different parts of a file — but when the exact same lines are changed by two people, Git cannot decide which version is correct, so it stops and marks the conflict inside the file using special markers — <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> for your version, <code>=======</code> as the divider, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> for the other person's version. You then open the file, read both versions, decide what the final version should look like, remove all the markers, save the file, run <code>git add</code> and <code>git commit</code>, and push. The conflict is resolved and both histories are merged together. Conflicts can be reduced by pulling before starting work every day, communicating with teammates, using branches, and dividing work clearly across different files.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you understand merge conflicts — the next things to learn are:</p>
+<ul><li>What is a branch and how does it help avoid conflicts in a team?</li><li>What is a pull request and how do teams review each other's code before merging?</li><li>How do you use GitHub to improve your developer profile?</li></ul>
+<p>You now understand one of the most important and most feared concepts in Git. And it is not scary at all once you understand what is actually happening. Well done! 🎉</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="recover_older_version_git.html">← Previous: How Does Git Help Me Recover an Older Version of My Project?</a><a href="pull_requests.html">Next: What is a Pull Request, and What is it Used For? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

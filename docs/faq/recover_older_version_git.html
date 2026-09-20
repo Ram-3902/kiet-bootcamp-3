@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Does Git Help Me Recover an Older Version of My Project? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 8 of 15 · Git</p>
+<h1>How Does Git Help Me Recover an Older Version of My Project?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-start-with-a-situation-every-student-has-faced">
+<h2>First, Let Us Start With a Situation Every Student Has Faced</h2>
+<p>You are working on your project for college submission.</p>
+<p>Everything is going fine. Then one day you try something new — maybe you restructure the whole code, or try a new design, or experiment with a feature.</p>
+<p>And suddenly — <strong>everything breaks.</strong></p>
+<p>Your website looks terrible. The code gives errors. Nothing works the way it did before. You spend 2 hours trying to fix it and you only make it worse.</p>
+<p>You sit there thinking —</p>
+<blockquote><p>"I wish I could just go back to how it was two days ago when everything was working perfectly. Why did I change anything at all?"</p></blockquote>
+<p>Without Git — you cannot go back. That working version is gone forever.</p>
+<p><strong>With Git — you can go back. Any time. To any point. In seconds.</strong></p>
+<p>This is one of the most powerful features of Git, and it is the reason developers sleep peacefully at night.</p>
+</section>
+<section id="the-core-idea-git-is-a-time-machine">
+<h2>The Core Idea — Git is a Time Machine</h2>
+<p>Every time you do a <code>git commit</code>, Git takes a <strong>complete photograph</strong> of your entire project at that moment.</p>
+<p>Not just the files — but the exact content of every file, who made the changes, when it was done, and what the message said.</p>
+<p>These photographs are stored permanently in Git's history.</p>
+<p>So if your project has 10 commits — Git has 10 photographs of your project at 10 different points in time.</p>
+<p>At any moment, you can say to Git:</p>
+<blockquote><p>"Show me photograph number 4." "Take me back to photograph number 4." "Copy one file from photograph number 4."</p></blockquote>
+<p>Git will do it. No questions asked.</p>
+</section>
+<section id="step-1-first-see-your-commit-history">
+<h2>Step 1 — First, See Your Commit History</h2>
+<p>Before you can go back to an older version, you need to see what versions exist.</p>
+<p>The command for this is:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git log</span></pre>
+</div>
+<p>Output looks something like this:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">commit a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0</span><span class="ln">Author: Your Name &lt;yourname@email.com&gt;</span><span class="ln">Date:   Thu Sep 03 10:22:31 2026 +0530</span><span class="ln"> </span><span class="ln">    added contact page</span><span class="ln"> </span><span class="ln">commit b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1</span><span class="ln">Author: Your Name &lt;yourname@email.com&gt;</span><span class="ln">Date:   Wed Sep 02 16:45:10 2026 +0530</span><span class="ln"> </span><span class="ln">    fixed navbar styling</span><span class="ln"> </span><span class="ln">commit c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2</span><span class="ln">Author: Your Name &lt;yourname@email.com&gt;</span><span class="ln">Date:   Tue Sep 01 09:30:55 2026 +0530</span><span class="ln"> </span><span class="ln">    added homepage layout</span><span class="ln"> </span><span class="ln">commit d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3</span><span class="ln">Author: Your Name &lt;yourname@email.com&gt;</span><span class="ln">Date:   Mon Aug 31 14:15:20 2026 +0530</span><span class="ln"> </span><span class="ln">    first commit — blank project setup</span></pre>
+</div>
+<p>Each block here is one commit. Notice each commit has:</p>
+<ul><li>A long random-looking code — this is the <strong>commit ID</strong> (also called commit hash). It is unique for every commit in the world.</li><li>The <strong>author</strong> — who made this commit</li><li>The <strong>date and time</strong> — when it was made</li><li>The <strong>message</strong> — what was done in this commit</li></ul>
+</section>
+<section id="making-git-log-easier-to-read">
+<h2>Making git log Easier to Read</h2>
+<p>The full <code>git log</code> output can look overwhelming with lots of text. Here is a cleaner version:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git log --oneline</span></pre>
+</div>
+<p>Output:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">a1b2c3d  added contact page</span><span class="ln">b2c3d4e  fixed navbar styling</span><span class="ln">c3d4e5f  added homepage layout</span><span class="ln">d4e5f6g  first commit — blank project setup</span></pre>
+</div>
+<p>Now you can see your entire history in a clean, simple list. Each line shows the <strong>short commit ID</strong> (first 7 characters) and the <strong>commit message</strong>.</p>
+<p>This is what you will use most of the time to browse your history.</p>
+</section>
+<section id="understanding-the-commit-id">
+<h2>Understanding the Commit ID</h2>
+<p>The long code you see — like <code>a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0</code> — is called a <strong>commit hash</strong> or <strong>commit ID</strong>.</p>
+<p>It is automatically generated by Git. You do not type it — Git creates it.</p>
+<p>Think of it like an <strong>Aadhaar number for each commit</strong> — unique, permanent, and used to identify that specific snapshot.</p>
+<p>The good news is — you do not need to type the full 40-character ID. Git accepts just the first 6 or 7 characters and it is smart enough to find the right commit.</p>
+<p>So instead of:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln">a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0</span></pre>
+</div>
+<p>You just use:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln">a1b2c3d</span></pre>
+</div>
+</section>
+<section id="method-1-recover-one-specific-file-from-an-older-version">
+<h2>Method 1 — Recover ONE Specific File From an Older Version</h2>
+<p>This is the most useful and most common recovery situation.</p>
+<p>Let us say you accidentally deleted some important code in <code>index.html</code>, and you want to recover just that one file from 3 commits ago — without touching any other files.</p>
+<p>The command is:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git checkout a1b2c3d -- index.html</span></pre>
+</div>
+<p>Notice the <code>--</code> before the filename. This tells Git:</p>
+<blockquote><p>"I want the version of <code>index.html</code> from commit <code>a1b2c3d</code>. Leave everything else alone."</p></blockquote>
+<p>After running this — your <code>index.html</code> is restored to how it was at that commit. All your other files stay as they are right now.</p>
+<p>Then you can stage and commit this recovery:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add index.html</span><span class="ln cmd"><span class="p">$ </span>git commit -m "recovered index.html from older version"</span></pre>
+</div>
+<h3>Real Life Situation</h3>
+<p>Imagine you have 4 files in your project:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">index.html    ← you accidentally broke this today</span><span class="ln">style.css     ← this is fine, do not touch</span><span class="ln">script.js     ← this is fine, do not touch</span><span class="ln">README.md     ← this is fine, do not touch</span></pre>
+</div>
+<p>You only want to recover <code>index.html</code> from 2 days ago — without losing today's changes in the other files.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git log --oneline</span><span class="ln"># a1b2c3d  today's work — broke index.html</span><span class="ln"># b2c3d4e  yesterday's changes</span><span class="ln"># c3d4e5f  two days ago — index.html was working perfectly</span><span class="ln"> </span><span class="ln cmd"><span class="p">$ </span>git checkout c3d4e5f -- index.html</span></pre>
+</div>
+<p>Done. <code>index.html</code> is recovered from two days ago. <code>style.css</code>, <code>script.js</code>, and <code>README.md</code> are completely untouched.</p>
+</section>
+<section id="method-2-undo-the-last-commit-but-keep-the-changes">
+<h2>Method 2 — Undo the Last Commit But Keep the Changes</h2>
+<p>Sometimes you committed too early — you want to undo the commit but keep the changes in your files so you can fix them and re-commit properly.</p>
+<p>The command is:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --soft HEAD~1</span></pre>
+</div>
+<p>Let us break this down:</p>
+<ul><li><code>git reset</code> — undo commits</li><li><code>--soft</code> — undo the commit but keep the changes staged (ready to commit again)</li><li><code>HEAD~1</code> — go back 1 commit from where I am now</li></ul>
+<p>After this command — your last commit is gone from history, but all the changes from that commit are still in your files and still staged. You can fix whatever you need to fix and commit again.</p>
+</section>
+<section id="method-3-undo-the-last-commit-and-unstage-the-changes">
+<h2>Method 3 — Undo the Last Commit AND Unstage the Changes</h2>
+<p>If you want to undo the commit AND remove the files from staging (but still keep the actual file changes on disk):</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --mixed HEAD~1</span></pre>
+</div>
+<ul><li><code>--mixed</code> is the default behaviour of <code>git reset</code></li><li>The commit is undone</li><li>The files go back to "modified but not staged" state</li><li>The actual content of your files on disk is unchanged</li></ul>
+</section>
+<section id="method-4-undo-the-last-commit-and-remove-all-changes-complet">
+<h2>Method 4 — Undo the Last Commit AND Remove All Changes Completely</h2>
+<p>This is the nuclear option — use with extreme caution.</p>
+<p>If you want to completely undo the last commit AND throw away all the changes:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --hard HEAD~1</span></pre>
+</div>
+<ul><li><code>--hard</code> — undo the commit AND wipe out all the changes from those files</li><li>Your files go back to exactly how they were at the commit before</li><li>The changes from the undone commit are <strong>permanently gone</strong></li></ul>
+<p><strong>Warning</strong> — <code>--hard</code> is permanent. There is no undo for this. Only use it when you are absolutely sure you want to throw everything away.</p>
+</section>
+<section id="going-back-multiple-commits">
+<h2>Going Back Multiple Commits</h2>
+<p><code>HEAD~1</code> means go back 1 commit. <code>HEAD~2</code> means go back 2 commits. <code>HEAD~3</code> means go back 3 commits. And so on.</p>
+<p>So if you want to undo the last 3 commits:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --soft HEAD~3</span></pre>
+</div>
+<p>Or go back to a specific commit using its ID:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --soft a1b2c3d</span></pre>
+</div>
+</section>
+<section id="method-5-the-safest-way-to-undo-git-revert">
+<h2>Method 5 — The Safest Way to Undo — git revert</h2>
+<p>All the <code>git reset</code> commands we saw above <strong>rewrite history</strong> — they remove commits from the timeline.</p>
+<p>This is fine when you are working alone. But when you are working in a team and your commits are already on GitHub — rewriting history causes big problems for your teammates.</p>
+<p>The safe alternative is <code>git revert</code>:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git revert a1b2c3d</span></pre>
+</div>
+<p>Instead of deleting the old commit — <code>git revert</code> creates a <strong>brand new commit</strong> that does the opposite of the commit you specify.</p>
+<p>Think of it like this:</p>
+<ul><li><code>git reset</code> — tears out a page from your diary (the page is gone)</li><li><code>git revert</code> — writes a new page in your diary that says "ignore what I wrote on page 5" (the original page is still there, you just cancelled it with a new page)</li></ul>
+<p><code>git revert</code> is <strong>always safe</strong> — it never deletes history, it only adds to it.</p>
+</section>
+<section id="summary-of-all-recovery-methods">
+<h2>Summary of All Recovery Methods</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Method</th><th>Command</th><th>What It Does</th><th>Safe for Teams?</th></tr></thead><tbody><tr><td>View old version</td><td><code>git checkout ID</code></td><td>Temporarily see old snapshot</td><td>✅ Yes (you come back with <code>git checkout main</code>)</td></tr><tr><td>Recover one file</td><td><code>git checkout ID -- filename</code></td><td>Restore one file from old commit</td><td>✅ Yes</td></tr><tr><td>Undo commit, keep staged</td><td><code>git reset --soft HEAD~1</code></td><td>Undo commit, changes stay staged</td><td>⚠️ Only if not pushed yet</td></tr><tr><td>Undo commit, unstage</td><td><code>git reset --mixed HEAD~1</code></td><td>Undo commit, changes in working dir</td><td>⚠️ Only if not pushed yet</td></tr><tr><td>Undo commit, delete changes</td><td><code>git reset --hard HEAD~1</code></td><td>Undo commit AND wipe changes</td><td>⚠️ Only if not pushed yet</td></tr><tr><td>Safe undo for teams</td><td><code>git revert ID</code></td><td>New commit that reverses old one</td><td>✅ Always safe</td></tr></tbody></table></div>
+</section>
+<section id="important-warning-git-reset-hard-has-no-undo">
+<h2>Important Warning — git reset --hard Has No Undo</h2>
+<p>We mentioned this before, but it deserves its own section because beginners often make this mistake.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git reset --hard HEAD~1</span></pre>
+</div>
+<p>When you run this — the changes from that commit are <strong>permanently erased from your disk.</strong> Not in Trash. Not recoverable. Gone.</p>
+<p>There is a small exception — if the changes were committed (even in a reset commit), Git keeps them in something called the <strong>reflog</strong> for about 30 days. But this is an advanced topic and you should not rely on it.</p>
+<p><strong>The rule is simple:</strong></p>
+<blockquote><p>Before running <code>git reset --hard</code> — make absolutely sure you do not need those changes. There is no going back.</p></blockquote>
+</section>
+<section id="quick-reference-all-commands-in-one-place">
+<h2>Quick Reference — All Commands in One Place</h2>
+<div class="panel"><table class="prose"><thead><tr><th>What You Want to Do</th><th>Command</th></tr></thead><tbody><tr><td>See full commit history</td><td><code>git log</code></td></tr><tr><td>See clean one-line history</td><td><code>git log --oneline</code></td></tr><tr><td>Temporarily view an old commit</td><td><code>git checkout commit-id</code></td></tr><tr><td>Come back to current work</td><td><code>git checkout main</code></td></tr><tr><td>Recover one file from old commit</td><td><code>git checkout commit-id -- filename</code></td></tr><tr><td>Undo last commit, keep changes staged</td><td><code>git reset --soft HEAD~1</code></td></tr><tr><td>Undo last commit, keep changes unstaged</td><td><code>git reset --mixed HEAD~1</code></td></tr><tr><td>Undo last commit, delete all changes</td><td><code>git reset --hard HEAD~1</code></td></tr><tr><td>Safely reverse a commit (team safe)</td><td><code>git revert commit-id</code></td></tr><tr><td>See what changed in a commit</td><td><code>git show commit-id</code></td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>Every time you run <code>git commit</code>, Git saves a permanent photograph of your entire project at that moment. To recover an older version, first use <code>git log --oneline</code> to see the full history and find the commit ID you want. You can temporarily view any old snapshot with <code>git checkout commit-id</code>, or recover just one specific file with <code>git checkout commit-id -- filename</code>. To undo recent commits, use <code>git reset --soft</code> to keep changes staged, <code>git reset --mixed</code> to keep changes unstaged, or <code>git reset --hard</code> to permanently delete the changes — but never use <code>--hard</code> carelessly. For commits already pushed to GitHub, always use <code>git revert</code> which safely creates a new commit that undoes the old one without rewriting history. The key to making recovery easy is committing small and often — the more snapshots you have, the more precisely you can recover.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you know how to recover older versions, the next important questions are:</p>
+<ul><li>What happens if two developers modify the same part of the same file? How does Git handle that?</li><li>What is a branch and how does it protect your main project while you experiment?</li><li>What is a pull request and how does it help teams review code?</li></ul>
+<p>You are learning Git the right way — concept by concept, with full understanding. Keep going! 💪</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="modify_file_after_commit.html">← Previous: What Happens if I Modify a File After I've Already Committed It?</a><a href="merge_conflicts_git.html">Next: What Happens if Two Developers Modify the Same Part of the Same File? How Does Git Handle That? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Do I Deploy a Website So That Other People Can Visit It? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 12 of 15 · Building</p>
+<h1>How Do I Deploy a Website So That Other People Can Visit It?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-understand-the-problem">
+<h2>First, Let Us Understand the Problem</h2>
+<p>You have built your website.</p>
+<p>It looks great on your laptop. You open it in Chrome, it works perfectly. You are proud of it.</p>
+<p>Then your friend asks — "Send me the link, I want to see it!"</p>
+<p>And you realise — there is no link.</p>
+<p>Your website only exists on YOUR laptop. Nobody else in the world can see it.</p>
+<p><strong>Deployment</strong> is the process of taking your website from your laptop and putting it on the internet — so that anyone, anywhere in the world, can open it in their browser just by visiting a link.</p>
+</section>
+<section id="what-actually-happens-when-someone-visits-a-website">
+<h2>What Actually Happens When Someone Visits a Website?</h2>
+<p>Before learning how to deploy, let us understand what is actually happening when someone visits a website. This will make everything else make much more sense.</p>
+<h3>The Simple Explanation</h3>
+<p>When your friend types <code>www.yourwebsite.com</code> in their browser and presses Enter — here is what happens:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">1. Their browser asks the internet —</span><span class="ln">   "Where is the computer that has yourwebsite.com?"</span><span class="ln"> </span><span class="ln">2. The internet looks up the address and replies —</span><span class="ln">   "It is at IP address 203.0.113.42"</span><span class="ln"> </span><span class="ln">3. Their browser sends a request to that computer —</span><span class="ln">   "Hey, can you send me the files for yourwebsite.com?"</span><span class="ln"> </span><span class="ln">4. That computer (called a SERVER) receives the request</span><span class="ln">   and sends back the HTML, CSS, and JavaScript files</span><span class="ln"> </span><span class="ln">5. Their browser receives those files and displays</span><span class="ln">   your website on their screen</span></pre>
+</div>
+<p>So for your website to be accessible to others — it needs to live on a <strong>server</strong> — a computer that is:</p>
+<ul><li>Connected to the internet at all times</li><li>Has a fixed address (IP address) on the internet</li><li>Can receive requests and send files back</li></ul>
+<p>Your laptop is not a server. It is not always on. It does not have a fixed internet address. It cannot receive requests from strangers.</p>
+<p><strong>Deployment = Putting your website files on a server.</strong></p>
+</section>
+<section id="what-is-a-domain-name">
+<h2>What is a Domain Name?</h2>
+<p>A <strong>domain name</strong> is the human-readable address of your website.</p>
+<p>Example: <code>www.google.com</code>, <code>www.flipkart.com</code>, <code>rahulportfolio.com</code></p>
+<p>Nobody wants to type <code>203.0.113.42</code> to visit a website. So domain names were created — they are easy-to-remember names that point to the server's IP address.</p>
+<p>For most beginner projects — free platforms give you a sub-domain automatically.</p>
+<p>Example: <code>yourname.github.io/my-portfolio</code></p>
+<p>Here — <code>github.io</code> is GitHub's domain, and <code>yourname.github.io</code> is your sub-domain that GitHub gives you for free.</p>
+<p>When you are ready to build something more serious — you can buy your own custom domain name for about ₹500 to ₹1,000 per year from providers like GoDaddy, Namecheap, or Google Domains.</p>
+</section>
+<section id="the-different-ways-to-deploy-a-website">
+<h2>The Different Ways to Deploy a Website</h2>
+<p>There are many ways to deploy depending on what kind of website you have built.</p>
+</section>
+<section id="method-1-github-pages-free-best-for-beginners">
+<h2>Method 1 — GitHub Pages (Free — Best for Beginners)</h2>
+<p><strong>Best for:</strong> Simple static websites — portfolios, project pages, club websites, personal blogs</p>
+<p><strong>Cost:</strong> Completely free</p>
+<p><strong>Difficulty:</strong> Very easy</p>
+<p><strong>Live URL you get:</strong> <code>https://yourname.github.io/project-name</code></p>
+<h3>What is GitHub Pages?</h3>
+<p>GitHub Pages is a free service by GitHub that turns your GitHub repository directly into a live website.</p>
+<p>You push your code to GitHub. GitHub reads your files. GitHub serves them as a website. Done.</p>
+<p>No server setup. No payment. No complicated configuration.</p>
+<h3>Step-by-Step — How to Deploy With GitHub Pages</h3>
+<p><strong>Step 1 — Make sure your project is on GitHub</strong></p>
+<p>Your project must already be pushed to a GitHub repository. If it is not — do git push to the repository first:</p>
+<p><strong>Step 2 — Go to your repository on GitHub</strong></p>
+<p>Open <code>github.com</code> in your browser. Log in. Go to your repository.</p>
+<p><strong>Step 3 — Click Settings</strong></p>
+<p>At the top of your repository, you will see tabs — Code, Issues, Pull requests, Settings. Click <strong>Settings</strong>.</p>
+<p><strong>Step 4 — Click Pages in the left sidebar</strong></p>
+<p>Scroll down the left sidebar until you see <strong>Pages</strong>. Click it.</p>
+<p><strong>Step 5 — Set the Source</strong></p>
+<p>Under "Build and deployment" — set Source to <strong>Deploy from a branch</strong></p>
+<p>Under Branch — select <strong>main</strong> and folder <strong>/ (root)</strong></p>
+<p>Click <strong>Save</strong>.</p>
+<p><strong>Step 6 — Wait 1 to 2 Minutes</strong></p>
+<p>GitHub is now building your website. Refresh the page after a minute.</p>
+<p>You will see a box saying:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Your site is live at https://yourname.github.io/my-portfolio/</span></pre>
+</div>
+<p><strong>Step 7 — Visit Your Live Website</strong></p>
+<p>Click that link. Your website is now live on the internet.</p>
+<p>Share this link with anyone — they can open it on their phone, laptop, anywhere in the world.</p>
+<h3>Updating Your Website After Deployment</h3>
+<p>Every time you make changes and push to GitHub — GitHub Pages automatically updates your live website within a minute or two.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln"># Make changes to your files</span><span class="ln"># Then:</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "updated about section"</span><span class="ln cmd"><span class="p">$ </span>git push</span></pre>
+</div>
+<p>That is it. No re-deployment needed. Push and it updates automatically.</p>
+</section>
+<section id="method-2-netlify-free-very-popular-very-easy">
+<h2>Method 2 — Netlify (Free — Very Popular, Very Easy)</h2>
+<p><strong>Best for:</strong> Static websites — same as GitHub Pages but with more features</p>
+<p><strong>Cost:</strong> Free tier is very generous</p>
+<p><strong>Difficulty:</strong> Very easy</p>
+<p><strong>Live URL you get:</strong> <code>https://your-chosen-name.netlify.app</code></p>
+<h3>What is Netlify?</h3>
+<p>Netlify is a platform built specifically for deploying websites. It is loved by developers worldwide because it is:</p>
+<ul><li>Very simple to use</li><li>Has a drag-and-drop option (no commands needed)</li><li>Automatically deploys every time you push to GitHub</li><li>Gives you a free SSL certificate (the <code>https://</code> security that browsers require)</li><li>Allows custom domain names for free</li></ul>
+<h3>Deploy on Netlify</h3>
+<h4>Way B — Connect to GitHub (Better for Long-Term Projects)</h4>
+<p>This is the professional way. Every time you push to GitHub — Netlify automatically re-deploys your website.</p>
+<p><strong>Step 1</strong> — Go to Netlify → Add new site → Import an existing project</p>
+<p><strong>Step 2</strong> — Choose <strong>GitHub</strong></p>
+<p><strong>Step 3</strong> — Authorise Netlify to access your GitHub account</p>
+<p><strong>Step 4</strong> — Select the repository you want to deploy</p>
+<p><strong>Step 5</strong> — Netlify shows build settings. For a simple HTML website — leave everything as default and click <strong>Deploy site</strong></p>
+<p><strong>Step 6</strong> — Netlify builds and deploys. You get a live URL in about 30 seconds.</p>
+<p>From now on — every <code>git push</code> automatically updates your live website. You never have to manually deploy again.</p>
+</section>
+<section id="method-3-vercel-free-best-for-react-and-next-js-projects">
+<h2>Method 3 — Vercel (Free — Best for React and Next.js Projects)</h2>
+<p><strong>Best for:</strong> React apps, Next.js projects, modern JavaScript frameworks</p>
+<p><strong>Cost:</strong> Free tier available</p>
+<p><strong>Difficulty:</strong> Easy</p>
+<p><strong>Live URL you get:</strong> <code>https://your-project.vercel.app</code></p>
+<h3>What is Vercel?</h3>
+<p>Vercel is made by the same team that created Next.js (a popular React framework). It is the go-to platform for deploying React applications.</p>
+<p>If you build a React project — deploy it on Vercel. It handles all the build steps automatically.</p>
+<h3>How to Deploy on Vercel</h3>
+<p><strong>Step 1</strong> — Go to <a href="https://vercel.com">vercel.com</a> and sign up with your GitHub account</p>
+<p><strong>Step 2</strong> — Click <strong>Add New Project</strong></p>
+<p><strong>Step 3</strong> — Import your GitHub repository</p>
+<p><strong>Step 4</strong> — Vercel automatically detects if it is a React, Next.js, or plain HTML project and sets the right build settings</p>
+<p><strong>Step 5</strong> — Click <strong>Deploy</strong></p>
+<p>Your project is live in about 1 minute at <code>https://yourproject.vercel.app</code></p>
+<p>Just like Netlify — every push to GitHub automatically re-deploys.</p>
+</section>
+<section id="understanding-ssl-why-your-website-must-have-https">
+<h2>Understanding SSL — Why Your Website Must Have https://</h2>
+<p>You will notice all the URLs above start with <code>https://</code> not <code>http://</code>.</p>
+<p>The <strong>S</strong> in https stands for <strong>Secure</strong>.</p>
+<ul><li><code>http://</code> — data between the browser and server is not encrypted. Anyone in the middle can read it.</li><li><code>https://</code> — data is encrypted. Safe and secure.</li></ul>
+<p>Browsers like Chrome show a <strong>"Not Secure"</strong> warning for websites that use <code>http://</code>. This scares visitors away.</p>
+<p>All the platforms we mentioned — GitHub Pages, Netlify, Vercel, Render — give you a free <strong>SSL certificate</strong> automatically. Your website will always be <code>https://</code> without you doing anything extra.</p>
+<p>When you buy a custom domain and use a different hosting service — getting SSL set up is one of the first things you do.</p>
+</section>
+<section id="buying-a-custom-domain-optional-but-professional">
+<h2>Buying a Custom Domain (Optional But Professional)</h2>
+<p>The free URLs you get from these platforms look like:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">yourname.github.io/portfolio</span><span class="ln">yourname.netlify.app</span><span class="ln">yourproject.vercel.app</span></pre>
+</div>
+<p>These are fine for learning and student projects. But when you want to look professional — especially for a portfolio — a custom domain looks much better:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">rahulkumar.dev</span><span class="ln">rahulbuilds.in</span><span class="ln">rahulcodes.com</span></pre>
+</div>
+<h3>How to Buy a Domain</h3>
+<p>Go to any domain registrar:</p>
+<ul><li><a href="https://godaddy.com">GoDaddy.com</a></li><li><a href="https://namecheap.com">Namecheap.com</a></li><li><a href="https://domains.google">Google Domains</a></li><li><a href="https://bigrock.in">BigRock.in</a> — popular in India</li></ul>
+<p>Search for the name you want. If it is available — buy it.</p>
+<p><strong>Price:</strong> <code>.com</code> domains cost around ₹800 to ₹1,500 per year. <code>.in</code> domains cost around ₹500 to ₹800 per year. <code>.dev</code> domains cost around ₹1,000 to ₹1,500 per year.</p>
+<h3>Connecting Your Custom Domain to Netlify or GitHub Pages</h3>
+<p>Once you buy a domain — you connect it to your deployed website.</p>
+<p><strong>For Netlify:</strong></p>
+<p>Step 1 — Go to your site settings in Netlify → Domain management</p>
+<p>Step 2 — Click <strong>Add custom domain</strong></p>
+<p>Step 3 — Type your domain name (example: <code>rahulkumar.dev</code>) → Click <strong>Verify</strong></p>
+<p>Step 4 — Netlify shows you the DNS settings to add</p>
+<p>Step 5 — Go to your domain registrar (GoDaddy, Namecheap etc.) → Find DNS settings → Add the records Netlify gave you</p>
+<p>Step 6 — Wait 15 minutes to a few hours for DNS to update globally</p>
+<p>Step 7 — Your custom domain now shows your Netlify website. <code>https://rahulkumar.dev</code> is live.</p>
+</section>
+<section id="quick-reference-all-platforms-at-a-glance">
+<h2>Quick Reference — All Platforms at a Glance</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Platform</th><th>Best For</th><th>Cost</th><th>URL Given</th></tr></thead><tbody><tr><td><strong>GitHub Pages</strong></td><td>Static HTML/CSS/JS sites</td><td>Free</td><td><code>yourname.github.io/project</code></td></tr><tr><td><strong>Netlify</strong></td><td>Static sites, more features</td><td>Free tier</td><td><code>project.netlify.app</code></td></tr><tr><td><strong>Vercel</strong></td><td>React, Next.js projects</td><td>Free tier</td><td><code>project.vercel.app</code></td></tr><tr><td><strong>Render</strong></td><td>Node.js, Python backends</td><td>Free tier</td><td><code>project.onrender.com</code></td></tr><tr><td><strong>Railway</strong></td><td>Full stack with database</td><td>Free credits</td><td><code>project.railway.app</code></td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>Deployment means taking your website from your laptop and putting it on a server so anyone on the internet can visit it with a link. For simple static websites built with HTML, CSS, and JavaScript — use GitHub Pages (simplest, completely free, just change one setting in your repository) or Netlify (free, drag-and-drop option, more features). For React or Next.js projects — use Vercel. For Node.js or Python backends — use Render. For full-stack projects with a database — use Railway or Render. All these platforms give you a free URL and a free SSL certificate (https) automatically. Every time you push new code to GitHub — these platforms automatically update your live website. For a more professional look — buy a custom domain name for around ₹800 to ₹1,500 per year and connect it to your deployment platform. Always use lowercase file names, relative paths, and never push passwords or API keys to GitHub.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you know how to deploy a website — the next questions to explore are:</p>
+<ul><li>How can I use GitHub to improve my developer profile and get noticed by recruiters?</li><li>What beginner projects should I actually build and deploy?</li><li>How do I distinguish between genuinely understanding AI vs just using AI tools?</li></ul>
+<p>You now know the complete journey — plan, build, commit, push, deploy, share. That is the full cycle of a real developer. Go build something and put it out there for the world to see! 🚀</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="build_website_from_scratch.html">← Previous: How Do I Build a Website or an App From Scratch — What Are the Actual Steps?</a><a href="beginner_project_ideas.html">Next: What Are Some Good Beginner Project Ideas I Could Build? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

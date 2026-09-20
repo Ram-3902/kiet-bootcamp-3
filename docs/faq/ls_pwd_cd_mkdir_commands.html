@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Do the Commands ls, pwd, cd, and mkdir Do, and When Would I Use Each One? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 4 of 15 · Terminal</p>
+<h1>What Do the Commands ls, pwd, cd, and mkdir Do, and When Would I Use Each One?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-set-the-scene">
+<h2>First, Let Us Set the Scene</h2>
+<p>You have opened your <strong>WSL Ubuntu</strong> terminal.</p>
+<p>You see a black screen with something like this:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln">yourname@DESKTOP:~$</span></pre>
+</div>
+<p>And you are just staring at it. No icons. No folders. No mouse clicks. Nothing familiar.</p>
+<p>Now what?</p>
+<p>This is exactly where these four commands come in — <strong><code>ls</code>, <code>pwd</code>, <code>cd</code>, and <code>mkdir</code></strong></p>
+<p>Let us understand each one — properly, from scratch.</p>
+</section>
+<section id="the-big-picture-first-what-are-we-even-doing-here">
+<h2>The Big Picture First — What Are We Even Doing Here?</h2>
+<p>When you use Windows normally, you navigate your computer like this:</p>
+<ul><li>Open <strong>File Explorer</strong></li><li>See folders like Desktop, Downloads, Documents</li><li>Double-click to go inside a folder</li><li>See what files are inside</li><li>Create a new folder by right-clicking</li></ul>
+<p><strong>In the terminal, you do all of these exact same things — but by typing commands.</strong></p>
+<p>There is no File Explorer here. The terminal is your File Explorer.</p>
+<p>These four commands are basically:</p>
+<div class="panel"><table class="prose"><thead><tr><th>Command</th><th>What It Replaces in File Explorer</th></tr></thead><tbody><tr><td><code>pwd</code></td><td>The address bar at the top of File Explorer (shows where you are)</td></tr><tr><td><code>ls</code></td><td>The main window of File Explorer (shows what is inside)</td></tr><tr><td><code>cd</code></td><td>Double-clicking a folder to go inside it</td></tr><tr><td><code>mkdir</code></td><td>Right-click → New → Folder</td></tr></tbody></table></div>
+<p>Now let us go deep into each one.</p>
+</section>
+<section id="command-1-pwd">
+<h2>Command 1 — <code>pwd</code></h2>
+<h3>What Does pwd Stand For?</h3>
+<p><strong>pwd = Print Working Directory</strong></p>
+<p>"Working Directory" means — the folder you are currently inside right now. "Print" means — show it on the screen.</p>
+<p>So <code>pwd</code> simply answers one question:</p>
+<blockquote><p><strong>"Where am I right now?"</strong></p></blockquote>
+<h3>How to Use It</h3>
+<p>Just type <code>pwd</code> and press Enter:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>pwd</span></pre>
+</div>
+<p>Output will look something like:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">/home/yourname</span></pre>
+</div>
+<p>This is telling you — right now, you are inside the folder called <code>yourname</code>, which is inside the folder called <code>home</code>.</p>
+<h3>When Would You Use pwd?</h3>
+<p>You will use <code>pwd</code> when:</p>
+<ul><li>You opened the terminal and you are not sure which folder you are in</li><li>You copied a path from somewhere and want to confirm you are in the right place</li><li>You are about to run an important command and want to double-check your location first</li><li>You get confused after moving between many folders</li></ul>
+<p>Think of it like looking at Google Maps to check <strong>"where am I right now?"</strong> before deciding where to go next.</p>
+</section>
+<section id="command-2-ls">
+<h2>Command 2 — <code>ls</code></h2>
+<h3>What Does ls Stand For?</h3>
+<p><strong>ls = List</strong></p>
+<p>It lists all the files and folders inside the folder you are currently in.</p>
+<p>So <code>ls</code> simply answers:</p>
+<blockquote><p><strong>"What is inside here?"</strong></p></blockquote>
+<h3>How to Use It</h3>
+<p>Just type <code>ls</code> and press Enter:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>ls</span></pre>
+</div>
+<p>Output will look something like:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">Desktop  Documents  Downloads  Music  Pictures  projects</span></pre>
+</div>
+<p>These are all the folders and files inside your current location.</p>
+<h3>Useful Variations of ls</h3>
+<p><code>ls</code> has some extra options that make it more useful:</p>
+<p><strong><code>ls -l</code> — Long format (shows more details)</strong> <strong><code>ls -a</code> — Show hidden files also</strong> <strong><code>ls -la</code> — Long format AND hidden files</strong></p>
+<h3>When Would You Use ls?</h3>
+<p>You will use <code>ls</code> when:</p>
+<ul><li>You just opened the terminal and want to see what folders are available</li><li>You moved into a folder and want to see what is inside</li><li>You created a file and want to confirm it was actually created</li><li>You want to check if a particular folder or file exists before doing something</li></ul>
+</section>
+<section id="command-3-cd">
+<h2>Command 3 — <code>cd</code></h2>
+<h3>What Does cd Stand For?</h3>
+<p><strong>cd = Change Directory</strong></p>
+<p>"Directory" is just another word for "folder."</p>
+<p>So <code>cd</code> means — move from one folder to another.</p>
+<p><code>cd</code> answers the question:</p>
+<blockquote><p><strong>"How do I go somewhere else?"</strong></p></blockquote>
+<h3>How to Use It — Basic</h3>
+<p>Example — if you want to go into a folder called <code>projects</code>:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd projects</span></pre>
+</div>
+<h3>Going Back — cd ..</h3>
+<p>Two dots <code>..</code> means "go back one folder" (go to the parent folder).</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ..</span></pre>
+</div>
+<p>If you were in <code>/home/yourname/projects</code>, after <code>cd ..</code> you will be in <code>/home/yourname</code>.</p>
+<h3>Going Back Multiple Steps</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ../..</span></pre>
+</div>
+<p>This goes back two folders at once.</p>
+<h3>Going Directly to Home Folder</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>cd ~</span></pre>
+</div>
+<p>The <code>~</code> (called tilde) always means your home folder — <code>/home/yourname</code>.</p>
+<h3>When Would You Use cd?</h3>
+<p>You will use <code>cd</code> when:</p>
+<ul><li>You want to go inside a project folder to start working</li><li>You want to navigate to a specific folder to run a command there</li><li>You want to go back to the previous folder</li><li>You want to return to your home folder quickly</li></ul>
+<p><code>cd</code> is the command you will type <strong>most often</strong> out of all four. You will constantly be moving between folders as you work.</p>
+<h3>Practice This Pattern</h3>
+<p>This is the most common pattern you will do every time you open the terminal:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>pwd               # Check where I am</span><span class="ln cmd"><span class="p">$ </span>ls                # See what is available</span><span class="ln cmd"><span class="p">$ </span>cd projects       # Go into the projects folder</span><span class="ln cmd"><span class="p">$ </span>ls                # See what is inside projects</span><span class="ln cmd"><span class="p">$ </span>cd my_website     # Go into the specific project</span><span class="ln cmd"><span class="p">$ </span>pwd               # Confirm I am in the right place</span></pre>
+</div>
+<p>Read this pattern a few times. You will do this dozens of times every day.</p>
+</section>
+<section id="command-4-mkdir">
+<h2>Command 4 — <code>mkdir</code></h2>
+<h3>What Does mkdir Stand For?</h3>
+<p><strong>mkdir = Make Directory</strong></p>
+<p>"Make Directory" simply means — create a new folder.</p>
+<p><code>mkdir</code> answers:</p>
+<blockquote><p><strong>"How do I create a new folder?"</strong></p></blockquote>
+<h3>How to Use It — Basic</h3>
+<p>Example — create a folder called <code>my_project</code>:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>mkdir my_project</span></pre>
+</div>
+<p>Now a new folder called <code>my_project</code> has been created in your current location.</p>
+<p>You can verify by typing <code>ls</code> — you will see <code>my_project</code> listed there.</p>
+<h3>Creating Multiple Folders at Once</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>mkdir folder1 folder2 folder3</span></pre>
+</div>
+<p>This creates three folders in one command.</p>
+<h3>Creating Nested Folders (Folder Inside Folder)</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>mkdir -p projects/my_website/css</span></pre>
+</div>
+<h3>When Would You Use mkdir?</h3>
+<p>You will use <code>mkdir</code> when:</p>
+<ul><li>You are starting a new project and need to create a project folder</li><li>You want to organise your files into separate folders</li><li>You are setting up a folder structure for a website (like separate folders for HTML, CSS, JavaScript)</li><li>You are following a tutorial that asks you to create a folder</li></ul>
+</section>
+<section id="quick-reference-table">
+<h2>Quick Reference Table</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Command</th><th>Full Form</th><th>What It Does</th><th>Simple Meaning</th></tr></thead><tbody><tr><td><code>pwd</code></td><td>Print Working Directory</td><td>Shows your current folder location</td><td>"Where am I?"</td></tr><tr><td><code>ls</code></td><td>List</td><td>Shows files and folders in current location</td><td>"What is here?"</td></tr><tr><td><code>ls -l</code></td><td>List (long)</td><td>Shows detailed information</td><td>"What is here, with details?"</td></tr><tr><td><code>ls -a</code></td><td>List (all)</td><td>Shows hidden files too</td><td>"Show me everything, including hidden"</td></tr><tr><td><code>cd foldername</code></td><td>Change Directory</td><td>Move into a folder</td><td>"Take me inside this folder"</td></tr><tr><td><code>cd ..</code></td><td>Change Directory up</td><td>Go back one folder</td><td>"Take me back"</td></tr><tr><td><code>cd ~</code></td><td>Change Directory home</td><td>Go to home folder</td><td>"Take me home"</td></tr><tr><td><code>mkdir foldername</code></td><td>Make Directory</td><td>Create a new folder</td><td>"Create a new folder here"</td></tr><tr><td><code>mkdir -p a/b/c</code></td><td>Make Directory (parents)</td><td>Create nested folders</td><td>"Create all these folders at once"</td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p><code>pwd</code> tells you which folder you are currently in — your location in the terminal. <code>ls</code> shows you all the files and folders inside your current location. <code>cd</code> moves you from one folder to another — forward into a folder, backward with <code>..</code>, or home with <code>~</code>. <code>mkdir</code> creates a brand new folder wherever you currently are. These four commands together are your complete navigation toolkit for the terminal. Every time you open Ubuntu, you will use some combination of these four commands before doing anything else.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you know your basic navigation commands, the next things to learn are:</p>
+<ul><li>What does <code>sudo</code> mean and when do we need it?</li><li>How do we create files (not just folders) from the terminal?</li><li>How do we use these commands together with Git?</li></ul>
+<p>Keep practising these four commands every day — even if just for 10 minutes. Open Ubuntu, navigate around, create folders, check where you are. Repetition is the only teacher here. 🙌</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="why_git_commands_wsl_ubuntu.html">← Previous: Why Do We Work With Git Through Commands in WSL Ubuntu?</a><a href="mv_command.html">Next: What Does the mv Command Do? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

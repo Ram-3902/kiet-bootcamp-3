@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Do I Build a Website or an App From Scratch — What Are the Actual Steps? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 11 of 15 · Building</p>
+<h1>How Do I Build a Website or an App From Scratch — What Are the Actual Steps?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-kill-the-biggest-myth">
+<h2>First, Let Us Kill the Biggest Myth</h2>
+<p>Most beginners think building a website looks like this:</p>
+<blockquote><p>"I will sit down, open my laptop, and magically start writing code until a beautiful website appears."</p></blockquote>
+<p>That is not how it works. Not for beginners. Not for experienced developers either.</p>
+<p>Every professional — whether they are building a simple portfolio page or a full app like Swiggy — follows a <strong>process</strong>. A clear sequence of steps.</p>
+<p>Without a process, you will:</p>
+<ul><li>Start coding without knowing what you are building</li><li>Get confused halfway through</li><li>Rewrite everything from scratch three times</li><li>Give up and say "this is too hard"</li></ul>
+<p>With a process, you will:</p>
+<ul><li>Know exactly what to build before you write a single line of code</li><li>Move forward step by step without getting lost</li><li>Finish something you are actually proud of</li></ul>
+<p>This entire document is about giving you that process — in the most simple, honest, practical way possible.</p>
+</section>
+<section id="the-two-types-of-things-you-can-build">
+<h2>The Two Types of Things You Can Build</h2>
+<p>Before we get into steps, let us be clear about what we are actually talking about.</p>
+<h3>Type 1 — A Website (Static)</h3>
+<p>A <strong>static website</strong> is a collection of pages that show information.</p>
+<p>Examples:</p>
+<ul><li>Your personal portfolio — "Hi, I am Rahul. Here are my projects."</li><li>A college club website — "Welcome to the Photography Club. Here are our events."</li><li>A restaurant menu page — "Here are our dishes and prices."</li></ul>
+<p>Static websites are built with three things:</p>
+<ul><li><strong>HTML</strong> — The structure and content (like the walls and rooms of a house)</li><li><strong>CSS</strong> — The styling and design (like the paint, furniture, and decoration)</li><li><strong>JavaScript</strong> — The behaviour and interactivity (like the lights, fans, and switches)</li></ul>
+<p>This is where every beginner should start. No database. No server. Just these three files.</p>
+<h3>Type 2 — A Web App (Dynamic)</h3>
+<p>A <strong>web app</strong> is a website that does something — it has logic, it saves data, it changes based on who is using it.</p>
+<p>Examples:</p>
+<ul><li>A to-do list app — you add tasks, mark them done, delete them</li><li>A login system — you create an account, log in, see your personal dashboard</li><li>A weather app — it fetches real weather data and shows it to you</li></ul>
+<p>Web apps need more tools:</p>
+<ul><li><strong>HTML + CSS + JavaScript</strong> — Still the frontend (what the user sees)</li><li><strong>A backend language</strong> — Like Node.js, Python, or PHP (the server logic)</li><li><strong>A database</strong> — Like MySQL or MongoDB (where data is stored)</li></ul>
+<p>For a complete beginner — start with Type 1 (static website) first. Once you are comfortable, move to Type 2. Do not try to run before you can walk.</p>
+</section>
+<section id="the-10-steps-to-build-a-website-from-scratch">
+<h2>The 10 Steps to Build a Website From Scratch</h2>
+<p>These steps apply whether you are building a simple portfolio or a full web app. The depth of each step changes — but the sequence stays the same.</p>
+</section>
+<section id="step-1-decide-what-you-are-building">
+<h2>Step 1 — Decide WHAT You Are Building</h2>
+<p>This sounds obvious but most beginners skip this step entirely. They open VS Code and start typing without a clear picture of what they want.</p>
+<p>Before writing one line of code — answer these questions in writing:</p>
+<p><strong>What is this website for?</strong></p>
+<p>Examples:</p>
+<ul><li>"This is my personal portfolio to show my projects to recruiters."</li><li>"This is a website for my college fest with event schedule and registration."</li><li>"This is a to-do list app where I can add, complete, and delete tasks."</li></ul>
+<p><strong>Who will use it?</strong></p>
+<p>Examples:</p>
+<ul><li>"Recruiters and HR managers who look at my profile."</li><li>"College students looking for fest information."</li><li>"Just me, for personal use."</li></ul>
+<p><strong>What pages or sections does it need?</strong></p>
+<p>Examples for a portfolio:</p>
+<ul><li>Home page — with my name, photo, and a short intro</li><li>About section — who I am, my skills, my education</li><li>Projects section — cards showing each project with a link</li><li>Contact section — my email and social media links</li></ul>
+<p><strong>This planning document is the most important thing you will create before coding.</strong></p>
+</section>
+<section id="step-2-sketch-a-rough-layout-wireframe">
+<h2>Step 2 — Sketch a Rough Layout (Wireframe)</h2>
+<p>A <strong>wireframe</strong> is a simple rough sketch of how your website will look — like a blueprint before a building is constructed.</p>
+<p>You do NOT need fancy software for this. A pen and paper is perfect.</p>
+<p>Draw boxes and labels. Like this:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">+------------------------------------------+</span><span class="ln">|           NAVBAR — Logo | Home | About   |</span><span class="ln">+------------------------------------------+</span><span class="ln">|                                          |</span><span class="ln">|        BIG HEADING — "Hi, I am Rahul"   |</span><span class="ln">|        Short intro text here            |</span><span class="ln">|        [ See My Work ] button           |</span><span class="ln">|                                          |</span><span class="ln">+------------------------------------------+</span><span class="ln">|  ABOUT SECTION                           |</span><span class="ln">|  [ Photo ]   My story text here         |</span><span class="ln">|              Skills list here           |</span><span class="ln">+------------------------------------------+</span><span class="ln">|  PROJECTS SECTION                        |</span><span class="ln">|  [ Card 1 ]  [ Card 2 ]  [ Card 3 ]     |</span><span class="ln">+------------------------------------------+</span><span class="ln">|  CONTACT SECTION                         |</span><span class="ln">|  Email | GitHub | LinkedIn              |</span><span class="ln">+------------------------------------------+</span><span class="ln">|  FOOTER — Copyright 2026               |</span><span class="ln">+------------------------------------------+</span></pre>
+</div>
+<p>This sketch takes 10 minutes. But it saves you hours of confusion later because you can see the structure before you code it.</p>
+</section>
+<section id="step-3-set-up-your-tools">
+<h2>Step 3 — Set Up Your Tools</h2>
+<p>Now you set up the tools you will use to actually build the website.</p>
+<p>Here is what every beginner needs:</p>
+<h3>Tool 1 — VS Code (Code Editor)</h3>
+<p><strong>VS Code</strong> (Visual Studio Code) is where you write your code. It is free, made by Microsoft, and used by developers all over the world.</p>
+<p>Download from: <a href="https://code.visualstudio.com">code.visualstudio.com</a></p>
+<p>Useful VS Code extensions to install:</p>
+<ul><li><strong>Prettier</strong> — automatically formats your code so it looks clean</li><li><strong>Live Server</strong> — opens your website in the browser and auto-refreshes every time you save a file (very useful)</li><li><strong>GitLens</strong> — helps you see Git history inside VS Code</li></ul>
+<h3>Tool 2 — A Browser</h3>
+<p><strong>Google Chrome</strong> or <strong>Mozilla Firefox</strong> — for viewing and testing your website.</p>
+<h3>Tool 3 — Git and GitHub</h3>
+<p>You already know these from our earlier topics. Set up Git on your machine and create a GitHub account if you have not already.</p>
+<p>Every project you build should go on GitHub from day one — not after you finish.</p>
+<h3>Tool 4 — WSL Ubuntu Terminal</h3>
+<p>For running commands — which you already know how to use from our earlier topics.</p>
+</section>
+<section id="step-4-create-your-project-folder-and-set-up-git">
+<h2>Step 4 — Create Your Project Folder and Set Up Git</h2>
+<p>Now open your WSL Ubuntu terminal and create a proper project structure:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln"># Go to your home folder</span><span class="ln cmd"><span class="p">$ </span>cd ~</span><span class="ln"> </span><span class="ln"># Create a projects folder if you do not have one yet</span><span class="ln cmd"><span class="p">$ </span>mkdir projects</span><span class="ln cmd"><span class="p">$ </span>cd projects</span><span class="ln"> </span><span class="ln"># Create a folder for this specific project</span><span class="ln cmd"><span class="p">$ </span>mkdir my-portfolio</span><span class="ln cmd"><span class="p">$ </span>cd my-portfolio</span><span class="ln"> </span><span class="ln"># Initialise Git — start tracking this project</span><span class="ln cmd"><span class="p">$ </span>git init</span></pre>
+</div>
+<p>Now create your basic files:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln"># Create the main HTML file</span><span class="ln cmd"><span class="p">$ </span>touch index.html</span><span class="ln"> </span><span class="ln"># Create a folder for styles</span><span class="ln cmd"><span class="p">$ </span>mkdir css</span><span class="ln cmd"><span class="p">$ </span>touch css/style.css</span><span class="ln"> </span><span class="ln"># Create a folder for JavaScript</span><span class="ln cmd"><span class="p">$ </span>mkdir js</span><span class="ln cmd"><span class="p">$ </span>touch js/script.js</span><span class="ln"> </span><span class="ln"># Create a folder for images</span><span class="ln cmd"><span class="p">$ </span>mkdir images</span></pre>
+</div>
+<p>Your project structure now looks like this:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">my-portfolio/</span><span class="ln">    index.html</span><span class="ln">    css/</span><span class="ln">        style.css</span><span class="ln">    js/</span><span class="ln">        script.js</span><span class="ln">    images/</span></pre>
+</div>
+<p>This is the standard folder structure for a simple website. Every web developer uses this same pattern.</p>
+<p>Now open this folder in VS Code:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>code .</span></pre>
+</div>
+<p>The <code>.</code> means "open VS Code in the current folder." Your entire project will appear in the VS Code sidebar.</p>
+</section>
+<section id="step-5-write-the-html-first-structure">
+<h2>Step 5 — Write the HTML First (Structure)</h2>
+<p>HTML is always the first thing you write. Before any CSS or JavaScript.</p>
+<p>HTML gives your page its structure — all the content, in the right order.</p>
+<p>Open <code>index.html</code> in VS Code and type the code which you want by your basic structure:</p>
+<p>Save the file. Right-click on <code>index.html</code> in VS Code and click <strong>"Open with Live Server"</strong> — your website opens in the browser.</p>
+<p>It looks plain right now — just text on a white background. That is perfectly fine. Structure first. Design later.</p>
+</section>
+<section id="step-6-add-css-design-and-styling">
+<h2>Step 6 — Add CSS (Design and Styling)</h2>
+<p>Now you make it look good.</p>
+<p>Open <code>css/style.css</code> and start adding styles which you want to add to the correct structures:</p>
+<p>Save and look at your browser — it should look much better now.</p>
+<p>CSS is all about experimenting. Change colours, sizes, spacing — and see the result instantly in the browser. Do not be afraid to break things. You can always undo.</p>
+</section>
+<section id="step-7-add-javascript-behaviour-and-interactivity">
+<h2>Step 7 — Add JavaScript (Behaviour and Interactivity)</h2>
+<p>For a simple portfolio, you may not need much JavaScript. But let us add one small thing — a smooth scroll effect and a simple active link highlight.</p>
+<p>Open <code>js/script.js</code>:</p>
+<p>and write the script like which the website/portfolio should be worked:</p>
+<p>Save and test in the browser. Click the nav links — the page scrolls smoothly to each section.</p>
+<p>This is a small but real piece of JavaScript interactivity. As you learn more JavaScript, you will add more powerful features.</p>
+</section>
+<section id="step-8-commit-your-work-regularly-to-git">
+<h2>Step 8 — Commit Your Work Regularly to Git</h2>
+<p>As you build — commit your work in small pieces. Do not wait until the whole website is done.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln"># After setting up the folder structure</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "initial project setup — folder structure and blank files"</span><span class="ln"> </span><span class="ln"># After writing the HTML</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added complete HTML structure for portfolio"</span><span class="ln"> </span><span class="ln"># After adding CSS</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added CSS styling for navbar, hero, and project card"</span><span class="ln"> </span><span class="ln"># After adding JavaScript</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added smooth scroll and active nav link with JavaScript"</span></pre>
+</div>
+<p>Each commit is a save point. If something breaks — you can always go back.</p>
+</section>
+<section id="step-9-push-to-github">
+<h2>Step 9 — Push to GitHub</h2>
+<p>Create a new repository on GitHub (github.com → New Repository → give it a name → do not initialise with README since you already have files).</p>
+<p>Then connect your local project to GitHub and push:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git remote add origin https://github.com/yourname/my-portfolio.git</span><span class="ln cmd"><span class="p">$ </span>git branch -M main</span><span class="ln cmd"><span class="p">$ </span>git push -u origin main</span></pre>
+</div>
+<p>Your project is now on GitHub. Anyone with the link can see your code.</p>
+<p>This is also your backup — even if your laptop crashes, your project is safe on GitHub.</p>
+</section>
+<section id="step-10-deploy-make-it-live-on-the-internet">
+<h2>Step 10 — Deploy — Make It Live on the Internet</h2>
+<p>Your website is built. It is on GitHub. But right now — only the code is visible on GitHub. To make it a real website that anyone can visit with a link — you need to <strong>deploy</strong> it.</p>
+<p>The easiest and completely free way to deploy a simple static website is <strong>GitHub Pages</strong>.</p>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>To build a website from scratch — start by deciding clearly what you are building, who it is for, and what pages it needs. Sketch a rough wireframe on paper before touching the keyboard. Set up VS Code, Git, and your terminal. Create a proper project folder, initialise Git, and make your files. Write HTML first for structure, then CSS for design, then JavaScript for interactivity. Commit your work to Git in small pieces as you go. Push to GitHub to back up your code online. Finally, deploy on GitHub Pages to make your website live with a real URL anyone can visit. Learn in the right order — HTML and CSS first, then JavaScript, then React, then backend. Start with small projects, finish and deploy them, then move to the next level. The key is to build real things from day one, not just watch tutorials.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you know how to build a website — the next questions are:</p>
+<ul><li>How do I deploy a website properly (beyond GitHub Pages)?</li><li>How can I use GitHub to improve my developer profile?</li><li>What beginner project should I actually build first?</li></ul>
+<p>You have the full roadmap now. The only thing left is to open VS Code and start. One step at a time. 💪</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="pull_requests.html">← Previous: What is a Pull Request, and What is it Used For?</a><a href="deploy_website.html">Next: How Do I Deploy a Website So That Other People Can Visit It? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

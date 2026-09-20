@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is a Pull Request, and What is it Used For? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 10 of 15 · GitHub</p>
+<h1>What is a Pull Request, and What is it Used For?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-start-with-a-familiar-situation">
+<h2>First, Let Us Start With a Familiar Situation</h2>
+<p>Imagine you are a new intern at a company.</p>
+<p>Your senior gives you a task — "Go and update the company website's homepage text."</p>
+<p>You go and do the work. You are done.</p>
+<p>Now — do you directly go and change the live company website yourself?</p>
+<p>Of course not.</p>
+<p>You go to your senior and say:</p>
+<blockquote><p>"I have made the changes. Can you please review them, check if everything looks correct, and if you are happy — then we will put it on the live website."</p></blockquote>
+<p>Your senior reviews your work. Maybe they suggest one small correction. You fix it. They approve it. Then and only — the change goes live.</p>
+<p><strong>This is exactly what a Pull Request is.</strong></p>
+<p>A Pull Request is a way of saying to your team:</p>
+<blockquote><p>"I have made some changes in my branch. I am requesting you to please review my work, give feedback, and if everything looks good — pull my changes into the main project."</p></blockquote>
+<p>That is it. That is the whole idea.</p>
+</section>
+<section id="but-wait-why-is-it-called-pull-request">
+<h2>But Wait — Why is it Called "Pull Request"?</h2>
+<p>The name confuses almost every beginner. Let us clear this up properly.</p>
+<p>Remember from earlier — <code>git pull</code> means bringing changes from GitHub onto your local computer.</p>
+<p>A <strong>Pull Request</strong> is a <strong>request to someone else to pull your changes</strong> into their branch — specifically into the <code>main</code> branch of the project.</p>
+<p>You are not pulling anything yourself. You are <strong>requesting</strong> someone else to pull your work into the main project after reviewing it.</p>
+<p>So the full meaning is:</p>
+<blockquote><p><strong>"I request you to pull my branch's changes into the main branch — after reviewing them."</strong></p></blockquote>
+<p>In some platforms like GitLab — it is called a <strong>Merge Request</strong> which is actually a clearer name. But on GitHub, it is called a Pull Request. Both mean the same thing.</p>
+</section>
+<section id="the-problem-pull-requests-solve">
+<h2>The Problem Pull Requests Solve</h2>
+<p>Let us think about what happens without Pull Requests.</p>
+<p>Imagine a team of 5 developers all pushing directly to the <code>main</code> branch:</p>
+<ul><li>Developer 1 pushes code — introduces a bug</li><li>Developer 2 pushes code — has a typo in an important file</li><li>Developer 3 pushes code — accidentally deletes a function that others need</li><li>Developer 4 pushes code — overwrites Developer 1's fix</li></ul>
+<p>Nobody reviewed anything. Nobody caught the mistakes before they went into the main project. The main branch is now broken. The live website is down.</p>
+<p>Everyone is in panic.</p>
+<p>This is a real situation that happens in teams without a proper review process.</p>
+<p><strong>Pull Requests solve this by making code review a mandatory step before anything goes into the main branch.</strong></p>
+<p>No code goes into <code>main</code> without at least one other person reviewing and approving it first.</p>
+</section>
+<section id="understanding-the-full-workflow-step-by-step">
+<h2>Understanding the Full Workflow — Step by Step</h2>
+<p>Let us walk through exactly how a Pull Request works in real life.</p>
+<h3>Step 1 — You Create a Branch</h3>
+<p>You never work directly on <code>main</code>. You create your own branch for the feature or fix you are working on:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git checkout -b feature/add-contact-page</span></pre>
+</div>
+<p>This creates a new branch called <code>feature/add-contact-page</code> and switches you to it.</p>
+<p>Now you are working in your own safe space — completely separate from <code>main</code>.</p>
+<h3>Step 2 — You Do Your Work and Commit</h3>
+<p>You write your code, make changes, and commit them on your branch:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added contact page with form"</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added CSS styling for contact page"</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "added form validation in JavaScript"</span></pre>
+</div>
+<p>You can have as many commits as you need on your branch.</p>
+<h3>Step 3 — You Push Your Branch to GitHub</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git push origin feature/add-contact-page</span></pre>
+</div>
+<p>Now your branch — with all your commits — is on GitHub. But it is still separate from <code>main</code>. The main project has not been touched at all.</p>
+<h3>Step 4 — You Create a Pull Request on GitHub</h3>
+<p>Now you go to GitHub in your browser.</p>
+<p>GitHub will usually show a yellow banner at the top saying:</p>
+<blockquote><p><strong>"You recently pushed the branch <code>feature/add-contact-page</code>. Would you like to compare and create a pull request?"</strong></p></blockquote>
+<p>You click <strong>"Compare and pull request"</strong></p>
+<p>A form opens where you fill in:</p>
+<ul><li><strong>Title</strong> — A short clear title describing what you did (Example: "Added contact page with form validation")</li><li><strong>Description</strong> — A detailed explanation of what you changed, why you changed it, and anything the reviewer should know</li><li><strong>Reviewers</strong> — You select which teammates should review your code</li><li><strong>Base branch</strong> — Usually <code>main</code> (the branch you want to merge INTO)</li><li><strong>Compare branch</strong> — Your branch <code>feature/add-contact-page</code> (the branch with your changes)</li></ul>
+<p>Then you click <strong>"Create Pull Request"</strong></p>
+<h3>Step 5 — Your Teammates Review Your Code</h3>
+<p>The people you assigned as reviewers get a notification — on GitHub and usually by email.</p>
+<p>They go to the Pull Request page on GitHub and see:</p>
+<ul><li>A clear list of all the files you changed</li><li>Exactly which lines were added (shown in green) and removed (shown in red)</li><li>All your commit messages</li><li>Your description of what you did</li></ul>
+<p>They can:</p>
+<ul><li><strong>Leave comments</strong> on specific lines of code</li><li><strong>Suggest changes</strong> directly in the code</li><li><strong>Approve</strong> the Pull Request — meaning "looks good, ready to merge"</li><li><strong>Request changes</strong> — meaning "please fix these issues before I approve"</li></ul>
+<h3>Step 6 — You Make Changes Based on Feedback</h3>
+<p>If the reviewer requested changes — you go back to your local computer, make the fixes, commit them, and push again:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "fixed variable naming as per review feedback"</span><span class="ln cmd"><span class="p">$ </span>git push origin feature/add-contact-page</span></pre>
+</div>
+<p>The new commits automatically appear in the same Pull Request on GitHub. The reviewer can see your updates and review again.</p>
+<p>This back-and-forth continues until the reviewer is satisfied.</p>
+<h3>Step 7 — The Pull Request is Approved and Merged</h3>
+<p>Once the reviewer approves — either they or you click the <strong>"Merge Pull Request"</strong> button on GitHub.</p>
+<p>GitHub merges your branch into <code>main</code>.</p>
+<p>Your contact page is now part of the main project. The branch can now be deleted — its work is done.</p>
+<h3>Step 8 — Everyone Pulls the Updated Main</h3>
+<p>Other team members now pull the latest <code>main</code> to get your merged changes:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git checkout main</span><span class="ln cmd"><span class="p">$ </span>git pull</span></pre>
+</div>
+<p>Everyone is now up to date.</p>
+</section>
+<section id="pull-requests-for-open-source-projects">
+<h2>Pull Requests for Open Source Projects</h2>
+<p>Pull Requests are not just for team projects. They are how the entire open-source world works.</p>
+<h3>Step 1 — Fork the Project</h3>
+<p><strong>Forking</strong> means creating your own personal copy of someone else's repository.</p>
+<p>You click the <strong>Fork</strong> button on their GitHub page.</p>
+<p>Now you have your own copy at <code>github.com/yourname/their-project</code></p>
+<h3>Step 2 — Clone Your Fork and Make Changes</h3>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>git clone github.com/yourname/their-project</span><span class="ln cmd"><span class="p">$ </span>cd their-project</span><span class="ln cmd"><span class="p">$ </span>git checkout -b fix/typo-in-readme</span><span class="ln"># make your changes</span><span class="ln cmd"><span class="p">$ </span>git add .</span><span class="ln cmd"><span class="p">$ </span>git commit -m "fixed typo in README introduction"</span><span class="ln cmd"><span class="p">$ </span>git push origin fix/typo-in-readme</span></pre>
+</div>
+<h3>Step 3 — Create a Pull Request to Their Repository</h3>
+<p>On GitHub, you create a Pull Request from your fork to the original project's <code>main</code> branch.</p>
+<p>The project maintainers review your contribution. If they like it — they merge it. Your code is now part of a project used by thousands of people.</p>
+<p>This is how millions of developers contribute to projects like React, VS Code, Python, and Linux — all through Pull Requests.</p>
+</section>
+<section id="a-full-visual-of-the-pull-request-workflow">
+<h2>A Full Visual of the Pull Request Workflow</h2>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">main branch</span><span class="ln">    |</span><span class="ln">    |-- You create a new branch</span><span class="ln">    |         |</span><span class="ln">    |    feature/contact-page</span><span class="ln">    |         |</span><span class="ln">    |    You write code</span><span class="ln">    |    You commit changes</span><span class="ln">    |    You push to GitHub</span><span class="ln">    |         |</span><span class="ln">    |    You open a Pull Request</span><span class="ln">    |         |</span><span class="ln">    |    Reviewer reads your code</span><span class="ln">    |    Reviewer leaves comments</span><span class="ln">    |         |</span><span class="ln">    |    You make fixes based on feedback</span><span class="ln">    |    You push again</span><span class="ln">    |         |</span><span class="ln">    |    Reviewer approves</span><span class="ln">    |         |</span><span class="ln">    |    Pull Request is MERGED</span><span class="ln">    |         |</span><span class="ln">    +-- main branch now has your contact page</span></pre>
+</div>
+</section>
+<section id="quick-reference-pull-request-commands-and-actions">
+<h2>Quick Reference — Pull Request Commands and Actions</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Action</th><th>Where it Happens</th><th>How</th></tr></thead><tbody><tr><td>Create a branch</td><td>Terminal</td><td><code>git checkout -b branch-name</code></td></tr><tr><td>Commit your work</td><td>Terminal</td><td><code>git add .</code> then <code>git commit -m "message"</code></td></tr><tr><td>Push branch to GitHub</td><td>Terminal</td><td><code>git push origin branch-name</code></td></tr><tr><td>Create Pull Request</td><td>GitHub website</td><td>Click "Compare and pull request" button</td></tr><tr><td>Review someone's PR</td><td>GitHub website</td><td>Pull Requests tab → open PR → Files Changed</td></tr><tr><td>Leave a comment on a line</td><td>GitHub website</td><td>Click the + button on any line</td></tr><tr><td>Approve a PR</td><td>GitHub website</td><td>Review changes → Approve → Submit review</td></tr><tr><td>Merge a PR</td><td>GitHub website</td><td>Click "Merge pull request" button</td></tr><tr><td>Delete branch after merge</td><td>GitHub website</td><td>Click "Delete branch" button</td></tr><tr><td>Update local main after merge</td><td>Terminal</td><td><code>git checkout main</code> then <code>git pull</code></td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p>A Pull Request is a formal request on GitHub to merge your branch's changes into the main branch — but only after the team has reviewed and approved your work. You create a branch, do your work, commit, push to GitHub, and then open a Pull Request where you describe what you changed and why. Teammates are assigned as reviewers — they read your code line by line, leave comments, suggest improvements, and either approve or request changes. Once approved, the PR is merged into main and your work becomes part of the project. Pull Requests ensure that no broken, low-quality, or unreviewed code ever enters the main branch. They are also the backbone of open-source contribution — where anyone in the world can fork a project, make improvements, and submit a Pull Request to the original maintainers. Every professional software team in the world uses Pull Requests as the standard way to collaborate on code.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you fully understand Pull Requests — the next questions to explore are:</p>
+<ul><li>How do we use GitHub to improve our developer profile?</li><li>How do we build a complete website or project from scratch?</li><li>How do we deploy a website so others can visit it?</li></ul>
+<p>You now understand the complete professional Git and GitHub workflow — branches, commits, Pull Requests, code review, and merging. This is exactly how developers work at every company in the world. You are well on your way! 🚀</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="merge_conflicts_git.html">← Previous: What Happens if Two Developers Modify the Same Part of the Same File? How Does Git Handle That?</a><a href="build_website_from_scratch.html">Next: How Do I Build a Website or an App From Scratch — What Are the Actual Steps? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is sudo, and When Do I Actually Need It? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 6 of 15 · Terminal</p>
+<h1>What is sudo, and When Do I Actually Need It?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-start-with-a-story">
+<h2>First, Let Us Start With a Story</h2>
+<p>Imagine you are a new employee at a company.</p>
+<p>You have your own desk, your own computer, your own files. You can do whatever you want with your own stuff — open files, create documents, delete your own notes. No problem.</p>
+<p>But one day you need to install a new software on the office computer. You try to install it and suddenly you get a message:</p>
+<blockquote><p><strong>"You do not have permission to do this. Please contact your system administrator."</strong></p></blockquote>
+<p>You cannot install it yourself. Only the <strong>system administrator</strong> — the person who manages the entire office computer system — has the power to install software, change system settings, and touch files that affect everyone.</p>
+<p>So you go to the administrator, explain what you need, they verify it is legitimate, and then they do it for you — or they give you temporary permission to do it yourself.</p>
+<p><strong>This is exactly what <code>sudo</code> does in Linux.</strong></p>
+</section>
+<section id="so-what-is-sudo">
+<h2>So What is sudo?</h2>
+<p><strong>sudo = Superuser Do</strong></p>
+<p>In simple words —</p>
+<blockquote><p><code>sudo</code> is a way to temporarily run a command <strong>with administrator level powers</strong> — even if you are a normal user.</p></blockquote>
+<p>The "superuser" in Linux is called <strong>root</strong>. The root user has complete and total control over the entire system. Root can install software, delete system files, change any setting, access any file — there are literally zero restrictions for root.</p>
+<p>When you type <code>sudo</code> before a command, you are saying:</p>
+<blockquote><p>"Run this command as if I am the root (administrator) — give me full power just for this one command."</p></blockquote>
+</section>
+<section id="why-does-linux-have-this-system">
+<h2>Why Does Linux Have This System?</h2>
+<p>This is a very good question. Why not just give everyone full power all the time?</p>
+<p>Because <strong>full power is dangerous.</strong></p>
+<p>Imagine if every person in the office could install any software, delete any file, change any system setting — without any check or verification. It would be chaos. Someone could accidentally delete an important system file. Someone could install a virus thinking it is a useful tool. Someone could change settings that break the computer for everyone.</p>
+<p>Linux protects against this by separating users into two types:</p>
+<div class="panel"><table class="prose"><thead><tr><th>Type</th><th>Who They Are</th><th>What They Can Do</th></tr></thead><tbody><tr><td><strong>Normal User</strong></td><td>You, in everyday use</td><td>Manage your own files and folders only</td></tr><tr><td><strong>Root / Superuser</strong></td><td>The administrator</td><td>Everything — no restrictions at all</td></tr></tbody></table></div>
+<p><code>sudo</code> is the bridge between these two. It lets a normal user do ONE administrator-level task at a time — after verifying with a password.</p>
+</section>
+<section id="how-does-sudo-work-step-by-step">
+<h2>How Does sudo Work — Step by Step</h2>
+<p>When you type a command with <code>sudo</code>:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sudo apt install git</span></pre>
+</div>
+<p>Here is what happens:</p>
+<ol><li>Linux sees that you want to run something as administrator</li><li>Linux asks — <strong>"What is your password?"</strong></li><li>You type your password (note — you will not see any letters or stars while typing, this is normal in Linux)</li><li>Linux checks — are you allowed to use sudo? (Not every user can use sudo — only users who are in the "sudo group")</li><li>If yes — the command runs with full administrator power</li><li>After the command finishes — you go back to being a normal user</li></ol>
+<p>The administrator power is only active <strong>during that one command.</strong> After it finishes, you are a regular user again automatically.</p>
+</section>
+<section id="what-does-the-sudo-password-look-like-while-typing">
+<h2>What Does the sudo Password Look Like While Typing?</h2>
+<p>This confuses almost every beginner.</p>
+<p>When you type your password after <code>sudo</code>, the terminal shows <strong>absolutely nothing</strong> — no letters, no stars, no dots. The cursor just sits there blinking.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sudo apt install git</span><span class="ln">[sudo] password for yourname:</span></pre>
+</div>
+<p>You type your password here but nothing appears on screen.</p>
+<p>This is <strong>intentional</strong> — Linux hides even the number of characters you are typing, for security. Even someone looking over your shoulder cannot count how many characters your password has.</p>
+<p>Just type your password normally and press Enter. It is working even though you cannot see anything.</p>
+</section>
+<section id="when-do-you-not-need-sudo">
+<h2>When Do You NOT Need sudo?</h2>
+<p>You do NOT need <code>sudo</code> for things inside your own home folder and your own files.</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>mkdir my_project          # No sudo needed — your own folder</span><span class="ln cmd"><span class="p">$ </span>cd my_project             # No sudo needed — your own folder</span><span class="ln cmd"><span class="p">$ </span>git init                  # No sudo needed — working in your folder</span><span class="ln cmd"><span class="p">$ </span>git add .                 # No sudo needed — your own project</span><span class="ln cmd"><span class="p">$ </span>git commit -m "message"   # No sudo needed — your own project</span><span class="ln cmd"><span class="p">$ </span>mv file.txt Documents/    # No sudo needed — your own files</span><span class="ln cmd"><span class="p">$ </span>ls                        # No sudo needed — just looking</span><span class="ln cmd"><span class="p">$ </span>pwd                       # No sudo needed — just checking location</span></pre>
+</div>
+<p><strong>Rule of thumb:</strong></p>
+<blockquote><p>If you are working inside <code>/home/yourname/</code> — you almost never need <code>sudo</code></p><p>If you are installing software or touching folders outside your home — you probably need <code>sudo</code></p></blockquote>
+<h3>The General Rule for sudo Safety</h3>
+<blockquote><p><strong>Never copy-paste a <code>sudo</code> command from the internet without understanding what it does.</strong></p></blockquote>
+<p>If someone online tells you to type a <code>sudo</code> command and you do not understand what it does — Google it first. Ask someone you trust. Make sure you know what will happen before you press Enter.</p>
+<p>Many scammers and bad tutorials trick beginners into running dangerous <code>sudo</code> commands by making them look helpful.</p>
+</section>
+<section id="what-if-you-get-permission-denied">
+<h2>What if You Get "Permission Denied"?</h2>
+<p>If you run a command and get this error:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln">Permission denied</span></pre>
+</div>
+<p>or</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln">bash: /path/to/file: Permission denied</span></pre>
+</div>
+<p>This usually means you need <code>sudo</code>. Try adding <code>sudo</code> before your command:</p>
+<div class="panel">
+<div class="cap">terminal</div>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>sudo your_command_here</span></pre>
+</div>
+<p>But first — think about WHY you are getting permission denied. If you are trying to do something in your own home folder and getting permission denied, <code>sudo</code> is probably not the right solution — there may be a different problem.</p>
+<p>If you are trying to install software or modify system files — then yes, <code>sudo</code> is exactly what you need.</p>
+</section>
+<section id="quick-reference-when-to-use-sudo-and-when-not-to">
+<h2>Quick Reference — When to Use sudo and When Not To</h2>
+<div class="panel"><table class="prose"><thead><tr><th>Task</th><th>Need sudo?</th></tr></thead><tbody><tr><td>Installing software with <code>apt install</code></td><td>✅ Yes</td></tr><tr><td>Updating system with <code>apt update</code></td><td>✅ Yes</td></tr><tr><td>Editing system config files in <code>/etc/</code></td><td>✅ Yes</td></tr><tr><td>Creating folders in system directories</td><td>✅ Yes</td></tr><tr><td>Navigating folders with <code>cd</code>, <code>ls</code>, <code>pwd</code></td><td>❌ No</td></tr><tr><td>Creating folders in your home directory</td><td>❌ No</td></tr><tr><td>Using Git commands</td><td>❌ No</td></tr><tr><td>Renaming or moving your own files</td><td>❌ No</td></tr><tr><td>Running your own scripts</td><td>❌ Usually No</td></tr></tbody></table></div>
+</section>
+<section id="summary-everything-in-one-paragraph">
+<h2>Summary — Everything in One Paragraph</h2>
+<blockquote><p><code>sudo</code> stands for Superuser Do. It temporarily gives your normal user account the power of the root (administrator) user — just for one specific command. You need <code>sudo</code> when you are doing things that affect the whole system — like installing software, updating the system, or editing system configuration files. You do not need <code>sudo</code> for everyday things like navigating folders, working with your own files, or using Git in your own project. Always type your password carefully when <code>sudo</code> asks — even though nothing appears on screen while you type. And never run a <code>sudo</code> command you do not understand, especially ones from unknown sources on the internet, because <code>sudo</code> has the power to seriously damage or completely destroy your system.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you understand <code>sudo</code>, you have covered all the essential terminal commands for a beginner. The next natural steps are:</p>
+<ul><li>How do we create files from the terminal using <code>touch</code> and <code>nano</code>?</li><li>How do we use all these commands together in a real Git workflow?</li><li>What happens when you <code>git commit</code> and then modify the file again?</li></ul>
+<p>You are now comfortable with the terminal. That is a big milestone. Well done! 🎉</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="mv_command.html">← Previous: What Does the mv Command Do?</a><a href="modify_file_after_commit.html">Next: What Happens if I Modify a File After I've Already Committed It? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

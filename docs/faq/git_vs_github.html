@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is the Difference Between Git and GitHub, and When Do We Use Each One? — KIET Bootcamp 3</title>
+<link rel="stylesheet" href="../style.css">
+<script src="../script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+<nav class="nav" aria-label="Pages">
+<a href="../index.html">Home</a>
+<a href="../stage0.html">Stage 0 · Python</a>
+<a href="../stage1.html">Stage 1 · SQLite</a>
+<a href="../stage2.html">Stage 2 · Python + SQL</a>
+<a href="../stage3.html">Stage 3 · A server</a>
+<a href="../stage4.html">Stage 4 · Your server</a>
+<a href="../stage5.html">Stage 5 · The backend</a>
+<a href="../stage6.html">Stage 6 · Big data</a>
+<a href="../stage7.html">Stage 7 · Browser</a>
+<a href="../stage8.html">Stage 8 · Inspector</a>
+<div class="group">Day 2</div>
+<a href="../omarchy-branding.html">Make Omarchy yours</a>
+<div class="group">Reference</div>
+<a href="../reference/python-cheatsheet.html">Python cheatsheet</a>
+<a href="../reference/c-to-python.html">C to Python</a>
+<a href="../reference/sqlite-cli.html">sqlite3 CLI</a>
+<a href="../reference/sql-for-students-table.html">SQL for students</a>
+<a href="../reference/json.html">JSON</a>
+<a href="../reference/bottle.html">Bottle</a>
+<a href="../reference/curl.html">curl</a>
+<a href="../reference/http-basics.html">HTTP basics</a>
+<div class="group">Help</div>
+<a href="../troubleshooting.html">Troubleshooting</a>
+<div class="group">After the bootcamp</div>
+<a href="../faq.html" class="cur">FAQ · 15 doubts</a>
+</nav>
+<main>
+<header class="page">
+<p class="stage">FAQ · 2 of 15 · Git</p>
+<h1>What is the Difference Between Git and GitHub, and When Do We Use Each One?</h1>
+</header>
+<div class="faq">
+<section id="first-let-us-clear-one-big-confusion">
+<h2>First, Let Us Clear One Big Confusion</h2>
+<p>Most beginners hear "Git" and "GitHub" and think they are the same thing.</p>
+<p>They are <strong>not</strong> the same.</p>
+<p>They are related — yes. But they are two completely different things, made by two different groups of people, for two different purposes.</p>
+<p>Let us understand each one separately first, and then compare them.</p>
+</section>
+<section id="what-is-git-quick-recap">
+<h2>What is Git? (Quick Recap)</h2>
+<p>Git is a <strong>tool that runs on your computer</strong>.</p>
+<p>It tracks every change you make to your project files. It saves snapshots of your work (called commits). It lets you go back to older versions. It lets you work in separate branches.</p>
+<p><strong>Key point → Git works fully on your own laptop or PC. No internet needed. No account needed. Nothing.</strong></p>
+<p>You install Git once on your computer, and it works locally — meaning, everything stays on your machine.</p>
+</section>
+<section id="what-is-github">
+<h2>What is GitHub?</h2>
+<p>GitHub is a <strong>website</strong> — <a href="https://github.com">github.com</a></p>
+<p>It is an online platform where you can <strong>upload your Git project</strong> and store it on the internet.</p>
+<p>Think of it like this:</p>
+<ul><li><strong>Git</strong> is the tool you use to manage your project on your computer.</li><li><strong>GitHub</strong> is the online storage where you keep a copy of that project — so others can see it, download it, and contribute to it.</li></ul>
+<p>GitHub is owned by <strong>Microsoft</strong> (they bought it in 2018). It is free to use for most things.</p>
+</section>
+<section id="very-important-point">
+<h2>Very Important Point</h2>
+<blockquote><p>Git can work <strong>without</strong> GitHub.</p><p>But GitHub <strong>cannot</strong> work without Git.</p></blockquote>
+<p>GitHub is built on top of Git. GitHub just gives Git a nice visual interface on the web and adds extra features like sharing, collaboration, and profile building.</p>
+</section>
+<section id="what-does-github-give-you-that-git-does-not">
+<h2>What Does GitHub Give You That Git Does Not?</h2>
+<p>Git alone is a command-line tool on your computer. GitHub adds many extra things on top:</p>
+<h3>1. Online Backup of Your Project</h3>
+<p>If your laptop crashes or gets stolen, your project is gone — if it is only on Git (your computer).</p>
+<p>If you have pushed your project to GitHub, it is safely stored on the internet. You can download it on any new computer anytime.</p>
+<h3>2. Share Your Project With the World</h3>
+<p>With GitHub, you can make your project <strong>public</strong> — meaning anyone in the world can see your code, learn from it, or use it.</p>
+<p>This is how most open-source projects work. Projects like React, Python, Linux — they are all on GitHub for anyone to see and contribute.</p>
+<h3>3. Team Collaboration Made Easy</h3>
+<p>When 5 people are working on the same project:</p>
+<ul><li>Everyone pushes their work to GitHub</li><li>Everyone pulls others' work from GitHub</li><li>GitHub shows clearly what each person changed</li><li>Pull Requests (we will learn this later) let the team <strong>review each other's code</strong> before merging</li></ul>
+<p>Without GitHub (or something like it), sharing code in a team would be very difficult.</p>
+<h3>4. Your Developer Profile / Portfolio</h3>
+<p>GitHub works like a <strong>LinkedIn for developers</strong>.</p>
+<p>Every project you put on GitHub becomes part of your public profile. Recruiters and companies look at your GitHub profile to see:</p>
+<ul><li>What projects have you built?</li><li>How regularly do you code?</li><li>How clean and organised is your code?</li></ul>
+<p>A good GitHub profile is very important when you are looking for jobs or internships.</p>
+<h3>5. GitHub Has Extra Tools Git Does Not Have</h3>
+<p>GitHub gives you features like:</p>
+<ul><li><strong>Issues</strong> — Report bugs or plan new features</li><li><strong>Pull Requests</strong> — Review code before merging</li><li><strong>GitHub Pages</strong> — Host your website for free</li><li><strong>Actions</strong> — Automate tasks (like testing your code automatically)</li><li><strong>Wikis</strong> — Write documentation for your project</li></ul>
+<p>None of these are part of Git. These are all GitHub features.</p>
+</section>
+<section id="so-when-do-we-use-git-and-when-do-we-use-github">
+<h2>So When Do We Use Git, and When Do We Use GitHub?</h2>
+<p>Here is a simple rule to remember:</p>
+<p><strong>Use Git when:</strong></p>
+<ul><li>You want to track changes in your project on your own computer</li><li>You want to create branches and experiment with new ideas</li><li>You want to go back to an older version of your code</li><li>You are working alone and do not need to share anything</li></ul>
+<p><strong>Use GitHub when:</strong></p>
+<ul><li>You want to back up your project online</li><li>You want to share your project with others</li><li>You are working in a team and everyone needs access to the same project</li><li>You want to build your developer portfolio</li><li>You want to contribute to someone else's open-source project</li><li>You want to deploy (host) a website using GitHub Pages</li></ul>
+<p><strong>Use Both Together when:</strong></p>
+<ul><li>You are building any real project — personal, college, or professional</li><li>In almost every real-world situation, you will use Git on your computer AND GitHub online together</li></ul>
+</section>
+<section id="the-typical-workflow-how-git-and-github-work-together">
+<h2>The Typical Workflow — How Git and GitHub Work Together</h2>
+<p>Here is what a normal developer does, step by step:</p>
+<div class="panel">
+<div class="cap">text</div>
+<pre class="code"><span class="ln">1. Create a project folder on your computer</span><span class="ln">2. Use Git to initialise tracking → git init</span><span class="ln">3. Write some code</span><span class="ln">4. Use Git to save a snapshot → git add . → git commit -m "message"</span><span class="ln">5. Create a repository on GitHub (the online storage space)</span><span class="ln">6. Connect your local project to GitHub → git remote add origin &lt;url&gt;</span><span class="ln">7. Push your work to GitHub → git push</span><span class="ln">8. Continue writing more code on your computer</span><span class="ln">9. Keep committing locally with Git</span><span class="ln">10. Keep pushing to GitHub to keep the online copy updated</span></pre>
+</div>
+<p>Git handles steps 2, 3, 4 — all on your computer. GitHub handles steps 5, 6, 7 — all online.</p>
+<p>They work <strong>hand in hand</strong>.</p>
+</section>
+<section id="are-there-alternatives-to-github">
+<h2>Are There Alternatives to GitHub?</h2>
+<p>Yes. GitHub is the most popular, but there are others that do the same job:</p>
+<div class="panel"><table class="prose"><thead><tr><th>Platform</th><th>Website</th></tr></thead><tbody><tr><td><strong>GitHub</strong></td><td>github.com (most popular)</td></tr><tr><td><strong>GitLab</strong></td><td>gitlab.com</td></tr><tr><td><strong>Bitbucket</strong></td><td>bitbucket.org</td></tr></tbody></table></div>
+<p>All of these work with Git. They are just different websites that host your Git projects online.</p>
+<p>In India, most companies and students use GitHub, so that is the one to focus on first.</p>
+</section>
+<section id="summary-the-one-paragraph-version">
+<h2>Summary — The One-Paragraph Version</h2>
+<blockquote><p>Git is a tool installed on your computer that tracks every change in your project, saves snapshots, and lets you manage versions — all offline, without any account. GitHub is a website where you upload that project to store it online, share it with others, collaborate with a team, and build your developer profile. Git works without GitHub, but GitHub cannot work without Git. In real projects, you always use both — Git to manage your code locally, and GitHub to store and share it online.</p></blockquote>
+</section>
+<section id="what-is-next">
+<h2>What is Next?</h2>
+<p>Now that you understand the difference between Git and GitHub, the next questions that naturally come up are:</p>
+<ul><li>Why do we work with Git through commands instead of a graphical interface?</li><li>What do commands like <code>git init</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code> actually do?</li><li>What is a branch and how do we use it?</li></ul>
+<p>Each of these builds on what you just learned here. Keep going — you are doing great! 🚀</p>
+</section>
+</div>
+<p class="next"><a class="prev" href="what_is_git.html">← Previous: What is Git, and Why Do We Use It?</a><a href="why_git_commands_wsl_ubuntu.html">Next: Why Do We Work With Git Through Commands in WSL Ubuntu? →</a></p>
+<footer class="page">
+  <span>KIET Bootcamp 3 · 21–22 September 2026</span>
+  <span>AI Karyashala</span>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>
