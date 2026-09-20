@@ -48,7 +48,7 @@ with JSON read from a SQLite database, and a web page that uses it. Every stage 
 task, one self-check, one quiz. Everything on this site and in <code>~/kiet-bootcamp-3</code> works
 with the network off. Day 2 is not on this site: team presentations, then Omarchy customization.</p><div class="panel">
 <div class="cap">port plan — four programs, one machine</div>
-<table><thead><tr><th>port</th><th>program</th><th>started in</th><th>used from</th></tr></thead><tbody><tr><td>8000</td><td>this material site</td><td><code>docs/</code> · <code>python3 -m http.server 8000</code></td><td>your browser, all day</td></tr><tr><td>8080</td><td>the given servers</td><td><code>code/stage3</code>, <code>code/stage5</code></td><td>Stage 3, 5, 6, 7, 8</td></tr><tr><td>8081</td><td>your own server</td><td><code>code/stage4</code></td><td>Stage 4</td></tr><tr><td>9000</td><td>the frontend page</td><td><code>code/frontend</code> · <code>python3 -m http.server 9000</code></td><td>Stage 7, 8</td></tr></tbody></table>
+<table><thead><tr><th>port</th><th>program</th><th>started in</th><th>used from</th></tr></thead><tbody><tr><td>8000</td><td>this guide</td><td><code>docs/</code> · <code>python3 -m http.server 8000</code></td><td>your browser, all day</td></tr><tr><td>8080</td><td>the given servers</td><td><code>code/stage3</code>, <code>code/stage5</code></td><td>Stage 3, 5, 6, 7, 8</td></tr><tr><td>8081</td><td>your own server</td><td><code>code/stage4</code></td><td>Stage 4</td></tr><tr><td>9000</td><td>the frontend page</td><td><code>code/frontend</code> · <code>python3 -m http.server 9000</code></td><td>Stage 7, 8</td></tr></tbody></table>
 </div>
 </section>
 <section id="before">
@@ -58,7 +58,7 @@ with the network off. Day 2 is not on this site: team presentations, then Omarch
 It installs git, curl and sqlite3, clones this repository to <code>~/kiet-bootcamp-3</code>, and runs
 <code>check_env.py</code>. On the day, run the check again, then start this site:</p><div class="panel">
 <div class="cap">terminal</div>
-<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ~/kiet-bootcamp-3/check_env.py</span><span class="ln dim">…</span><span class="ln">Ready. Start the material site with:</span><span class="ln">    cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span></pre>
+<pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ~/kiet-bootcamp-3/check_env.py</span><span class="ln dim">…</span><span class="ln">Ready. Start the bootcamp guide with:</span><span class="ln">    cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span></pre>
 </div><p>Then open <a href="http://localhost:8000">http://localhost:8000</a>. That is this page, served from your own machine.</p>
 </section>
 <section id="s1">

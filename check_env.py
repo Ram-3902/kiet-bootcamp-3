@@ -63,15 +63,15 @@ fe = os.path.join(HERE, "code", "frontend", "index.html")
 report(os.path.exists(fe), "code/frontend/index.html is present (needed in Stage 7)",
        "" if os.path.exists(fe) else "git pull in ~/kiet-bootcamp-3", fatal=False)
 
-# 8. material site present
+# 8. bootcamp guide present
 mat = os.path.join(HERE, "docs", "index.html")
-report(os.path.exists(mat), "docs/index.html is present (the material site)",
+report(os.path.exists(mat), "docs/index.html is present (the bootcamp guide)",
        "" if os.path.exists(mat) else "git pull in ~/kiet-bootcamp-3")
 
 print()
 if fatal_failed:
     print("Something above needs fixing before the bootcamp.")
     sys.exit(1)
-print("Ready. Start the material site with:")
+print("Ready. Start the bootcamp guide with:")
 print("    cd ~/kiet-bootcamp-3/docs && python3 -m http.server 8000")
 print("then open http://localhost:8000 in your browser.")
