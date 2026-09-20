@@ -38,12 +38,12 @@
 <main>
 <header class="page">
 <h1>Python backend with Bottle + SQLite</h1>
-<p class="sub">KIET Bootcamp 3 · 21 September 2026, three sessions · AI Karyashala</p>
+<p class="sub">KIET Bootcamp 3 · 21st and 22nd September 2026 · AI Karyashala</p>
 <p class="artifact">HTTP in  →  SQL in the middle  →  JSON out</p>
 </header>
 <section id="about">
 <h2>What this is</h2>
-<p>One day, three sessions. You arrive knowing C. You leave with a Python program that answers HTTP requests
+<p>One day, nine stages. You arrive knowing C. You leave with a Python program that answers HTTP requests
 with JSON read from a SQLite database, and a web page that uses it. Every stage is one new idea, one
 task, one self-check, one quiz. Everything on this site and in <code>~/kiet-bootcamp-3</code> works
 with the network off. Day 2 is not on this site: team presentations, then Omarchy customization.</p><div class="panel">
@@ -61,17 +61,9 @@ It installs git, curl and sqlite3, clones this repository to <code>~/kiet-bootca
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>python3 ~/kiet-bootcamp-3/check_env.py</span><span class="ln dim">…</span><span class="ln">Ready. Start the bootcamp guide with:</span><span class="ln">    cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln cmd"><span class="p">$ </span>cd ~/kiet-bootcamp-3/docs &amp;&amp; python3 -m http.server 8000</span><span class="ln">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span></pre>
 </div><p>Then open <a href="http://localhost:8000">http://localhost:8000</a>. That is this page, served from your own machine.</p>
 </section>
-<section id="s1">
-<h2>Session 1 · morning</h2>
-<div class="cards"><a class="card" href="stage0.html"><div class="num">Stage 0 · ~2 h</div><h3>Just enough Python</h3><p>C with the ceremony removed. Seven complete programs, each stepped through line by line — nothing to write.</p><div class="go">Open →</div></a><a class="card" href="stage1.html"><div class="num">Stage 1</div><h3>Data that survives</h3><p>SQLite and four SQL verbs. Build your team's table by hand and watch it outlive the program.</p><div class="go">Open →</div></a><a class="card" href="stage2.html"><div class="num">Stage 2</div><h3>Python talks to the database</h3><p>Module, connection, cursor. execute positions, fetchall reads, ? carries the value.</p><div class="go">Open →</div></a></div>
-</section>
-<section id="s2">
-<h2>Session 2 · afternoon</h2>
-<div class="cards"><a class="card" href="stage3.html"><div class="num">Stage 3</div><h3>What a server actually is</h3><p>Observe only. A program that waits, poked with curl, both terminals in view.</p><div class="go">Open →</div></a><a class="card" href="stage4.html"><div class="num">Stage 4</div><h3>Write your own server</h3><p>Three routes on port 8081. Return a string for text, a dict for JSON.</p><div class="go">Open →</div></a><a class="card" href="stage5.html"><div class="num">Stage 5</div><h3>Join the two halves</h3><p>Unpack, query, pack. The whole backend in one function, four times.</p><div class="go">Open →</div></a></div>
-</section>
-<section id="s3">
-<h2>Session 3 · after dinner, until 11:30 pm</h2>
-<div class="cards"><a class="card" href="stage6.html"><div class="num">Stage 6 · short</div><h3>Swap the data, not the code</h3><p>200 rows from a .sql source. Zero lines changed.</p><div class="go">Open →</div></a><a class="card" href="stage7.html"><div class="num">Stage 7</div><h3>Someone else's client</h3><p>A plain web page calls your backend. The server cannot tell it from curl.</p><div class="go">Open →</div></a><a class="card" href="stage8.html"><div class="num">Stage 8</div><h3>The inspector</h3><p>The Network tab is curl -i with a mouse. Break CORS on purpose, then fix it.</p><div class="go">Open →</div></a></div>
+<section id="day1">
+<h2>Day 1 · 21 September</h2>
+<div class="cards"><a class="card" href="stage0.html"><div class="num">Stage 0 · ~2 h</div><h3>Just enough Python</h3><p>C with the ceremony removed. Seven complete programs, each stepped through line by line — nothing to write.</p><div class="go">Open →</div></a><a class="card" href="stage1.html"><div class="num">Stage 1</div><h3>Data that survives</h3><p>SQLite and four SQL verbs. Build your team's table by hand and watch it outlive the program.</p><div class="go">Open →</div></a><a class="card" href="stage2.html"><div class="num">Stage 2</div><h3>Python talks to the database</h3><p>Module, connection, cursor. execute positions, fetchall reads, ? carries the value.</p><div class="go">Open →</div></a><a class="card" href="stage3.html"><div class="num">Stage 3</div><h3>What a server actually is</h3><p>Observe only. A program that waits, poked with curl, both terminals in view.</p><div class="go">Open →</div></a><a class="card" href="stage4.html"><div class="num">Stage 4</div><h3>Write your own server</h3><p>Three routes on port 8081. Return a string for text, a dict for JSON.</p><div class="go">Open →</div></a><a class="card" href="stage5.html"><div class="num">Stage 5</div><h3>Join the two halves</h3><p>Unpack, query, pack. The whole backend in one function, four times.</p><div class="go">Open →</div></a><a class="card" href="stage6.html"><div class="num">Stage 6 · short</div><h3>Swap the data, not the code</h3><p>200 rows from a .sql source. Zero lines changed.</p><div class="go">Open →</div></a><a class="card" href="stage7.html"><div class="num">Stage 7</div><h3>Someone else's client</h3><p>A plain web page calls your backend. The server cannot tell it from curl.</p><div class="go">Open →</div></a><a class="card" href="stage8.html"><div class="num">Stage 8</div><h3>The inspector</h3><p>The Network tab is curl -i with a mouse. Break CORS on purpose, then fix it.</p><div class="go">Open →</div></a></div>
 </section>
 <section id="day2">
 <h2>Day 2 · 22 September</h2>
