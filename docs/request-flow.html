@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request → Bottle → SQLite → Response</title>
+<style>
+  :root {
+    --bg: #F5F6F2;
+    --panel: #FFFFFF;
+    --ink: #1E2622;
+    --muted: #5F6A64;
+    --line: #D8DCD6;
+    --gray-fill: #ECEDE8; --gray-stroke: #8A8F88; --gray-ink: #3A3F3B;
+    --purple-fill: #EEEDFE; --purple-stroke: #534AB7; --purple-ink: #3C3489; --purple-sub: #534AB7;
+    --teal-fill: #E1F5EE; --teal-stroke: #0F6E56; --teal-ink: #085041; --teal-sub: #0F6E56;
+    --req: #534AB7;
+    --res: #1D9E75;
+    --packet-bg: #1E2622; --packet-ink: #F5F6F2;
+    --code-bg: #1E2622; --code-ink: #E6EAE3; --code-dim: #8F9A93; --code-hi: #B9B1F2; --code-str: #9FE1CB;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif; }
+  body { padding: 28px 20px 40px; }
+  header { max-width: 1120px; margin: 0 auto 18px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .stage { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: stretch; }
+  @media (max-width: 860px) { .stage { grid-template-columns: 1fr; } }
+
+  .diagram { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { font-family: inherit; }
+  .t14 { font-size: 14px; font-weight: 500; }
+  .t12 { font-size: 12px; }
+  .lane-label { fill: var(--muted); transition: fill .3s, font-weight .3s; }
+  .lane-label.on { fill: var(--ink); font-weight: 500; }
+  .arr { stroke: var(--line); stroke-width: 1.5; fill: none; transition: stroke .3s; }
+  .arr.req.on { stroke: var(--req); }
+  .arr.res.on { stroke: var(--res); }
+  .box rect { stroke-width: 1; transition: stroke-width .3s, filter .3s; }
+  .box.on rect { stroke-width: 2.5; }
+  .box.gray rect { fill: var(--gray-fill); stroke: var(--gray-stroke); }
+  .box.gray .title { fill: var(--gray-ink); } .box.gray .sub { fill: var(--gray-stroke); }
+  .box.purple rect { fill: var(--purple-fill); stroke: var(--purple-stroke); }
+  .box.purple .title { fill: var(--purple-ink); } .box.purple .sub { fill: var(--purple-sub); }
+  .box.teal rect { fill: var(--teal-fill); stroke: var(--teal-stroke); }
+  .box.teal .title { fill: var(--teal-ink); } .box.teal .sub { fill: var(--teal-sub); }
+  #packet { transition: transform .9s cubic-bezier(.4,0,.2,1), opacity .3s; }
+  #packet rect { fill: var(--packet-bg); }
+  #packet text { fill: var(--packet-ink); font-size: 12px; font-weight: 500; }
+  #db-pulse { fill: none; stroke: var(--teal-stroke); stroke-width: 2; opacity: 0; }
+  @keyframes pulse { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.12); } }
+  #db-pulse.go { transform-box: fill-box; transform-origin: center; animation: pulse .8s ease-out 1; }
+
+  .side { display: flex; flex-direction: column; gap: 14px; }
+  .now { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; flex: 1; }
+  .now .step { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+  .now h2 { font-size: 18px; font-weight: 500; margin: 0 0 8px; }
+  .now p { margin: 0 0 14px; font-size: 15px; line-height: 1.55; color: var(--ink); max-width: 60ch; }
+  pre { margin: 0; background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 14px 16px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13.5px; line-height: 1.55; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+  pre .d { color: var(--code-dim); } pre .h { color: var(--code-hi); } pre .s { color: var(--code-str); }
+
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  button { font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  button:hover { border-color: var(--gray-stroke); }
+  button:focus-visible { outline: 2px solid var(--req); outline-offset: 2px; }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); min-width: 84px; }
+  .dots { display: flex; gap: 6px; margin-left: auto; }
+  header a { color: var(--req); text-decoration: none; border-bottom: 1px solid var(--line); }
+  header a:hover { border-bottom-color: var(--req); }
+  .after { max-width: 1120px; margin: 22px auto 0; font-size: 15px; color: var(--muted); }
+  .after a { color: var(--req); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); transition: background .25s; }
+  .dots span.req { background: var(--req); } .dots span.res { background: var(--res); }
+  label.speed { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  select { font: inherit; font-size: 13px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #packet, .arr, .box rect, .lane-label { transition: none; }
+    #db-pulse.go { animation: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>One request, start to finish — the overview</h1>
+  <p>Browser → Bottle → route handler → SQLite, and back again. Play it once, then go on to the step-by-step version.</p>
+  <p><a href="index.html">← Bootcamp guide</a> &nbsp;·&nbsp; <a href="request-response.html">Next: the same trip, step by step, with real output →</a></p>
+</header>
+
+<div class="stage">
+  <div class="diagram">
+    <svg viewBox="0 0 680 484" role="img" aria-labelledby="svgTitle">
+      <title id="svgTitle">Animated request and response flow through a Bottle server and SQLite</title>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <g class="box gray" id="box-client">
+        <rect x="240" y="40" width="200" height="56" rx="8"/>
+        <text class="t14 title" x="340" y="58" text-anchor="middle" dominant-baseline="central">Browser / client</text>
+        <text class="t12 sub" x="340" y="78" text-anchor="middle" dominant-baseline="central">fetch() or address bar</text>
+      </g>
+      <g class="box purple" id="box-bottle">
+        <rect x="240" y="156" width="200" height="56" rx="8"/>
+        <text class="t14 title" x="340" y="174" text-anchor="middle" dominant-baseline="central">Bottle app</text>
+        <text class="t12 sub" x="340" y="194" text-anchor="middle" dominant-baseline="central">@route matches the URL</text>
+      </g>
+      <g class="box purple" id="box-handler">
+        <rect x="240" y="272" width="200" height="56" rx="8"/>
+        <text class="t14 title" x="340" y="290" text-anchor="middle" dominant-baseline="central">Route handler</text>
+        <text class="t12 sub" x="340" y="310" text-anchor="middle" dominant-baseline="central">your Python function</text>
+      </g>
+      <g class="box teal" id="box-db">
+        <rect x="240" y="388" width="200" height="56" rx="8"/>
+        <text class="t14 title" x="340" y="406" text-anchor="middle" dominant-baseline="central">SQLite</text>
+        <text class="t12 sub" x="340" y="426" text-anchor="middle" dominant-baseline="central">sqlite3 module + team_details.db</text>
+      </g>
+      <rect id="db-pulse" x="240" y="388" width="200" height="56" rx="8"/>
+
+      <line id="a1" class="arr req" x1="290" y1="100" x2="290" y2="152" marker-end="url(#arrow)"/>
+      <line id="a2" class="arr req" x1="290" y1="216" x2="290" y2="268" marker-end="url(#arrow)"/>
+      <line id="a3" class="arr req" x1="290" y1="332" x2="290" y2="384" marker-end="url(#arrow)"/>
+      <text id="l1" class="t12 lane-label" x="275" y="126" text-anchor="end" dominant-baseline="central">GET /students</text>
+      <text id="l2" class="t12 lane-label" x="275" y="242" text-anchor="end" dominant-baseline="central">calls the matched function</text>
+      <text id="l3" class="t12 lane-label" x="275" y="358" text-anchor="end" dominant-baseline="central">SELECT * FROM students</text>
+
+      <line id="a4" class="arr res" x1="390" y1="384" x2="390" y2="332" marker-end="url(#arrow)"/>
+      <line id="a5" class="arr res" x1="390" y1="268" x2="390" y2="216" marker-end="url(#arrow)"/>
+      <line id="a6" class="arr res" x1="390" y1="152" x2="390" y2="100" marker-end="url(#arrow)"/>
+      <text id="l4" class="t12 lane-label" x="405" y="358" text-anchor="start" dominant-baseline="central">rows as tuples</text>
+      <text id="l5" class="t12 lane-label" x="405" y="242" text-anchor="start" dominant-baseline="central">return dict → JSON body</text>
+      <text id="l6" class="t12 lane-label" x="405" y="126" text-anchor="start" dominant-baseline="central">200 OK + JSON</text>
+
+      <g id="packet" style="opacity:0">
+        <rect x="-48" y="-12" width="96" height="24" rx="12"/>
+        <text id="packet-text" x="0" y="0" text-anchor="middle" dominant-baseline="central">GET</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="side">
+    <div class="now">
+      <div class="step" id="stepLabel">Ready</div>
+      <h2 id="title">Press play</h2>
+      <p id="desc">Watch a single HTTP request travel down into the database and come back up as a response.</p>
+      <pre id="code"><span class="d"># the whole app, in short (Stage 5's server.py, without the ? parameter)</span>
+<span class="h">from</span> bottle <span class="h">import</span> route, run
+<span class="h">import</span> sqlite3
+
+<span class="h">@route</span>(<span class="s">'/students'</span>)
+<span class="h">def</span> list_students():
+    con = sqlite3.connect(<span class="s">'team_details.db'</span>)
+    rows = con.execute(
+        <span class="s">'SELECT student_name, inter_college, inter_city FROM students'</span>
+    ).fetchall()
+    con.close()
+    result = []
+    <span class="h">for</span> row <span class="h">in</span> rows:
+        name, college, city = row
+        result.append({<span class="s">'student_name'</span>: name, <span class="s">'inter_college'</span>: college, <span class="s">'inter_city'</span>: city})
+    <span class="h">return</span> {<span class="s">'students'</span>: result}
+
+run(host=<span class="s">'localhost'</span>, port=8080)</pre>
+    </div>
+    <div class="controls">
+      <button class="primary" id="play">Play</button>
+      <button id="prev">Back</button>
+      <button id="next">Next</button>
+      <button id="reset">Restart</button>
+      <label class="speed">Speed
+        <select id="speed">
+          <option value="2600">Slow</option>
+          <option value="1700" selected>Normal</option>
+          <option value="1000">Fast</option>
+        </select>
+      </label>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</div>
+
+<p class="after">Seen the round trip? <a href="request-response.html">Now the same request with the bootcamp's real server, database rows and curl output, one crossing at a time →</a></p>
+
+<script>
+  const LX = 290, RX = 390;
+  const steps = [
+    { // 0
+      label: 'Step 1 of 7 · request', title: 'The browser sends a request',
+      desc: 'Something in the page (a fetch call, a form, or the address bar) opens a connection to localhost:8080 and writes an HTTP request as plain text.',
+      code: `<span class="d">// in the browser</span>
+fetch(<span class="s">'http://localhost:8080/students'</span>)
+
+<span class="d">// what actually goes over the wire</span>
+GET /students HTTP/1.1
+Host: localhost:8080
+Accept: application/json`,
+      packet: 'GET /students', from: [LX, 96], to: [LX, 156], on: ['box-client','a1','l1','box-bottle'] },
+    { // 1
+      label: 'Step 2 of 7 · request', title: 'Bottle matches the URL to a route',
+      desc: 'Bottle reads the method and path, looks through every @route you registered, and picks the function whose pattern matches. No match means a 404.',
+      code: `<span class="h">@route</span>(<span class="s">'/students'</span>)          <span class="d"># GET is the default method</span>
+<span class="h">def</span> list_students():
+    ...
+
+<span class="d"># Bottle keeps a table like:</span>
+<span class="d">#   GET  /students              → students_by_college</span>
+<span class="d">#   GET  /students/by-location  → students_by_location</span>
+<span class="d">#   GET  /colleges              → colleges</span>
+<span class="d">#   GET  /count                 → count</span>`,
+      packet: 'route match', from: [LX, 212], to: [LX, 272], on: ['box-bottle','a2','l2','box-handler'] },
+    { // 2
+      label: 'Step 3 of 7 · request', title: 'The handler runs your SQL',
+      desc: 'Your function opens the database file with the sqlite3 module and executes a query. The database is just team_details.db on disk; there is no separate server process.',
+      code: `con  = sqlite3.connect(<span class="s">'team_details.db'</span>)
+rows = con.execute(
+    <span class="s">'SELECT student_name, inter_college, inter_city FROM students'</span>
+).fetchall()
+con.close()`,
+      packet: 'SELECT …', from: [LX, 328], to: [LX, 388], on: ['box-handler','a3','l3','box-db'], pulse: true },
+    { // 3
+      label: 'Step 4 of 7 · response', title: 'SQLite returns rows',
+      desc: 'fetchall() gives back a plain Python list of tuples, one tuple per row, in column order. Nothing here knows about HTTP or JSON yet.',
+      code: `rows == [
+    (<span class="s">'Ravi Teja Kanchi'</span>, <span class="s">'Sri Chaitanya Junior College'</span>, <span class="s">'Visakhapatnam'</span>),
+    (<span class="s">'Lakshmi Prasanna Gudla'</span>, <span class="s">'Narayana Junior College'</span>, <span class="s">'Vijayawada'</span>),
+    (<span class="s">'Sai Kiran Bommu'</span>, <span class="s">'Sri Chaitanya Junior College'</span>, <span class="s">'Visakhapatnam'</span>),
+    (<span class="s">'Divya Sree Pothula'</span>, <span class="s">'Narayana Junior College'</span>, <span class="s">'Vijayawada'</span>),
+]`,
+      packet: '4 rows', from: [RX, 388], to: [RX, 328], on: ['box-db','a4','l4','box-handler'] },
+    { // 4
+      label: 'Step 5 of 7 · response', title: 'The handler returns a dict',
+      desc: 'You shape the tuples into something the client can use and return a dict. Returning a dict is the signal to Bottle that this should become JSON.',
+      code: `result = []
+<span class="h">for</span> row <span class="h">in</span> rows:
+    name, college, city = row
+    result.append({<span class="s">'student_name'</span>: name,
+                   <span class="s">'inter_college'</span>: college,
+                   <span class="s">'inter_city'</span>: city})
+<span class="h">return</span> {<span class="s">'students'</span>: result}`,
+      packet: 'dict', from: [RX, 272], to: [RX, 212], on: ['box-handler','a5','l5','box-bottle'] },
+    { // 5
+      label: 'Step 6 of 7 · response', title: 'Bottle builds the HTTP response',
+      desc: 'Bottle calls json.dumps on your dict, sets the Content-Type header, adds a 200 status line, and writes the whole thing back to the socket.',
+      code: `HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 477
+
+{<span class="s">"students"</span>: [
+  {<span class="s">"student_name"</span>: <span class="s">"Ravi Teja Kanchi"</span>, <span class="s">"inter_college"</span>: <span class="s">"Sri Chaitanya Junior College"</span>, <span class="s">"inter_city"</span>: <span class="s">"Visakhapatnam"</span>},
+  {<span class="s">"student_name"</span>: <span class="s">"Lakshmi Prasanna Gudla"</span>, <span class="s">"inter_college"</span>: <span class="s">"Narayana Junior College"</span>, <span class="s">"inter_city"</span>: <span class="s">"Vijayawada"</span>},
+  {<span class="s">"student_name"</span>: <span class="s">"Sai Kiran Bommu"</span>, …},
+  {<span class="s">"student_name"</span>: <span class="s">"Divya Sree Pothula"</span>, …}
+]}`,
+      packet: '200 OK', from: [RX, 156], to: [RX, 96], on: ['box-bottle','a6','l6','box-client'] },
+    { // 6
+      label: 'Step 7 of 7 · done', title: 'The browser parses and renders',
+      desc: 'The fetch promise resolves. Calling .json() turns the body text back into a JavaScript object, and your page code puts it on screen. One full round trip is complete.',
+      code: `<span class="h">const</span> res  = <span class="h">await</span> fetch(<span class="s">'/students'</span>);
+<span class="h">const</span> data = <span class="h">await</span> res.json();
+
+data.students.forEach(s =&gt; {
+  list.innerHTML += <span class="s">\`&lt;li&gt;\${s.student_name}&lt;/li&gt;\`</span>;
+});`,
+      packet: '200 OK', from: [RX, 96], to: [RX, 96], on: ['box-client'], hold: true },
+  ];
+
+  const $ = id => document.getElementById(id);
+  const packet = $('packet'), packetText = $('packet-text');
+  const dots = $('dots');
+  steps.forEach((s, i) => { const d = document.createElement('span'); d.title = s.title; dots.appendChild(d); });
+
+  let idx = -1, playing = false, timer = null;
+  const speed = () => parseInt($('speed').value, 10);
+
+  function clearOn() {
+    document.querySelectorAll('.on').forEach(el => el.classList.remove('on'));
+  }
+  function place(x, y, instant) {
+    if (instant) packet.style.transition = 'none';
+    packet.style.transform = `translate(${x}px, ${y}px)`;
+    if (instant) { packet.getBoundingClientRect(); packet.style.transition = ''; }
+  }
+  function show(i) {
+    idx = i;
+    const s = steps[i];
+    clearOn();
+    s.on.forEach(id => $(id).classList.add('on'));
+    $('stepLabel').textContent = s.label;
+    $('title').textContent = s.title;
+    $('desc').textContent = s.desc;
+    $('code').innerHTML = s.code;
+    packetText.textContent = s.packet;
+    packet.style.opacity = 1;
+    place(s.from[0], s.from[1], true);
+    requestAnimationFrame(() => requestAnimationFrame(() => place(s.to[0], s.to[1], false)));
+    if (s.pulse) { const p = $('db-pulse'); p.classList.remove('go'); void p.offsetWidth; setTimeout(() => p.classList.add('go'), 800); }
+    [...dots.children].forEach((d, k) => { d.className = k <= i ? (k < 3 ? 'req' : 'res') : ''; });
+  }
+  function reset() {
+    stop(); idx = -1; clearOn();
+    packet.style.opacity = 0;
+    $('stepLabel').textContent = 'Ready';
+    $('title').textContent = 'Press play';
+    $('desc').textContent = 'Watch a single HTTP request travel down into the database and come back up as a response.';
+    $('code').innerHTML = initialCode;
+    [...dots.children].forEach(d => d.className = '');
+  }
+  const initialCode = $('code').innerHTML;
+
+  function next() {
+    if (idx >= steps.length - 1) { stop(); return; }
+    show(idx + 1);
+    if (playing) timer = setTimeout(next, speed());
+  }
+  function prev() { stop(); if (idx > 0) show(idx - 1); else reset(); }
+  function stop() { playing = false; clearTimeout(timer); $('play').textContent = 'Play'; }
+  function play() {
+    if (playing) { stop(); return; }
+    if (idx >= steps.length - 1) idx = -1;
+    playing = true; $('play').textContent = 'Pause';
+    next();
+  }
+
+  $('play').addEventListener('click', play);
+  $('next').addEventListener('click', () => { stop(); if (idx < steps.length - 1) show(idx + 1); });
+  $('prev').addEventListener('click', prev);
+  $('reset').addEventListener('click', reset);
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'SELECT') return;
+    if (e.key === ' ') { e.preventDefault(); play(); }
+    if (e.key === 'ArrowRight') { stop(); if (idx < steps.length - 1) show(idx + 1); }
+    if (e.key === 'ArrowLeft') prev();
+  });
+</script>
+</body>
+</html>

@@ -49,7 +49,8 @@
 <div class="group">Day 2</div>
 <a href="omarchy-branding.html">Make Omarchy yours</a>
 <div class="group">Reference</div>
-<a href="request-response.html" class="cur">Request/response diagram</a>
+<a href="request-flow.html">Request flow · overview</a>
+<a href="request-response.html" class="cur">Request/response · step by step</a>
 <a href="reference/python-cheatsheet.html">Python cheatsheet</a>
 <a href="reference/c-to-python.html">C to Python</a>
 <a href="reference/sqlite-cli.html">sqlite3 CLI</a>
@@ -65,7 +66,7 @@
 </nav>
 <main>
 <header class="page">
-<p class="stage">Diagram</p>
+<p class="stage">Diagram · step by step</p>
 <h1>Request and response</h1>
 <p class="sub">One curl, followed into the server, down to SQLite, and back — as a diagram you can step through.</p>
 <p class="artifact">GET /students?college=…  →  SELECT … WHERE ?  →  rows  →  JSON  →  200 OK</p>
@@ -132,7 +133,7 @@ on the sample database.</p><div class="stepper rrstep">
 <pre class="term"><span class="ln cmd"><span class="p">$ </span>curl -v "localhost:8080/students?college=Narayana+Junior+College"</span><span class="ln">*   Trying 127.0.0.1:8080...</span><span class="ln">* Connected to localhost (127.0.0.1) port 8080</span><span class="ln">&gt; GET /students?college=Narayana+Junior+College HTTP/1.1</span><span class="ln">&gt; Host: localhost:8080</span><span class="ln">&gt; User-Agent: curl/8.5.0</span><span class="ln">&gt; Accept: */*</span><span class="ln">&gt;</span><span class="ln">&lt; HTTP/1.0 200 OK</span><span class="ln">&lt; Date: Sun, 20 Sep 2026 23:36:37 GMT</span><span class="ln">&lt; Server: WSGIServer/0.2 CPython/3.12.3</span><span class="ln">&lt; Content-Type: application/json</span><span class="ln">&lt; Access-Control-Allow-Origin: *</span><span class="ln">&lt; Content-Length: 254</span><span class="ln">&lt;</span><span class="ln">{"count": 2, "students": [{"student_name": "Lakshmi Prasanna Gudla", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}, {"student_name": "Divya Sree Pothula", "inter_college": "Narayana Junior College", "inter_city": "Vijayawada"}]}</span><span class="ln">* Closing connection</span></pre>
 </div>
 </section>
-
+<p class="next"><a class="prev" href="request-flow.html">← Previous: the overview animation</a></p>
 <footer class="page">
   <span>KIET Bootcamp 3 · 21–22 September 2026</span>
   <span>AI Karyashala</span>
